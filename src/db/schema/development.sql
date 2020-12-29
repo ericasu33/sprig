@@ -25,10 +25,10 @@ VALUES
 
 INSERT INTO entries (category_id, description, start_time, end_time,cumulative_pause_duration)
 VALUES 
-(1, 'final-planning', '19:43:02', '20:05:23', 200),
-(1, 'compass-ruby', '11:20:09', '14:02:44', 900),
-(2, 'brainstorming', '13:20:09', '14:02:44', 600),
-(3, 'practice piano', '11:20:09', '12:02:44', 375);
+(1, 'final-planning', '2020-12-29 19:43:02+00', '2020-12-29 20:05:23+00', 200),
+(1, 'compass-ruby', '2020-12-29 11:20:09+00', '2020-12-29 14:02:44+00', 900),
+(2, 'brainstorming', '2020-12-29 13:20:09+00', '2020-12-29 14:02:44+00', 600),
+(3, 'practice piano', '2020-12-29 11:20:09+00', '2020-12-29 12:02:44+00', 375);
 
 INSERT INTO entries_tags (tag_id, entries_id)
 VALUES 
