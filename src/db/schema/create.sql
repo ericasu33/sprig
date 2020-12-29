@@ -30,14 +30,18 @@ CREATE TABLE categories (
 );
 
 -- https://stackoverflow.com/questions/2762302/appropriate-datatype-for-holding-percent-values
+-- https://www.postgresqltutorial.com/postgresql-timestamp/
+-- https://www.postgresqltutorial.com/postgresql-to_timestamp/
+-- https://stackoverflow.com/questions/22332425/default-timestamp-format-and-fractional-seconds
+-- https://www.postgresqltutorial.com/postgresql-current_timestamp/
 
 CREATE TABLE entries (
   id SERIAL PRIMARY KEY NOT NULL,
   category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
   description VARCHAR(255),
-  date DATE NOT NULL DEFAULT CURRENT_DATE,
-  start_time TIME with time zone DEFAULT CURRENT_TIME NOT NULL,
-  end_time TIME with time zone DEFAULT CURRENT_TIME NOT NULL,
+  -- date DATE NOT NULL DEFAULT CURRENT_DATE,
+  start_time timestamptz DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
+  end_time timestamptz DEFAULT CURRENT_TIMESTAMP(0),
   cumulative_pause_duration INTEGER DEFAULT 0 NOT NULL,
   intensity DECIMAL(3,2) CONSTRAINT chk_intensity CHECK (intensity between 0 and 1) DEFAULT 1 NOT NULL
 );
@@ -68,7 +72,7 @@ CREATE TABLE timers (
   shortbr_end_audio_alert_id INTEGER REFERENCES audio_alerts(id) ON DELETE CASCADE,
   longbr_start_audio_alert_id INTEGER REFERENCES audio_alerts(id) ON DELETE CASCADE, 
   longbr_end_audio_alert_id INTEGER REFERENCES audio_alerts(id) ON DELETE CASCADE,
-  notifications BOOLEAN DEFAULT false NOT NULL,
+  notifications BOOLEAN DEFAULT TRUE NOT NULL,
   global_alert_volume DECIMAL(3,2) DEFAULT 0.5 NOT NULL,
   shortbr_start_alert_volume DECIMAL(3,2) DEFAULT 0.5 NOT NULL,
   shortbr_end_alert_volume DECIMAL(3,2) DEFAULT 0.5 NOT NULL,
@@ -77,7 +81,7 @@ CREATE TABLE timers (
   is_default_timer BOOLEAN DEFAULT FALSE NOT NULL,
   is_auto_starting BOOLEAN DEFAULT TRUE NOT NULL,
   pause_task_on_breaks BOOLEAN DEFAULT TRUE NOT NULL,
-  visual_notifications BOOLEAN DEFAULT FALSE NOT NULL,
+  visual_notifications BOOLEAN DEFAULT TRUE NOT NULL,
   CONSTRAINT chk_volume CHECK (
     global_alert_volume between 0 and 1
     AND shortbr_start_alert_volume between 0 and 1
