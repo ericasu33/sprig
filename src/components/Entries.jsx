@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
+import './Entries.scss'
 
 
 function Entries() {
+  const data = [1, 1, 'final-planning', '2020-12-29 19:43:02+00', '2020-12-29 20:05:23+00', 200, 1];
   const [desc, setDesc] = useState('');
+  const [intensity, setIntensity] = useState(100);
   const [calendarValue, setCalendarValue] = useState(new Date());
   const [toggle, setToggle] = useState({
     calendar: false,
@@ -56,7 +59,19 @@ function Entries() {
             {getTimeNow}
         </div>
         {/* no manual input yet */}
+
         {/* <Intensity /> */}
+        <span className='intensityPadding'>
+          <input
+            type='number'
+            min='0'
+            max='100'
+            value={intensity}
+            onChange={(event) => setIntensity(event.target.value)}
+          /> 
+          %
+        </span>
+     
 
         <i 
           className='fa fa-calendar-alt fa-lg'
