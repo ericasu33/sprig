@@ -3,8 +3,11 @@ import classNames from 'classnames';
 
 const Button = (props) => {
   let buttonClass = classNames('button', {
-    'button--confirm': props.confirm,
-    'button--danger': props.danger,
+    'button--play': props.play,
+    'button--stop': props.stop,
+    'button--duplicate': props.duplicate,
+    'button--delete': props.delete,
+    'button--pause': props.pause,
  });
   return (
     <button disabled={props.disabled} className={buttonClass} onClick={props.onClick}>
