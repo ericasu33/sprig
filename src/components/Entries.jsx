@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
+import Button from './Button';
 
 
 function Entries() {
   const [desc, setDesc] = useState('');
-  const [toggleCalendar, setToggleCalendar] = useState(false);
   const [calendarValue, setCalendarValue] = useState(new Date());
+  const [toggle, setToggle] = useState({
+    calendar: false,
+    pause: false,
+    play: true,
+  })
 
   const calendarState = (value) => {
     setCalendarValue(value)
-    setToggleCalendar(prev => !prev)
+    setToggle(prev => {
+      return {
+        ...prev,
+        calendar: !prev.calendar,
+      };
+    })
   }
 
   // https://stackoverflow.com/questions/10599148/how-do-i-get-the-current-time-only-in-javascript
@@ -21,7 +31,7 @@ function Entries() {
 
 
   return (
-    <div>
+    <>
       <form
         autoComplete='off'
         onSubmit={event => event.preventDefault()}
@@ -50,19 +60,62 @@ function Entries() {
 
         <i 
           className='fa fa-calendar-alt fa-lg'
-          onClick={(e) => setToggleCalendar(prev => !prev)}
+          onClick={(e) => setToggle(prev => {
+            return {
+              ...prev, 
+              calendar: !prev.calendar
+            };
+          })
+        }
         >
           {calendarValue.getMonth() + 1}/{calendarValue.getDate()}
         </i>
       
  
-        {toggleCalendar && 
+        {toggle.calendar && 
         <Calendar 
           value = {calendarValue}
           onClickDay={(value, event) => calendarState(value)}
 
         /> 
         }
+
+        {toggle.play &&
+        <Button
+        onClick={(e) => setToggle(prev => {
+          return {
+            ...prev,
+            play: !prev.play,
+            pause: !prev.pause
+          };
+        })
+        }
+        >
+          <i class="far fa-play-circle fa-lg"></i>
+        </Button>
+        }
+
+
+        {toggle.pause &&
+        <Button
+          onClick={(e) => setToggle(prev => {
+            return {
+              ...prev,
+              play: !prev.play,
+              pause: !prev.pause
+            };
+          })
+          }
+        >
+          <i class="far fa-pause-circle fa-lg"></i>
+        </Button>
+        }
+
+      
+        <Button>
+          <i class="far fa-stop-circle fa-lg"></i>
+        </Button>
+
 
         {console.log({calendarValue})}
 
@@ -76,7 +129,7 @@ function Entries() {
         {/* <ModeToggle /> STRETCH */}
 
       </form>
-    </div>
+    </>
   )
 }
 
