@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
+import Timer from './Timer';
 import './Entries.scss'
 
 
 function Entries() {
-  const data = [1, 1, 'final-planning', '2020-12-29 19:43:02+00', '2020-12-29 20:05:23+00', 200, 1];
+  const data = [1, 1, 'final-planning', '2020-12-30 00:18:02+00', '2020-12-30 20:05:23+00', 200, 1];
   const [desc, setDesc] = useState('');
   const [intensity, setIntensity] = useState(100);
   const [calendarValue, setCalendarValue] = useState(new Date());
+  const [initTimer, setInitTimer] = useState('');
   const [toggle, setToggle] = useState({
     calendar: false,
     pause: false,
@@ -26,8 +28,19 @@ function Entries() {
     })
   }
 
+  const timerAction = (action) => {
+    setToggle(prev => {
+      return {
+        ...prev,
+        play: !prev.play,
+        pause: !prev.pause,
+      };
+    })
+    setInitTimer(action);
+  } 
+
   // https://stackoverflow.com/questions/10599148/how-do-i-get-the-current-time-only-in-javascript
-  const getTimeNow = new Date().toLocaleTimeString([], {
+  const getLocalTimeNow = new Date().toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -56,7 +69,7 @@ function Entries() {
 
         {/* <StartEndTime />  */}
         <div>
-            {getTimeNow}
+            {getLocalTimeNow}
         </div>
         {/* no manual input yet */}
 
@@ -95,47 +108,42 @@ function Entries() {
         /> 
         }
 
+        <Timer 
+          startTime = {initTimer}
+        />
+
         {toggle.play &&
-        <Button
-        onClick={(e) => setToggle(prev => {
-          return {
-            ...prev,
-            play: !prev.play,
-            pause: !prev.pause
-          };
-        })
-        }
-        >
-          <i class="far fa-play-circle fa-lg"></i>
-        </Button>
+          <Button
+            onClick={(e) => timerAction(new Date())}
+          >
+            <i className="far fa-play-circle fa-lg"></i>
+          </Button>
         }
 
 
         {toggle.pause &&
-        <Button
-          onClick={(e) => setToggle(prev => {
-            return {
-              ...prev,
-              play: !prev.play,
-              pause: !prev.pause
-            };
-          })
-          }
-        >
-          <i class="far fa-pause-circle fa-lg"></i>
-        </Button>
+          <Button
+          // onClick={(e) => timerAction('')}
+          >
+            <i className="far fa-pause-circle fa-lg"></i>
+          </Button>
         }
 
-      
-        <Button>
-          <i class="far fa-stop-circle fa-lg"></i>
+
+        <Button
+          onClick={(e) => timerAction('')}
+        >
+          <i className="far fa-stop-circle fa-lg"></i>
         </Button>
+
 
 
         {console.log({calendarValue})}
 
         {/* https://www.npmjs.com/package/react-calendar */}
         {/* <TimerDuration /> */}
+
+        
 
         {/* <Button /> */}
         {/* Pass in img as prop & conditionals to render the component diff */}
