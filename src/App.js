@@ -1,6 +1,6 @@
 import './App.css';
 import Entries from './components/Entries';
-import StepInput from './components/StepInput';
+import StepInputInt from './components/StepInputInt';
 import StepInputTime from './components/StepInputTime';
 
 function App() {
@@ -10,9 +10,9 @@ function App() {
       <Entries />
       <br />
       STEP INPUT INT
-      <StepInput />
+      <StepInputInt />
       <br />
-      STEP INPUT TIME
+      STEP INPUT TIME h:m:s +-5min
       <StepInputTime
         value={0}
         format='timer'

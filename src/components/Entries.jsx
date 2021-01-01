@@ -3,7 +3,7 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Timer from './Timer';
-import StepInput from './StepInput'
+import StepInputInt from './StepInputInt'
 import StepInputTime from './StepInputTime'
 import './Entries.scss'
 
@@ -84,7 +84,7 @@ function Entries() {
 
         {/* <Intensity /> */}
         <span className='intensityPadding'>
-          <StepInput
+          <StepInputInt
             name='intensity'
             format='int'
             value='90'
