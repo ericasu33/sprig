@@ -4,33 +4,23 @@ import './Step_input.scss'
 
 
 
-const Increment_input = function() {
-  const [value, setValue] = useState('')
+const Increment_input = function(props) {
+  const [value, setValue] = useState(props.value || '')
+  const increment = (value) => {
+    return Number(value) + 1
+  }
 
   return (
     <>
     <div>
-      <i className="fa fa-chevron-up" onClick={e=>setValue((prev)=>prev + 1)}></i>
+      <i className="fa fa-chevron-up" onClick={e=>setValue(prev => Number(prev) + 1)}></i>
       <input
         value={value}
-        onChange={(event) => setValue(event.target.value)}
-        name='input'
-        type='time'
-        step='60'
+        onChange={e => setValue(e.target.value)}
+        name={props.name}
+        type={props.type}
       />
-      <i className="fa fa-chevron-down" ></i>
-    </div>
-    <br />
-    <div>
-      <i className="fa fa-chevron-up" ></i>
-      <input
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-        name='input'
-        type='time'
-        step='60'
-      />
-      <i className="fa fa-chevron-down" ></i>
+      <i className="fa fa-chevron-down" onClick={e=>setValue(prev => Number(prev) - 1)}></i>
     </div>
     </>
   )

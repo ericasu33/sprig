@@ -3,6 +3,7 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Timer from './Timer';
+import Step_input from './Step_input'
 import './Entries.scss'
 
 
@@ -75,12 +76,12 @@ function Entries() {
 
         {/* <Intensity /> */}
         <span className='intensityPadding'>
-          <input
+          <Step_input
+            name='intensity'
             type='number'
             min='0'
             max='100'
-            value={intensity}
-            onChange={(event) => setIntensity(event.target.value)}
+            value='600'
           /> 
           %
         </span>
