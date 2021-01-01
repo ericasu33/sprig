@@ -1,12 +1,12 @@
 import './App.css';
 import Entries from './components/Entries';
-import Step_input from './components/Step_input';
+import StepInput from './components/StepInput';
 
 function App() {
   return (
     <div>
       <Entries />
-      <Step_input />
+      <StepInput />
     </div>
   );
 }

@@ -3,14 +3,13 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Timer from './Timer';
-import Step_input from './Step_input'
+import StepInput from './StepInput'
 import './Entries.scss'
 
 
 function Entries() {
   const data = [1, 1, 'final-planning', '2020-12-30 00:18:02+00', '2020-12-30 20:05:23+00', 200, 1];
   const [desc, setDesc] = useState('');
-  const [intensity, setIntensity] = useState(100);
   const [calendarValue, setCalendarValue] = useState(new Date());
   const [initTimer, setInitTimer] = useState('');
   const [toggle, setToggle] = useState({
@@ -76,12 +75,13 @@ function Entries() {
 
         {/* <Intensity /> */}
         <span className='intensityPadding'>
-          <Step_input
+          <StepInput
             name='intensity'
             type='number'
             min='0'
             max='100'
-            value='600'
+            value='90'
+            stepSize='5'
           /> 
           %
         </span>
