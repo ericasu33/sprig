@@ -8,35 +8,31 @@ import './StepInput.scss'
 */
 
 const StepInputTime = function(props) {
-
-
-  const [value, setValue] = useState(new Date(props.value))
-  console.log('value:', value)
-  
-  // const time = new Date(props.value)
-  
-  const h = value.getHours()
-  const m = value.getMinutes()
-  // value.setMinutes(m + 5)
-  const s = value.getSeconds()
-  // console.log('h:m:s', h, ':', m, ':', s);
-  // console.log('`${h}:${m}`', `${h}:${m}`);
+  const [value, setValue] = useState(new Date(props.value || 0))
+  // console.log('value:', value)
   
   const timeStr = value.toLocaleTimeString([], {
     hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
+    ...props.display
   });
   console.log('timeStr:', timeStr);
 
-  const stepValue = function (value, sign, stepSize = props.stepSize || 1000 * 60) {
-    return new Date(Number(value) + sign * Number(stepSize))
-  }
-
-  const getDateFromInputStr = function(inputStr) {
+  const updateFromInputStr = function(inputStr) {
     const [h, m, s] = inputStr.split(':')
     console.log('h:m:s', h, ':', m, ':', s);
+    setValue(prev => {
+      const newTime = prev
+      if (h) prev.setHours = h
+      if (m) prev.setMinutes = m
+      if (s) prev.setSeconds = s
+      return newTime
+    })
+  }
+
+  const stepValue = function (value, sign, stepSize = props.stepSize || '1:00') {
+    const [m, s] = stepSize.split(':')
+    const stepSizeMillis = m * 60 * 1000 + s * 1000
+    return new Date(Number(value) + sign * Number(stepSizeMillis))
   }
 
   return (
@@ -46,7 +42,7 @@ const StepInputTime = function(props) {
         // value={`${h}:${m}`}
         value={timeStr}
         // onChange={e => setValue(e.target.value)}
-        onChange={e => getDateFromInputStr(e.target.value)}
+        onChange={e => updateFromInputStr(e.target.value)}
         // onChange={e => console.log('--- input value is:', typeof e.target.value)}
         name={props.name}
         type='text'

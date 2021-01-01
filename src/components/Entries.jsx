@@ -74,13 +74,10 @@ function Entries() {
         <div>
           <StepInputTime
             name='startTime'
-            format={['h', 'm']}
-            // time={getLocalTimeNow}
-            // h={getLocalTimeNow.getHours()}
-            // m={getLocalTimeNow.getMinutes()}
-            // s={getLocalTimeNow.getSeconds()}
+            format='clock'
+            display={{hour: '2-digit', minute: '2-digit'}}
             value={new Date()}
-            stepSize={1000 * 60}
+            stepSize={'1:00'}
           />
         </div>
         {/* no manual input yet */}
