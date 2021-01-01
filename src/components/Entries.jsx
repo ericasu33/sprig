@@ -74,7 +74,7 @@ function Entries() {
         <div>
           <StepInputTime
             name='startTime'
-            format='hh:mm'
+            format={['h', 'm']}
             // time={getLocalTimeNow}
             // h={getLocalTimeNow.getHours()}
             // m={getLocalTimeNow.getMinutes()}

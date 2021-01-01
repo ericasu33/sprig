@@ -15,7 +15,7 @@ function App() {
       STEP INPUT TIME
       <StepInputTime
         value={new Date(0)}
-        format={['h', 'm']}
+        format={['h', 'm', 's']}
         stepSize={1000 * 60*5}
       />
     </div>
