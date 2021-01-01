@@ -4,6 +4,7 @@ import Calendar from 'react-calendar';
 import Button from './Button';
 import Timer from './Timer';
 import StepInput from './StepInput'
+import StepInputTime from './StepInputTime'
 import './Entries.scss'
 
 
@@ -40,11 +41,11 @@ function Entries() {
   } 
 
   // https://stackoverflow.com/questions/10599148/how-do-i-get-the-current-time-only-in-javascript
-  // const getLocalTimeNow = new Date().toLocaleTimeString([], {
-  //   hour: '2-digit',
-  //   minute: '2-digit',
-  // });
-  const getLocalTimeNow = new Date()
+  const getLocalTimeNow = new Date().toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  // const getLocalTimeNow = new Date()
   // const test = {a: 1, b:2}
   // const test2 = ['a', 'b']
 
@@ -71,14 +72,14 @@ function Entries() {
 
         {/* <StartEndTime />  */}
         <div>
-          <StepInput
+          <StepInputTime
             name='startTime'
-            format='hh-mm'
-            time={getLocalTimeNow}
+            format='hh:mm'
+            // time={getLocalTimeNow}
             // h={getLocalTimeNow.getHours()}
             // m={getLocalTimeNow.getMinutes()}
             // s={getLocalTimeNow.getSeconds()}
-            value={getLocalTimeNow}
+            value={new Date()}
             stepSize={1000 * 60}
           />
         </div>

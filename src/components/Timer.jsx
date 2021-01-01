@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 const Timer = ({ startTime }) => {
-  console.log(`STARTTIME ${startTime}`);
 
   const convertDateToUTC = (date) => { 
     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); 
   }
 
   const calculateTime = () => {
-    console.log(`INSIDE`, startTime)
     if(startTime){
-      console.log("DID I FIRE?")
       const timeNow = convertDateToUTC(new Date());
       const start = convertDateToUTC(new Date(startTime));
       const difference = timeNow - start;
@@ -28,10 +25,8 @@ const Timer = ({ startTime }) => {
   }
 
   const [accumTime, setAccumTime] = useState(calculateTime());
-  console.log("ACCUM TIME", accumTime)
 
   useEffect(() => {
-    console.log("Inside useEffect")
     if(startTime){
       const timer = setInterval(() => {
         setAccumTime(calculateTime());
