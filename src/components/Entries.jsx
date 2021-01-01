@@ -40,10 +40,13 @@ function Entries() {
   } 
 
   // https://stackoverflow.com/questions/10599148/how-do-i-get-the-current-time-only-in-javascript
-  const getLocalTimeNow = new Date().toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  // const getLocalTimeNow = new Date().toLocaleTimeString([], {
+  //   hour: '2-digit',
+  //   minute: '2-digit',
+  // });
+  const getLocalTimeNow = new Date()
+  // const test = {a: 1, b:2}
+  // const test2 = ['a', 'b']
 
 
   return (
@@ -64,12 +67,20 @@ function Entries() {
             size='50'
           />
 
-          {console.log(desc)}
         </div>
 
         {/* <StartEndTime />  */}
         <div>
-            {getLocalTimeNow}
+          <StepInput
+            name='startTime'
+            type='time'
+            format='hh-mm'
+            // h={getLocalTimeNow.getHours()}
+            // m={getLocalTimeNow.getMinutes()}
+            // s={getLocalTimeNow.getSeconds()}
+            value={getLocalTimeNow}
+            stepSize='5'
+          />
         </div>
         {/* no manual input yet */}
 
@@ -139,7 +150,6 @@ function Entries() {
 
 
 
-        {console.log({calendarValue})}
 
         {/* https://www.npmjs.com/package/react-calendar */}
         {/* <TimerDuration /> */}
