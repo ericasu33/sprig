@@ -73,13 +73,13 @@ function Entries() {
         <div>
           <StepInput
             name='startTime'
-            type='time'
             format='hh-mm'
+            time={getLocalTimeNow}
             // h={getLocalTimeNow.getHours()}
             // m={getLocalTimeNow.getMinutes()}
             // s={getLocalTimeNow.getSeconds()}
             value={getLocalTimeNow}
-            stepSize='5'
+            stepSize={1000 * 60}
           />
         </div>
         {/* no manual input yet */}
@@ -88,9 +88,7 @@ function Entries() {
         <span className='intensityPadding'>
           <StepInput
             name='intensity'
-            type='number'
-            min='0'
-            max='100'
+            format='int'
             value='90'
             stepSize='5'
           /> 
