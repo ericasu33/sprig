@@ -5,13 +5,19 @@ import Button from './Button';
 import Timer from './Timer';
 import './Entries.scss'
 
+const data = {};
 
-function Entries() {
-  const data = [1, 1, 'final-planning', '2020-12-30 00:18:02+00', '2020-12-30 20:05:23+00', 200, 1];
+const Entries = () => {
+  // const data = [1, 1, 'final-planning', '2020-12-30 00:18:02+00', '2020-12-30 20:05:23+00', 200, 1];
+
   const [desc, setDesc] = useState('');
   const [intensity, setIntensity] = useState(100);
   const [calendarValue, setCalendarValue] = useState(new Date());
-  const [initTimer, setInitTimer] = useState('');
+  const [initTimer, setInitTimer] = useState({
+    value: '',
+    action: null,
+  });
+
   const [toggle, setToggle] = useState({
     calendar: false,
     pause: false,
@@ -28,15 +34,41 @@ function Entries() {
     })
   }
 
-  const timerAction = (action) => {
+  const timerAction = (timephase) => {
     setToggle(prev => {
+      if (timephase === 'stop') {
+        return {
+          ...prev,
+          play: true,
+          pause: false,
+        };
+      }
       return {
         ...prev,
         play: !prev.play,
         pause: !prev.pause,
       };
     })
-    setInitTimer(action);
+
+    data[timephase] = new Date();
+
+    setInitTimer(prev => {
+      if (timephase === 'stop') {
+        return {
+          ...prev,
+          value: null,
+          action: timephase,
+        };
+      }
+      return {
+        ...prev,
+        value: data,
+        action: timephase,
+      };
+    });
+
+    
+    console.log(`INSIDE TIMERACTION`, data);
   } 
 
   // https://stackoverflow.com/questions/10599148/how-do-i-get-the-current-time-only-in-javascript
@@ -114,7 +146,7 @@ function Entries() {
 
         {toggle.play &&
           <Button
-            onClick={(e) => timerAction(new Date())}
+            onClick={(e) => timerAction("start")}
           >
             <i className="far fa-play-circle fa-lg"></i>
           </Button>
@@ -123,22 +155,18 @@ function Entries() {
 
         {toggle.pause &&
           <Button
-          // onClick={(e) => timerAction('')}
+          onClick={(e) => timerAction("pause")}
           >
             <i className="far fa-pause-circle fa-lg"></i>
           </Button>
-        }
+                 }
 
 
         <Button
-          onClick={(e) => timerAction('')}
+          onClick={(e) => timerAction("stop")}
         >
           <i className="far fa-stop-circle fa-lg"></i>
         </Button>
-
-
-
-        {console.log({calendarValue})}
 
         {/* https://www.npmjs.com/package/react-calendar */}
         {/* <TimerDuration /> */}
