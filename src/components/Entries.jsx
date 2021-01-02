@@ -4,7 +4,7 @@ import Calendar from 'react-calendar';
 import Button from './Button';
 import Timer from './Timer';
 import StepInputInt from './StepInputInt'
-import StepInputTime from './StepInputTime'
+import StepInputClock from './StepInputClock'
 import './Entries.scss'
 
 
@@ -72,7 +72,7 @@ function Entries() {
 
         {/* <StartEndTime />  */}
         <div>
-          <StepInputTime
+          <StepInputClock
             name='startTime'
             format='clock'
             display={{hour: '2-digit', minute: '2-digit'}}

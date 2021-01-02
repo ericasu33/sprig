@@ -1,7 +1,8 @@
 import './App.css';
 import Entries from './components/Entries';
 import StepInputInt from './components/StepInputInt';
-import StepInputTime from './components/StepInputTime';
+import StepInputTimer from './components/StepInputTimer';
+import StepInputClock from './components/StepInputClock';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <StepInputInt />
       <br />
       STEP INPUT TIME h:m:s +-5min
-      <StepInputTime
+      <StepInputTimer
         value={0}
         format='timer'
         display={{hour: '2-digit', minute: '2-digit', second: '2-digit'}}
@@ -21,7 +22,7 @@ function App() {
       />
       <br />
       STEP INPUT TIME m:s += 10sec
-      <StepInputTime
+      <StepInputTimer
         value={0}
         format='timer'
         display={{hour: '2-digit', minute: '2-digit', second: '2-digit'}}

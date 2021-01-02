@@ -6,28 +6,23 @@ import './StepInput.scss'
   * Conditionally render the chevrons
   * Make this component universal? Or make one component for integers, one for clocks/timers
   * Distinguish between clock time and timer time: UTC or not?
+  * 
+  * BIG CHALLENGE: 
+  *   if we format the box as time, it'll display with AM/PM, which doesn't make sense for timers
+  *   if we format the box as text, we have to store the state value as literally the string being displayed, otherwise each attempt to manually alter the input re-renders, re-calculates the new timestamp and essentially prevents manual user changes to the time.
+  * I think we should use time for clock-times, because it's cool BUT current code tries to set the time as 24:05 instead of 00:05, so that's not good. Then use text for timer times and store the value in state but convert it to seconds before sending to the DB
 */
 
-const StepInputTime = function(props) {
+const StepInputClock = function(props) {
   const [value, setValue] = useState(new Date(props.value || 0))
-  console.log('value:', value);
-  
-  // useEffect(() => {
-  //   if (props.format === 'timer') {
-  //     setValue(prev => new Date(Number(prev) - (prev.getHours() * 60 * 60 * 1000)))
-  //   }
-  // }, [])
+  console.log('value:', value)
 
-  console.log('value.getHours():', value.getHours());
-
-  // Set display format for 'timer' = 'HH:mm:ss' or 'clock' = 'HH:mm'
-  const displayFormat = {hour: '2-digit', minute: '2-digit'}
-  if (props.format === 'timer') displayFormat.seconds = '2-digit'
-
-  console.log(displayFormat);
-
-  // Get local 24-hr string of state timestamp, to display in input
-  let timeStr = value.toLocaleTimeString([], {hour12: false, ...displayFormat});
+  // Get local 24-hr string of state value's timestamp, to display in input
+  let timeStr = value.toLocaleTimeString([], {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
   console.log('timeStr:', timeStr);
 
   // Update state with new value directly entered into input
@@ -60,7 +55,7 @@ const StepInputTime = function(props) {
         onChange={e => updateFromInputStr(e.target.value)}
         // onChange={e => console.log('--- input value is:', e.target.value)}
         name={props.name}
-        type='text'
+        type='time'
         step={props.format === 'clock' ? 60 : 1}
       />
       <i className="fa fa-chevron-down" onClick={e => updateByStepValue(-1)}></i>
@@ -68,4 +63,4 @@ const StepInputTime = function(props) {
   )
 }
 
-export default StepInputTime
+export default StepInputClock
