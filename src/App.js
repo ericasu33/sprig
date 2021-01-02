@@ -24,7 +24,7 @@ function App() {
       <StepInputTime
         value={0}
         format='timer'
-        display={{minute: '2-digit', second: '2-digit'}}
+        display={{hour: '2-digit', minute: '2-digit', second: '2-digit'}}
         stepSize={'0:10'}
       />
     </div>
