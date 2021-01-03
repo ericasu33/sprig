@@ -14,14 +14,15 @@ const Entries = () => {
   const [intensity, setIntensity] = useState(100);
   const [calendarValue, setCalendarValue] = useState(new Date());
   const [initTimer, setInitTimer] = useState({
-    value: '',
+    start: null,
+    pause: null,
+    stop: null,
     action: null,
   });
 
   const [toggle, setToggle] = useState({
     calendar: false,
-    pause: false,
-    play: true,
+    play: false,
   })
 
   const calendarState = (value) => {
@@ -39,36 +40,28 @@ const Entries = () => {
       if (timephase === 'stop') {
         return {
           ...prev,
-          play: true,
-          pause: false,
+          play: false,
         };
       }
+
       return {
         ...prev,
         play: !prev.play,
-        pause: !prev.pause,
       };
     })
 
-    data[timephase] = new Date();
 
     setInitTimer(prev => {
-      if (timephase === 'stop') {
-        return {
-          ...prev,
-          value: null,
-          action: timephase,
-        };
-      }
+      if (timephase !== 'start' || !data[timephase]) data[timephase] = new Date();
       return {
         ...prev,
-        value: data,
+        stop: null,
+        [timephase]: data[timephase],
         action: timephase,
       };
     });
 
     
-    console.log(`INSIDE TIMERACTION`, data);
   } 
 
   // https://stackoverflow.com/questions/10599148/how-do-i-get-the-current-time-only-in-javascript
@@ -95,8 +88,6 @@ const Entries = () => {
             placeholder='What are you working on?'
             size='50'
           />
-
-          {console.log(desc)}
         </div>
 
         {/* <StartEndTime />  */}
@@ -117,19 +108,18 @@ const Entries = () => {
           %
         </span>
      
-
-        <i 
-          className='fa fa-calendar-alt fa-lg'
+        <Button 
           onClick={(e) => setToggle(prev => {
             return {
               ...prev, 
               calendar: !prev.calendar
             };
-          })
-        }
+          })}
         >
+        <i className='fa fa-calendar-alt fa-lg'>
           {calendarValue.getMonth() + 1}/{calendarValue.getDate()}
         </i>
+        </Button>
       
  
         {toggle.calendar && 
@@ -144,8 +134,9 @@ const Entries = () => {
           startTime = {initTimer}
         />
 
-        {toggle.play &&
+        {!toggle.play &&
           <Button
+            play
             onClick={(e) => timerAction("start")}
           >
             <i className="far fa-play-circle fa-lg"></i>
@@ -153,8 +144,9 @@ const Entries = () => {
         }
 
 
-        {toggle.pause &&
+        {toggle.play &&
           <Button
+          pause
           onClick={(e) => timerAction("pause")}
           >
             <i className="far fa-pause-circle fa-lg"></i>
@@ -163,6 +155,7 @@ const Entries = () => {
 
 
         <Button
+          stop
           onClick={(e) => timerAction("stop")}
         >
           <i className="far fa-stop-circle fa-lg"></i>
