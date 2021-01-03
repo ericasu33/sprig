@@ -1,10 +1,10 @@
 import './App.css';
-import Entries from './components/Entries';
+import Stopwatch from './components/Stopwatch';
 
 function App() {
   return (
     <div>
-      <Entries />
+      <Stopwatch />
     </div>
   );
 }

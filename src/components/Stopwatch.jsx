@@ -3,11 +3,11 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Timer from './Timer';
-import './Entries.scss'
+import './Stopwatch.scss'
 
 const data = {};
 
-const Entries = () => {
+const Stopwatch = () => {
   // const data = [1, 1, 'final-planning', '2020-12-30 00:18:02+00', '2020-12-30 20:05:23+00', 200, 1];
 
   const [desc, setDesc] = useState('');
@@ -177,4 +177,4 @@ const Entries = () => {
   )
 }
 
-export default Entries;
+export default Stopwatch;
