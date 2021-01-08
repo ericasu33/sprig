@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
+import Category from './Category';
 import Timer from './Timer';
 import './Stopwatch.scss'
 
@@ -171,7 +172,8 @@ const Stopwatch = () => {
         {/* Play/Pause/Stop/Duplicate/Delete */}
 
         {/* <ModeToggle /> STRETCH */}
-
+        
+        <Category />
       </form>
     </>
   )
