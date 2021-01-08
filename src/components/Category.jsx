@@ -1,8 +1,11 @@
 import React from 'react';
 
-const Category = () => {
+const Category = (props) => {
+  const style = {
+    backgroundColor: props.color,
+  };
   return (
-    <div>
+    <div style={style}>
       
     </div>
   );
