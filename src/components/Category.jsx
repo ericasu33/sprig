@@ -14,7 +14,7 @@ const Category = (props) => {
     // color: false,
   })
   const [categoryColor, setCategoryColor] = useState({
-    background: '#fff'
+    background: '#ffffff'
   })
   const [displayColor, setDisplayColor] = useState(false)
 
@@ -23,6 +23,8 @@ const Category = (props) => {
       background:color.hex
     })
   }
+
+  console.log(categoryColor)
 
   return (
     <>
@@ -37,7 +39,7 @@ const Category = (props) => {
             };
           }
         )}> 
-        <i class="fas fa-plus"></i>
+        <i className="fas fa-plus"></i>
         Create new project 
       </div>
 
