@@ -1,0 +1,40 @@
+section {
+  display: flex;
+  align-items: center;
+}
+
+section button {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+#player {
+	width: 250px;
+  position: relative;
+  margin: 1rem;
+	
+	i {
+		position: absolute;
+		margin-top: -6px;
+		color: #666;
+	}
+	
+	i.fa-volume-down {
+		margin-left: -8px;
+	}
+	
+	i.fa-volume-up {
+		margin-right: -8px;
+		right: 0;
+	}
+}
+
+#volume {
+	position: absolute;
+	left: 24px;
+	margin: 0 auto;
+	height: 5px;
+	width: 200px;
+	background: #555;
+  border-radius: 15px;
+}
