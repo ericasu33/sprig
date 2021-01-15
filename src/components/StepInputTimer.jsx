@@ -4,7 +4,13 @@ import './StepInput.scss'
 
 const StepInputTimer = function(props) {
   const [value, setValue] = useState(props.value || '00:00:00')
-  const [dbTime, setDbTime] = useState(new Date())
+  const [dbTime, setDbTime] = useState(new Date(0))
+
+  const convertStrToDate = function (clockStr) {
+    let [h, m, s] = clockStr.split(':')
+    const seconds = Number(h) * 60 * 60 + Number(m) * 60 + Number (s)
+    setDbTime(new Date(seconds * 1000))
+  }
   
   const addColons = function (cleanStr) {
     const sixChars = ('000000' + cleanStr).slice(-6)
@@ -14,11 +20,12 @@ const StepInputTimer = function(props) {
       let twoChars = sixChars[i] + sixChars[i + 1]
       output += twoChars
     }
-    return output
+    convertStrToDate(output)
+    setValue(output)
   }
   
   const updateByStepValue = function (prev, sign) {
-    let [h, m, s] = prev.split(':')
+    let [h, m, s] = value.split(':')
     m = Number(m) + Number(sign)
     h = Number(h)
     if (m < 0) {
@@ -36,22 +43,24 @@ const StepInputTimer = function(props) {
     let ss = ("0" + s).slice(-2);
     let mm = ("0" + m).slice(-2);
     let hh = ("0" + h).slice(-2);
-    return `${hh}:${mm}:${ss}`
+    const timeStr = `${hh}:${mm}:${ss}`
+    convertStrToDate(timeStr)
+    setValue(timeStr)
   }
 
-  const reformatInputStr = function (rawStr) {
-    const cleanStr = rawStr.split(':').join('')
+  const handleBlur = function (rawStr) {
+    const cleanStr = rawStr.split(':').join('')    
     return addColons(cleanStr)
   }
 
   return (
     <>
-      <i className="fa fa-chevron-up" onClick={e=>setValue(prev => updateByStepValue(prev, 1))}></i>
+      <i className="fa fa-chevron-up" onClick={e=>updateByStepValue(false, 1)}></i>
       <input
         value={value}
         onFocus={e => e.target.select()}
         onChange={e => setValue(e.target.value)}
-        onBlur={e => setValue(reformatInputStr(e.target.value))}
+        onBlur={e => handleBlur(e.target.value)}
         name={props.name}
         type='text'
         step={props.format === 'clock' ? 60 : 1}
