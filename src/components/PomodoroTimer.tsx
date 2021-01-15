@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import Button from './Button'
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
   return (
-    <>
-    <button
-      onClick={(e: any) => setExpand((prev: boolean) => (!prev))}
-    >
-
-    </button>
     <div>
+      <Button
+        onClick={(e: any) => setExpand((prev: boolean) => (!prev))}
+      >
+        { (expand && "shrink") || "expand" }
+      </Button>
       { expand && 
         <div>
           expanded
@@ -21,7 +21,6 @@ const PomodoroTimer = (props: any) => {
         </div>
       }
     </div>
-    </>
   );
 };
 
