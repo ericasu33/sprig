@@ -3,7 +3,7 @@ import { ChromePicker } from 'react-color';
 import classNames from 'classnames';
 import Button from './Button';
 
-const Category = (props) => {
+const Category = (props: any) => {
   let categoryClass = classNames('category_default', {
     'category': props.color
   })
@@ -17,7 +17,7 @@ const Category = (props) => {
     background: '#ffffff'
   })
 
-  const handleChangeComplete = color => {
+  const handleChangeComplete = (color: any) => {
     setCategoryColor({
       background:color.hex
     })
@@ -53,12 +53,12 @@ const Category = (props) => {
             type='text'
             form='form2'
             placeholder="Category name"
-            size='50'
+            size={50}
           />
 
           <div>
             <Button
-            onClick={(e) => setToggle(prev => {
+            onClick={(e: any) => setToggle(prev => {
               return {
                 ...prev,
                 color: !prev.color
