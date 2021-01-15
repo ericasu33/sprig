@@ -42,6 +42,7 @@ CREATE TABLE entries (
   -- date DATE NOT NULL DEFAULT CURRENT_DATE,
   start_time timestamptz DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
   end_time timestamptz DEFAULT CURRENT_TIMESTAMP(0),
+  pause_start_time timestamptz,
   cumulative_pause_duration INTEGER DEFAULT 0 NOT NULL,
   intensity DECIMAL(3,2) CONSTRAINT chk_intensity CHECK (intensity between 0 and 1) DEFAULT 1 NOT NULL
 );
