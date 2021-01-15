@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import './Button.scss';
 
-const Button = (props) => {
+const Button = (props: any) => {
   let buttonClass = classNames('button', {
     'button--play': props.play,
     'button--stop': props.stop,
