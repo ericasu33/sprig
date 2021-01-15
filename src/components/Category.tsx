@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Category = (props) => {
+const Category = (props: any) => {
   const style = {
     backgroundColor: props.color,
   };
