@@ -5,11 +5,11 @@ import Tag from './Tag';
 
 import './TagList.scss';
 
-const TagList = (props) => {
+const TagList = (props: any) => {
 
   let tagListClass = classNames("tag-list");
 
-  const tags = props.tags.map((opts) => (
+  const tags = props.tags.map((opts: any) => (
     <Tag 
       key={opts.id}
       name={opts.name}
