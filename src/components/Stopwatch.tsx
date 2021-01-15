@@ -6,7 +6,11 @@ import Category from './Category';
 import Timer from './Timer';
 import './Stopwatch.scss'
 
-const data = {};
+interface Data {
+  [key: string]: Date;
+}
+
+const data: Data = {};
 
 const Stopwatch = () => {
   // const data = [1, 1, 'final-planning', '2020-12-30 00:18:02+00', '2020-12-30 20:05:23+00', 200, 1];
@@ -26,7 +30,7 @@ const Stopwatch = () => {
     play: false,
   })
 
-  const calendarState = (value) => {
+  const calendarState = (value: any) => {
     setCalendarValue(value)
     setToggle(prev => {
       return {
@@ -36,7 +40,7 @@ const Stopwatch = () => {
     })
   }
 
-  const timerAction = (timephase) => {
+  const timerAction = (timephase: string) => {
     setToggle(prev => {
       if (timephase === 'stop') {
         return {
@@ -52,7 +56,7 @@ const Stopwatch = () => {
     })
 
 
-    setInitTimer(prev => {
+    setInitTimer( (prev: any) => {
       if (timephase !== 'start' || !data[timephase]) data[timephase] = new Date();
       return {
         ...prev,
@@ -95,7 +99,7 @@ const Stopwatch = () => {
             type='text'
             form='form1'
             placeholder='What are you working on?'
-            size='50'
+            size={50}
           />
         </div>
 
@@ -113,13 +117,13 @@ const Stopwatch = () => {
             min='0'
             max='100'
             value={intensity}
-            onChange={(event) => setIntensity(event.target.value)}
+            onChange={(event: any) => setIntensity(event.target.value)}
           /> 
           %
         </span>
      
         <Button 
-          onClick={(e) => setToggle(prev => {
+          onClick={(e: any) => setToggle(prev => {
             return {
               ...prev, 
               calendar: !prev.calendar
@@ -135,7 +139,7 @@ const Stopwatch = () => {
         {toggle.calendar && 
         <Calendar 
           value = {calendarValue}
-          onClickDay={(value, event) => calendarState(value)}
+          onClickDay={(value: any, event: any) => calendarState(value)}
 
         /> 
         }
@@ -147,7 +151,7 @@ const Stopwatch = () => {
         {!toggle.play &&
           <Button
             play
-            onClick={(e) => timerAction("start")}
+            onClick={(e: any) => timerAction("start")}
           >
             <i className="far fa-play-circle fa-lg"></i>
           </Button>
@@ -157,7 +161,7 @@ const Stopwatch = () => {
         {toggle.play &&
           <Button
           pause
-          onClick={(e) => timerAction("pause")}
+          onClick={(e: any) => timerAction("pause")}
           >
             <i className="far fa-pause-circle fa-lg"></i>
           </Button>
@@ -166,7 +170,7 @@ const Stopwatch = () => {
 
         <Button
           stop
-          onClick={(e) => timerAction("stop")}
+          onClick={(e: any) => timerAction("stop")}
         >
           <i className="far fa-stop-circle fa-lg"></i>
         </Button>
