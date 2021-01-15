@@ -14,66 +14,55 @@ import './StepInput.scss'
 */
 
 const StepInputTimer = function(props) {
-  const [value, setValue] = useState(new Date(props.value || 0))
+  const [value, setValue] = useState(props.value || '00:00:00')
+  const [dbTime, setDbTime] = useState(new Date())
   console.log('value:', value);
-  
-  // useEffect(() => {
-  //   if (props.format === 'timer') {
-  //     setValue(prev => new Date(Number(prev) - (prev.getHours() * 60 * 60 * 1000)))
-  //   }
-  // }, [])
 
-  console.log('value.getHours():', value.getHours());
-
-  // Set display format for 'timer' = 'HH:mm:ss' or 'clock' = 'HH:mm'
-  // const displayFormat = {hour: '2-digit', minute: '2-digit'}
-  // if (props.format === 'timer') displayFormat.seconds = '2-digit'
-
-  // console.log(displayFormat);
-
-  // Get local 24-hr string of state value's timestamp, to display in input
-  let timeStr = value.toLocaleTimeString([], {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  });
-  console.log('timeStr:', timeStr);
-
-  // Update state with new value directly entered into input
-  const updateFromInputStr = function(inputStr) {
-    console.log('inputStr:', inputStr);
-    const [h, m, s] = inputStr.split(':')    
-    setValue(prev => {
-      const newTime = new Date(prev)
-      if (h) newTime.setHours(h)
-      if (m) newTime.setMinutes(m)
-      if (s) newTime.setSeconds(s)
-      return new Date(newTime)
+  const updateByStepValue = function (prev, sign, stepSize = props.stepSize || '1:00') {
+    const prevArr = prev.split(':')
+    const updatedArr = prevArr.map((el, i) => {
+      if (i === 1) {
+        return ('0' + (Number(el) + 1 * Number(sign))).slice(-2)
+      }
+      return el
     })
+    return updatedArr.join(':')
   }
 
-  const updateByStepValue = function (sign, stepSize = props.stepSize || '1:00') {
-    const [m, s] = stepSize.split(':')
-    setValue(prev => {
-      const newTime = new Date(Number(prev) + sign * (m * 60 * 1000 + s * 1000))
-      console.log(newTime);
-      return newTime
-    })
+  const removeColons = function (rawStr) {
+    return rawStr.split(':').join('')
+  }
+
+  const reformatInputStr = function (rawStr) {
+    const blandStr = rawStr.split(':').join('')
+    const sixChars = ('000000' + blandStr).slice(-6)
+    let output = ''
+    for (let i = 0; i < 6; i += 2) {
+      output += i == 2 || i == 4 ? ':' : ''
+      let twoChars = sixChars[i] + sixChars[i + 1]
+      output += twoChars
+    }
+    return output
+  }
+
+  const handleFocus = function (e) {
+    // setValue(removeColons(e.target.value))
+    e.target.select()
   }
 
   return (
     <>
-      <i className="fa fa-chevron-up" onClick={e => updateByStepValue(1)}></i>
+      <i className="fa fa-chevron-up" onClick={e=>setValue(prev => updateByStepValue(prev, 1))}></i>
       <input
-        value={timeStr}
-        onChange={e => updateFromInputStr(e.target.value)}
-        // onChange={e => console.log('--- input value is:', e.target.value)}
+        value={value}
+        onFocus={e => handleFocus(e)}
+        onChange={e => setValue(e.target.value)}
+        onBlur={e => setValue(reformatInputStr(e.target.value))}
         name={props.name}
         type='text'
         step={props.format === 'clock' ? 60 : 1}
       />
-      <i className="fa fa-chevron-down" onClick={e => updateByStepValue(-1)}></i>
+      <i className="fa fa-chevron-down" onClick={e=>setValue(prev => updateByStepValue(prev, -1))}></i>
     </>
   )
 }
