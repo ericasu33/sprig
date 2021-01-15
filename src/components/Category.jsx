@@ -11,18 +11,19 @@ const Category = (props) => {
   const [categoryName, setCategoryName] = useState('')
   const [toggle, setToggle] = useState({
     category: false,
-    // color: false,
+    color: false,
   })
   const [categoryColor, setCategoryColor] = useState({
-    background: '#fff'
+    background: '#ffffff'
   })
-  const [displayColor, setDisplayColor] = useState(false)
 
   const handleChangeComplete = color => {
     setCategoryColor({
       background:color.hex
     })
   }
+
+  console.log(categoryColor)
 
   return (
     <>
@@ -36,35 +37,37 @@ const Category = (props) => {
             category: !prev.category
             };
           }
-        )}> 
-        <i class="fas fa-plus"></i>
+        )}
+      > 
+        <i className="fas fa-plus"></i>
         Create new project 
       </div>
 
       {/* create */}
       {toggle.category &&
       <div>
-        <form
-          autoComplete='off'
-          onSubmit={event => event.preventDefault()}
-        >
           <input
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
             name='categoryName'
             type='text'
+            form='form2'
             placeholder="Category name"
             size='50'
           />
 
           <div>
             <Button
-              onClick={(e) => setDisplayColor(prev => !prev)
-              }
+            onClick={(e) => setToggle(prev => {
+              return {
+                ...prev,
+                color: !prev.color
+              };
+            })}
             >
               Pick Color
             </Button>
-            {displayColor &&
+            {toggle.color &&
               <div>
                   <ChromePicker
                     color={categoryColor.background}
@@ -73,10 +76,11 @@ const Category = (props) => {
               </div>
             }
           </div>
-        <Button>
+        <Button
+          // onSubmit
+        >
           Create
         </Button>
-        </form>
       </div>
       }
     </>

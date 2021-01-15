@@ -11,7 +11,7 @@ const Button = (props) => {
     'button--pause': props.pause,
  });
   return (
-    <button disabled={props.disabled} className={buttonClass} onClick={props.onClick}>
+    <button type="button" disabled={props.disabled} className={buttonClass} onClick={props.onClick}>
       {props.children}
     </button>
   );

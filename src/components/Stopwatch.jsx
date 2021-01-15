@@ -75,9 +75,16 @@ const Stopwatch = () => {
   return (
     <>
       <form
+        id="form1"
         autoComplete='off'
         onSubmit={event => event.preventDefault()}
-      >
+      />
+      
+      <form
+        id="form2"
+        autoComplete='off'
+        onSubmit={event => event.preventDefault()}
+      />
 
         {/* <EntryDesc />  */}
         <div>
@@ -86,6 +93,7 @@ const Stopwatch = () => {
             onChange={(event) => setDesc(event.target.value)}
             name='desc'
             type='text'
+            form='form1'
             placeholder='What are you working on?'
             size='50'
           />
@@ -101,6 +109,7 @@ const Stopwatch = () => {
         <span className='intensityPadding'>
           <input
             type='number'
+            form='form1'
             min='0'
             max='100'
             value={intensity}
@@ -174,7 +183,6 @@ const Stopwatch = () => {
         {/* <ModeToggle /> STRETCH */}
         
         <Category />
-      </form>
     </>
   )
 }
