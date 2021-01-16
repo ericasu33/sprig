@@ -1,14 +1,13 @@
 import './App.css';
-import Entries from './components/Entries';
 import StepInputInt from './components/StepInputInt';
 import StepInputTimer from './components/StepInputTimer';
 import StepInputClock from './components/StepInputClock';
+import Stopwatch from './components/Stopwatch';
 
 function App() {
   return (
     <div>
-      ENTRIES
-      <Entries />
+      <Stopwatch />
       <br />
       STEP INPUT INT
       <StepInputInt />
