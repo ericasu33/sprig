@@ -10,12 +10,14 @@ function App() {
       <Stopwatch />
       <br />
       STEP INPUT INT
-      <StepInputInt />
+      <StepInputInt 
+        name='integer'
+        min='0'
+      />
       <br />
       STEP INPUT TIME h:m:s +-5min
       <StepInputTimer
         name='timer'
-        value={0}
       />
     </div>
   );

@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 
 import './StepInput.scss'
 
-const StepInputInt = function(props) {
-  const [value, setValue] = useState(props.value || '')
+const StepInputInt = function(props: any) {
+  const [value, setValue] = useState(props.value || '0')
 
-  const validateVal = (testVal) => {
+  const validateVal = (testVal: string | number) => {
     if (Number(testVal) < Number(props.min)) {
       return props.min
     } else if (Number(testVal) > Number(props.max)) {
@@ -14,13 +14,13 @@ const StepInputInt = function(props) {
     return testVal
   }
 
-  const handleClick = (sign, stepSize = props.stepSize || 1) => {
-    const newValue = validateVal(Number(value) + sign * Number(stepSize))
+  const handleClick = (sign: number, stepSize: (string | number) = props.stepSize || '1') => {
+    const newValue: Number = validateVal(Number(value) + sign * Number(stepSize))
     setValue(newValue)
   }
 
-  const handleBlur = rawStr => {
-    let onlyNums = rawStr.replace(/\D/g,'')
+  const handleBlur = (rawStr: string) => {
+    const onlyNums: string = rawStr.replace(/\D/g,'')
     setValue(validateVal(onlyNums))
   }
 

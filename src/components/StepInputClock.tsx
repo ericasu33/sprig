@@ -2,32 +2,32 @@ import React, { useState } from 'react'
 
 import './StepInput.scss'
 
-const StepInputClock = function(props) {
+const StepInputClock = function(props: any) {
   const [value, setValue] = useState(new Date(props.value || 0))
 
   // Get local 24-hr string of state value's timestamp, to display in input
-  let timeStr = value.toLocaleTimeString([], {
+  let timeStr: string = value.toLocaleTimeString([], {
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
   });
 
   // Update state with new value directly entered into input
-  const handleChange = function(inputStr) {
-    const [h, m, s] = inputStr.split(':')
+  const handleChange = (inputStr: string) => {
+    const timeArr: (string[] | number[]) = inputStr.split(':')
+    const [h, m, s] = timeArr
     setValue(prev => {
       const newTime = new Date(prev)
-      if (h) newTime.setHours(h)
-      if (m) newTime.setMinutes(m)
-      if (s) newTime.setSeconds(s)
+      if (h) newTime.setHours(Number(h))
+      if (m) newTime.setMinutes(Number(m))
+      if (s) newTime.setSeconds(Number(s))
       return new Date(newTime)
     })
   }
 
-  const handleClick = function (sign, stepSize = props.stepSize || '1:00') {
-    const [m, s] = stepSize.split(':')
+  const handleClick = (sign: number) => {
     setValue(prev => {
-      const newTime = new Date(Number(prev) + sign * (m * 60 * 1000 + s * 1000))
+      const newTime = new Date(Number(prev) + sign * (60 * 1000))
       console.log(newTime);
       return newTime
     })
@@ -41,7 +41,6 @@ const StepInputClock = function(props) {
         onChange={e => handleChange(e.target.value)}
         name={props.name}
         type='time'
-        // step={props.format === 'clock' ? 60 : 1}
       />
       <i className="fa fa-chevron-down" onClick={e => handleClick(-1)}></i>
     </>

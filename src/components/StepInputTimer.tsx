@@ -2,25 +2,26 @@ import React, { useState } from 'react'
 
 import './StepInput.scss'
 
-const StepInputTimer = function(props) {
+const StepInputTimer = function(props: any) {
   const [value, setValue] = useState(props.value || '00:00:00')
   const [dbTime, setDbTime] = useState(new Date(0))
 
   // Time array --> Date object
-  const convertTimeArrToDateObj = ([h, m, s]) => {
+  const convertTimeArrToDateObj = (timeArr: number[]) => {
+    const [h, m, s] = timeArr
     const seconds = Number(h) * 60 * 60 + Number(m) * 60 + Number (s)
     return new Date(seconds * 1000)
   }
   // Date object --> Time array
-  const convertDateObjToArr = dateObj => {
-    let h = dateObj.getUTCHours()
-    let m = dateObj.getUTCMinutes()
-    let s = dateObj.getUTCSeconds()
+  const convertDateObjToArr = (dateObj: Date) => {
+    let s: number = dateObj.getUTCSeconds()
+    let m: number = dateObj.getUTCMinutes()
+    let h: number = dateObj.getUTCHours()
     return [h, m, s]
   }
 
   // Time array --> Time string
-  const convertTimeArrToStr = ([h, m, s]) => {
+  const convertTimeArrToStr = ([h, m, s]: (number[])) => {
     let ss = ("0" + s).slice(-2);
     let mm = ("0" + m).slice(-2);
     let hh = ("0" + h).slice(-2);
@@ -28,35 +29,35 @@ const StepInputTimer = function(props) {
     return timeStr
   }
   // Time string --> Time array
-  const convertTimeStrToArr = rawStr => {
+  const convertTimeStrToArr = (rawStr: string | number) => {
     // Let h, m, s from rawStr
-    let s = Math.floor(rawStr % 100)
-    let m = Math.floor((rawStr / 100) % 100)
-    let h = Math.floor((rawStr / 100 / 100) % 100)
+    let s: number = Math.floor(Number(rawStr) % 100)
+    let m: number = Math.floor((Number(rawStr) / 100) % 100)
+    let h: number = Math.floor((Number(rawStr) / 100 / 100) % 100)
     return [h, m, s]
   }
 
   // Validity check for user's raw input
-  const isAllNumbers = noColons => {
+  const isAllNumbers = (noColons: string): boolean => {
     return /^\d+$/.test(noColons)
   }
   
   // Adjust time with butttons
-  const handleClick = direction => {
-    let dateObj = convertTimeArrToDateObj(value.split(':'))
+  const handleClick = (direction: number): void => {
+    let dateObj: (Date | number) = convertTimeArrToDateObj(value.split(':'))
     dateObj.setUTCMinutes(dateObj.getUTCMinutes() + direction)
 
     // Disallow wrapping from 00:00:00 to 23:59:00
-    if (dateObj < 0) return
+    if (Number(dateObj) < 0) return
 
-    const timeArr = convertDateObjToArr(dateObj)
+    const timeArr: number[] = convertDateObjToArr(dateObj)
     setDbTime(convertTimeArrToDateObj(timeArr))
     const timeStr = convertTimeArrToStr(timeArr)
     setValue(timeStr)
   }
 
   // Adjust time by manually entering a new time
-  const handleBlur = rawStr => {
+  const handleBlur = (rawStr: string) => {
     const noColons = rawStr.split(':').join('')
     const isValid = isAllNumbers(noColons)
     if (isValid) {
