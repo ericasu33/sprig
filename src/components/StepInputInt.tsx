@@ -26,7 +26,7 @@ const StepInputInt = function(props: any) {
 
   return (
     <>
-      <i className="fa fa-chevron-up" onClick={e => handleClick(1)}></i>
+      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
       <input
         value={value}
         onFocus={e => e.target.select()}
@@ -35,7 +35,7 @@ const StepInputInt = function(props: any) {
         name={props.name}
         type='text'
       />
-      <i className="fa fa-chevron-down" onClick={e => handleClick(-1)}></i>
+      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
     </>
   )
 }
