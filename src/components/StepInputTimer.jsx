@@ -48,10 +48,13 @@ const StepInputTimer = function(props) {
   }
   
   // Adjust time with butttons
-  const updateByStepValue = function (plusMinus) {
-    let newTime = convertTimeArrToDateObj(value.split(':'))
-    newTime.setUTCMinutes(newTime.getUTCMinutes() + plusMinus)
-    const timeArr = convertDateObjToArr(newTime)
+  const handleClick = function (direction) {
+    let dateObj = convertTimeArrToDateObj(value.split(':'))
+    dateObj.setUTCMinutes(dateObj.getUTCMinutes() + direction)
+    if (dateObj < 0 || dateObj > 1000 * 60 * 60 * 24) {
+      return
+    }
+    const timeArr = convertDateObjToArr(dateObj)
     setDbTime(convertTimeArrToDateObj(timeArr))
     const timeStr = convertTimeArrToStr(timeArr)
     setValue(timeStr)
@@ -77,7 +80,7 @@ const StepInputTimer = function(props) {
 
   return (
     <>
-      <i className="fa fa-chevron-up" onClick={e => updateByStepValue(1)}></i>
+      <i className="fa fa-chevron-up" onClick={e => handleClick(1)}></i>
       <input
         value={value}
         onFocus={e => e.target.select()}
@@ -87,7 +90,7 @@ const StepInputTimer = function(props) {
         type='text'
         step={props.format === 'clock' ? 60 : 1}
       />
-      <i className="fa fa-chevron-down" onClick={e => updateByStepValue(-1)}></i>
+      <i className="fa fa-chevron-down" onClick={e => handleClick(-1)}></i>
     </>
   )
 }
