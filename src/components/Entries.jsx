@@ -74,10 +74,8 @@ function Entries() {
         <div>
           <StepInputClock
             name='startTime'
-            format='clock'
             display={{hour: '2-digit', minute: '2-digit'}}
             value={new Date()}
-            stepSize={'1:00'}
           />
         </div>
         {/* no manual input yet */}
@@ -86,9 +84,10 @@ function Entries() {
         <span className='intensityPadding'>
           <StepInputInt
             name='intensity'
-            format='int'
             value='90'
             stepSize='5'
+            min='0'
+            max='100'
           /> 
           %
         </span>

@@ -15,18 +15,8 @@ function App() {
       <br />
       STEP INPUT TIME h:m:s +-5min
       <StepInputTimer
+        name='timer'
         value={0}
-        format='timer'
-        display={{hour: '2-digit', minute: '2-digit', second: '2-digit'}}
-        stepSize={'5:00'}
-      />
-      <br />
-      STEP INPUT TIME m:s += 10sec
-      <StepInputTimer
-        value={0}
-        format='timer'
-        display={{hour: '2-digit', minute: '2-digit', second: '2-digit'}}
-        stepSize={'0:10'}
       />
     </div>
   );
