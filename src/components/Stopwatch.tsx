@@ -23,9 +23,7 @@ const records: Data[] = []
 
 /* TODO
 - Render calendar as a layer on top of the rest of the page, so it doesn't move other elements around
-- Link Start time in functions to time passed to stepInputClock
 - On date change, update y, m, d of start-time in state and db
-
 */
 
 const Stopwatch = () => {
@@ -52,6 +50,14 @@ const Stopwatch = () => {
     // Update task start time with new year, month, day
   }
 
+  const handleStartTimeAdjust = (newTime: Date) => {
+    setTimerObj(prev => {
+      return {
+        ...prev,
+        start_time: newTime
+      }
+    })
+  }
 
   const handleTimerState = (timerState: string) => {
     switch (timerState) {
@@ -130,8 +136,8 @@ const Stopwatch = () => {
         <div>
           <StepInputClock
             name='startTime'
-            display={{hour: '2-digit', minute: '2-digit'}}
-            value={new Date()}
+            start_time={timerObj.start_time}
+            startTimeAdjust={handleStartTimeAdjust}
             allowFuture='false'
           />
         </div>

@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './StepInput.scss'
 
 const StepInputClock = function(props: any) {
-  const [time, setTime] = useState(new Date(props.value || 0))
+  const [inputVal, setInputVal] = useState(new Date(props.start_time || new Date()))
 
   // Get local 24-hr string of state value's timestamp, to display in input
-  let timeStr: string = time.toLocaleTimeString([], {
+  let timeStr: string = inputVal.toLocaleTimeString([], {
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
   });
+
+  // Trigger Stopwatch function to set start_time on any 'inputVal' update
+  useEffect(() => {
+    props.startTimeAdjust(inputVal)
+  }, [inputVal])
 
   // Check if 'time' arg is in the past, return bool
   const isAllowed = (time: Date): boolean => {
@@ -24,7 +29,7 @@ const StepInputClock = function(props: any) {
   const handleChange = (inputStr: string) => {
     const timeArr: (string[] | number[]) = inputStr.split(':')
     const [h, m, s] = timeArr
-    setTime(prev => {
+    setInputVal(prev => {
       const newTime = new Date(prev)
       if (h) newTime.setHours(Number(h))
       if (m) newTime.setMinutes(Number(m))
@@ -38,7 +43,7 @@ const StepInputClock = function(props: any) {
 
   // Update state +/- 1min from buttons clicked
   const handleClick = (sign: number) => {
-    setTime((prev: Date) => {
+    setInputVal((prev: Date) => {
       const newTime = new Date(Number(prev) + sign * (60 * 1000))
       if (isAllowed(newTime)) {
         return newTime
