@@ -19,7 +19,7 @@ const Timer = (props: any) => {
     if (props.isTimerActive) {
       const timer = setInterval(() => {
         setTimerVal(Number(new Date()) - Number(props.timerObj.start_time) - Number(props.timerObj.cumulative_pause_duration));
-      }, 1000);
+      }, 10);
       
       return () => clearInterval(timer);
     }
