@@ -1,7 +1,7 @@
 .button {
   width: 100px;
   height: 100px;
-  border: none;
+  border: 1px solid black;
   text-decoration: none;
   background: none;
   &button--play {
@@ -23,5 +23,9 @@
   &button--delete {
     width: 100px;
     height: 100px;
+  }
+  &button--close {
+    width: 10px;
+    height: 10px;
   }
 }
