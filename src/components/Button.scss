@@ -1,31 +1,38 @@
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100px;
   height: 100px;
   border: 1px solid black;
+  border-radius: 0.2em;
   text-decoration: none;
   background: none;
-  &button--play {
+  &:hover {
+    filter: opacity(50%);
+  }
+  &.button--play {
     width: 100px;
     height: 100px;
   }
-  &button--duplicate {
+  &.button--duplicate {
     width: 100px;
     height: 100px;
   }
-  &button--stop {
+  &.button--stop {
     width: 100px;
     height: 100px;
   }
-  &button--pause {
+  &.button--pause {
     width: 100px;
     height: 100px;
   }
-  &button--delete {
+  &.button--delete {
     width: 100px;
     height: 100px;
   }
-  &button--close {
-    width: 10px;
-    height: 10px;
+  &.button--close {
+    width: 20px;
+    height: 20px;
   }
 }

@@ -9,7 +9,7 @@ const Tag = (props: any) => {
     <div className={tagClass}>
       <span>{props.name}</span>
       <Button
-        delete
+        close
         onClick={props.onRemove}
       >X</Button>
     </div>
