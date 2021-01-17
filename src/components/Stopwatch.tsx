@@ -23,17 +23,16 @@ const records: Data[] = []
 
 /* TODO
 - Render calendar as a layer on top of the rest of the page, so it doesn't move other elements around
-- On date change, update y, m, d of start-time in state and db
 */
 
 const Stopwatch = () => {
   const [description, setDescription] = useState('');
-  const [calendarDate, setCalendarDate] = useState(new Date());
+  const [calendarDate, setCalendarDate] = useState(new Date(new Date().setHours(0,0,0,0)));
   const [showCalendar, setShowCalendar] = useState(false)
   const [isTimerActive, setIsTimerActive] = useState(false)
   const [timerObj, setTimerObj] = useState({...data});
 
-
+  // Send data to DB and reset stopwatch on 'SAVE'
   useEffect(() => {
     if (timerObj.end_time) {
       records.push(timerObj)
@@ -42,14 +41,23 @@ const Stopwatch = () => {
     }
   }, [timerObj])
 
-
+  // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
   const calendarState = (value: Date) => {
-    console.log(value);
+    const dateDiff: number = Number(calendarDate) - Number(value);
     setCalendarDate(value)
     setShowCalendar(!showCalendar)
-    // Update task start time with new year, month, day
+    setTimerObj(prev => {
+      const startTime = new Date(Number(timerObj.start_time) - dateDiff)
+      const endTime = timerObj.end_time ? new Date(Number(timerObj.end_time) - dateDiff) : null
+      return {
+        ...prev,
+        start_time: startTime,
+        end_time: endTime
+      }
+    })    
   }
 
+  // Update start_time if InputClock is manually adjusted
   const handleStartTimeAdjust = (newTime: Date) => {
     setTimerObj(prev => {
       return {
@@ -59,6 +67,7 @@ const Stopwatch = () => {
     })
   }
 
+  // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
     switch (timerState) {
       case 'SAVE':
@@ -127,7 +136,7 @@ const Stopwatch = () => {
             name='desc'
             type='text'
             form='form1'
-            placeholder='What are you working on?'
+            placeholder='enter task description'
             size={50}
           />
         </div>
@@ -160,9 +169,9 @@ const Stopwatch = () => {
  
         {showCalendar && 
           <Calendar 
-            value = {calendarDate}
+            value = {new Date(Number(timerObj.start_time)).setHours(0,0,0,0)}
             onClickDay={(value: Date) => calendarState(value)}
-          /> 
+          />
         }
 
         <Timer 

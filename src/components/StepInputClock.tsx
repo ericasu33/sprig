@@ -30,7 +30,7 @@ const StepInputClock = function(props: any) {
     const timeArr: (string[] | number[]) = inputStr.split(':')
     const [h, m, s] = timeArr
     setInputVal(prev => {
-      const newTime = new Date(prev)
+      const newTime = new Date(props.start_time)
       if (h) newTime.setHours(Number(h))
       if (m) newTime.setMinutes(Number(m))
       if (s) newTime.setSeconds(Number(s))
@@ -44,7 +44,7 @@ const StepInputClock = function(props: any) {
   // Update state +/- 1min from buttons clicked
   const handleClick = (sign: number) => {
     setInputVal((prev: Date) => {
-      const newTime = new Date(Number(prev) + sign * (60 * 1000))
+      const newTime = new Date(Number(props.start_time) + sign * (60 * 1000))
       if (isAllowed(newTime)) {
         return newTime
       }
