@@ -3,7 +3,7 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Category from './Category';
-import Timer from './Timer';
+import Timer from './ReadOnlyTimer';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './Stopwatch.scss'
