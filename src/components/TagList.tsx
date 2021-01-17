@@ -18,7 +18,9 @@ const TagList = (props: any) => {
 
   useEffect(() => {
     setTags([
-      { id: 1, name: "test", color: "#FFFFFF", },
+      { id: 1, name: "test1", color: "#FFFFFF", },
+      { id: 2, name: "test2", color: "#FFFFFF", },
+      { id: 3, name: "test3", color: "#FFFFFF", },
     ]);
   }, []);
   
