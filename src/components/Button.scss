@@ -7,9 +7,9 @@
   border: 1px solid black;
   border-radius: 0.2em;
   text-decoration: none;
-  background: none;
+  cursor: pointer;
   &:hover {
-    filter: opacity(50%);
+    filter: opacity(60%);
   }
   &.button--play {
     width: 100px;
