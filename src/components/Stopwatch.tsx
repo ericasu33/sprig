@@ -33,29 +33,17 @@ const Stopwatch = () => {
   const [calendarDate, setCalendarDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false)
   const [isTimerActive, setIsTimerActive] = useState(false)
-  const [timerVal, setTimerVal] = useState(0) // is a number of milliseconds
   const [timerObj, setTimerObj] = useState({...data});
 
 
   useEffect(() => {
-    if (isTimerActive) {
-      const timer = setInterval(() => {
-        setTimerVal(Number(new Date()) - Number(timerObj.start_time) - Number(timerObj.cumulative_pause_duration));
-      }, 1000);
-      
-      return () => clearInterval(timer);
-    }
     if (timerObj.end_time) {
-      sendToDB(timerObj)
+      records.push(timerObj)
+      console.log(records);
+      setTimerObj({...data})
     }
-  }, [timerObj, isTimerActive])
+  }, [timerObj])
 
-  const sendToDB = (timerData: Data) => {
-    records.push(timerObj)
-    console.log(records);
-    setTimerVal(0)
-    setTimerObj({...data})
-  }
 
   const calendarState = (value: Date) => {
     console.log(value);
@@ -64,32 +52,32 @@ const Stopwatch = () => {
     // Update task start time with new year, month, day
   }
 
-  const calculateTime = (start: Date, end: Date) => {
-    return Number(end) - Number(start);
-  }
 
-  const timerAction = (timephase: string) => {
-    setIsTimerActive(() => {
-      if (timephase === 'end_time') return false
-      return !isTimerActive;
-    })
-
-    // setTimerObj( (prev: any) => {
-    //   if (timephase !== 'start' || !data[timephase]) data[timephase] = new Date();
-    //   return {
-    //     ...prev,
-    //     end: null,
-    //     [timephase]: data[timephase],
-    //     action: timephase,
-    //   };
-    // });
-
-    switch (timephase) {
+  const handleTimerState = (timerState: string) => {
+    switch (timerState) {
+      case 'SAVE':
+        setIsTimerActive(false)
+        setTimerObj(prev => {
+          return {
+            ...prev, 
+            end_time: new Date()
+          };
+        })
+        break;
+      case 'PAUSE':
+        setIsTimerActive(false)
+        setTimerObj(prev => {
+          return {
+            ...prev, 
+            pause_start_time: new Date()
+          }
+        })
+        break;
       case 'PLAY':
         setIsTimerActive(true);
         if (timerObj.pause_start_time) {
           const old_pause_dur = timerObj.cumulative_pause_duration
-          const new_pause_dur = Number(old_pause_dur) + Number(new Date()) - Number(timerObj.pause_start_time)
+          const new_pause_dur = Number(new Date()) - Number(timerObj.pause_start_time) + Number(old_pause_dur)
           setTimerObj(prev => {
             return {
               ...prev, 
@@ -105,35 +93,9 @@ const Stopwatch = () => {
             };
           })
         }
-        // setTimerVal(Number(new Date()) - Number(timerObj.start_time) - Number(timerObj.cumulative_pause_duration));
-        break;
-      case 'SAVE':
-        setIsTimerActive(false)
-        setTimerObj(prev => {
-          return {
-            ...prev, 
-            end_time: new Date()
-          };
-        })
-        // saveToDB
-        // setTimerObj({...data})
-        // console.log(timerObj)
-        break;
-      case 'PAUSE':
-        setIsTimerActive(false)
-        setTimerObj(prev => {
-          return {
-            ...prev, 
-            pause_start_time: new Date()
-          }
-        })
-        // setTimerVal(Number(timerObj.pause_start_time) - Number(timerObj.start_time))
-        break;
     }
   }
-  
-  
-  
+
 
   return (
     <>
@@ -195,26 +157,24 @@ const Stopwatch = () => {
           /> 
         }
 
-        ---------   
-        {Math.floor(Number(timerVal) / 1000)}
-           ---------
         <Timer 
           timerObj={timerObj}
+          isTimerActive={isTimerActive}
         />
 
         {!isTimerActive &&
-          <Button play onClick={(e: any) => timerAction("PLAY")}>
+          <Button play onClick={(e: any) => handleTimerState("PLAY")}>
             <i className="far fa-play-circle fa-lg"></i>
           </Button>
         }
 
         {isTimerActive &&
-          <Button pause onClick={(e: any) => timerAction("PAUSE")}>
+          <Button pause onClick={(e: any) => handleTimerState("PAUSE")}>
             <i className="far fa-pause-circle fa-lg"></i>
           </Button>
         }
 
-        <Button stop onClick={(e: any) => timerAction("SAVE")}>
+        <Button stop onClick={(e: any) => handleTimerState("SAVE")}>
           <i className="far fa-save fa-lg"></i>
         </Button>
         
