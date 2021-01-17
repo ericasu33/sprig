@@ -7,6 +7,7 @@ import Timer from './ReadOnlyTimer';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './Stopwatch.scss'
+import ReadOnlyTimer from './ReadOnlyTimer';
 
 interface Data {
   [key: string]: Date | number | null;
@@ -174,7 +175,7 @@ const Stopwatch = () => {
           />
         }
 
-        <Timer 
+        <ReadOnlyTimer 
           timerObj={timerObj}
           isTimerActive={isTimerActive}
         />

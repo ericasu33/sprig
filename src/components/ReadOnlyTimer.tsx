@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-const Timer = (props: any) => {
+const ReadOnlyTimer = (props: any) => {
   const [timerVal, setTimerVal] = useState(0) // is a number of milliseconds
 
   // Date object --> Time string
@@ -15,13 +15,29 @@ const Timer = (props: any) => {
     return `${hh}:${mm}:${ss}`
   }
 
+  /* 
+    When timer is active, timerVal shows active stopwatch
+    When timer is paused, keep timerVal updated if start_time changes
+    When timer is saved, reset timerVal 
+  */
   useEffect(() => {
     if (props.isTimerActive) {
       const timer = setInterval(() => {
-        setTimerVal(Number(new Date()) - Number(props.timerObj.start_time) - Number(props.timerObj.cumulative_pause_duration));
+        setTimerVal(
+          Number(new Date()) -
+          Number(props.timerObj.start_time) -
+          Number(props.timerObj.cumulative_pause_duration)
+        );
       }, 10);
       
       return () => clearInterval(timer);
+    }
+    if (props.timerObj.pause_start_time) {
+      setTimerVal(
+        Number(props.timerObj.pause_start_time) - 
+        Number(props.timerObj.start_time) - 
+        Number(props.timerObj.cumulative_pause_duration)
+      )
     }
     if (!props.timerObj.start_time) {
       setTimerVal(0)
@@ -37,4 +53,4 @@ const Timer = (props: any) => {
   );
 };
 
-export default Timer;
+export default ReadOnlyTimer;
