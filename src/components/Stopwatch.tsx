@@ -88,9 +88,10 @@ const Stopwatch = () => {
           })
         } else {
           setTimerObj(prev => {
+            const startTime = timerObj.start_time || new Date()
             return {
               ...prev, 
-              start_time: new Date()
+              start_time: startTime
             };
           })
         }
