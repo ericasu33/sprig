@@ -58,9 +58,10 @@ const Stopwatch = () => {
       case 'SAVE':
         setIsTimerActive(false)
         setTimerObj(prev => {
+          const endTime = timerObj.pause_start_time || new Date()
           return {
             ...prev, 
-            end_time: new Date()
+            end_time: endTime
           };
         })
         break;
