@@ -19,12 +19,13 @@ const data: Data = {
   cumulative_pause_duration: 0
 };
 
+const records: Data[] = []
+
 /* TODO
 - Render calendar as a layer on top of the rest of the page, so it doesn't move other elements around
 - Link Start time in functions to time passed to stepInputClock
 - On date change, update y, m, d of start-time in state and db
-- Debug play/pause, sometimes it renders as a weird time with letters?
-- Change 'stop' to 'save', save the data and reset the component
+
 */
 
 const Stopwatch = () => {
@@ -45,10 +46,16 @@ const Stopwatch = () => {
       return () => clearInterval(timer);
     }
     if (timerObj.end_time) {
-      setTimerVal(0)
+      sendToDB(timerObj)
     }
   }, [timerObj, isTimerActive])
 
+  const sendToDB = (timerData: Data) => {
+    records.push(timerObj)
+    console.log(records);
+    setTimerVal(0)
+    setTimerObj({...data})
+  }
 
   const calendarState = (value: Date) => {
     console.log(value);
@@ -109,8 +116,8 @@ const Stopwatch = () => {
           };
         })
         // saveToDB
-        setTimerObj({...data})
-        console.log(timerObj)
+        // setTimerObj({...data})
+        // console.log(timerObj)
         break;
       case 'PAUSE':
         setIsTimerActive(false)
