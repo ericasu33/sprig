@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
 
@@ -27,7 +28,7 @@ const StepInputInt = function(props: any) {
 
   return (
     <>
-      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
+      {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={value}
         onFocus={e => e.target.select()}
@@ -37,7 +38,7 @@ const StepInputInt = function(props: any) {
         type='text'
         disabled={props.disabled}
       />
-      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
+      {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
     </>
   )
 }

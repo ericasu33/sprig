@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
 
@@ -49,14 +50,15 @@ const StepInputClock = function(props: any) {
 
   return (
     <>
-      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
+      {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={timeStr}
         onChange={e => handleChange(e.target.value)}
         name={props.name}
         type='time'
+        disabled={props.disabled}
       />
-      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
+      {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
     </>
   )
 }

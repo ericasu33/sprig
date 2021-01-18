@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
 
@@ -84,7 +85,7 @@ const StepInputTimer = function(props: any) {
 
   return (
     <>
-      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
+      {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={inputVal}
         onFocus={e => e.target.select()}
@@ -95,7 +96,7 @@ const StepInputTimer = function(props: any) {
         step={props.format === 'clock' ? 60 : 1}
         disabled={props.disabled}
       />
-      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
+      {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
     </>
   )
 }
