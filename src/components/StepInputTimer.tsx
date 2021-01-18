@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import './StepInput.scss'
 
 const StepInputTimer = function(props: any) {
-  const [value, setValue] = useState(props.value || '00:00:00')
+  const [inputVal, setInputVal] = useState(props.value || '00:00:00')
   const [dbTime, setDbTime] = useState(new Date(0))
 
   // Time array --> Date object
@@ -44,7 +44,7 @@ const StepInputTimer = function(props: any) {
   
   // Adjust time with butttons
   const handleClick = (direction: number): void => {
-    let dateObj: (Date | number) = convertTimeArrToDateObj(value.split(':'))
+    let dateObj: (Date | number) = convertTimeArrToDateObj(inputVal.split(':'))
     dateObj.setUTCMinutes(dateObj.getUTCMinutes() + direction)
 
     // Disallow wrapping from 00:00:00 to 23:59:00
@@ -53,7 +53,7 @@ const StepInputTimer = function(props: any) {
     const timeArr: number[] = convertDateObjToArr(dateObj)
     setDbTime(convertTimeArrToDateObj(timeArr))
     const timeStr = convertTimeArrToStr(timeArr)
-    setValue(timeStr)
+    setInputVal(timeStr)
   }
 
   // Adjust time by manually entering a new time
@@ -67,10 +67,10 @@ const StepInputTimer = function(props: any) {
       const normalizedTimeArr = convertDateObjToArr(convertTimeArrToDateObj(timeArr))
       setDbTime(convertTimeArrToDateObj(normalizedTimeArr))
       const timeStr = convertTimeArrToStr(normalizedTimeArr)
-      setValue(timeStr)
+      setInputVal(timeStr)
     } else {
       const timeStr = convertTimeArrToStr(convertDateObjToArr(dbTime))
-      setValue(timeStr)
+      setInputVal(timeStr)
     }
   }
 
@@ -78,9 +78,9 @@ const StepInputTimer = function(props: any) {
     <>
       <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
       <input
-        value={value}
+        value={inputVal}
         onFocus={e => e.target.select()}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => setInputVal(e.target.value)}
         onBlur={e => handleBlur(e.target.value)}
         name={props.name}
         type='text'
