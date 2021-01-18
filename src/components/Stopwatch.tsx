@@ -33,13 +33,20 @@ const Stopwatch = () => {
   const [isTimerActive, setIsTimerActive] = useState(false)
   const [timerObj, setTimerObj] = useState({...data});
 
-  // Send data to DB and reset stopwatch on 'SAVE'
   useEffect(() => {
+    // Send data to DB and reset stopwatch on 'SAVE'
     if (timerObj.end_time) {
       records.push(timerObj)
       console.log(records);
       setTimerObj({...data})
     }
+
+    // Update calendarDate when timerObj.start_time is updated
+    if (timerObj.start_time) {
+      const newCalendarDate: number = new Date(Number(timerObj.start_time)).setHours(0,0,0,0)
+      setCalendarDate(new Date(newCalendarDate));
+    }
+
   }, [timerObj])
 
   // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
@@ -170,7 +177,7 @@ const Stopwatch = () => {
  
         {showCalendar && 
           <Calendar 
-            value = {new Date(Number(timerObj.start_time)).setHours(0,0,0,0)}
+            value={calendarDate}
             onClickDay={(value: Date) => calendarState(value)}
           />
         }
