@@ -3,11 +3,11 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Category from './Category';
-import Timer from './ReadOnlyTimer';
+import Timer from './StopwatchTime';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './Stopwatch.scss'
-import ReadOnlyTimer from './ReadOnlyTimer';
+import StopwatchTime from './StopwatchTime';
 
 interface Data {
   [key: string]: Date | number | null;
@@ -175,7 +175,7 @@ const Stopwatch = () => {
           />
         }
 
-        <ReadOnlyTimer 
+        <StopwatchTime 
           timerObj={timerObj}
           isTimerActive={isTimerActive}
         />

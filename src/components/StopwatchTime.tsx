@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-const ReadOnlyTimer = (props: any) => {
+const StopwatchTime = (props: any) => {
   const [timerVal, setTimerVal] = useState(0) // is a number of milliseconds
 
   // Date object --> Time string
@@ -53,4 +53,4 @@ const ReadOnlyTimer = (props: any) => {
   );
 };
 
-export default ReadOnlyTimer;
+export default StopwatchTime;
