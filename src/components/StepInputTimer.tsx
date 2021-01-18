@@ -1,10 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './StepInput.scss'
 
 const StepInputTimer = function(props: any) {
   const [inputVal, setInputVal] = useState(props.value || '00:00:00')
   const [dbTime, setDbTime] = useState(new Date(0))
+
+  useEffect(() => {
+    if (typeof props.value === 'number') {
+      const propsValArr = convertDateObjToArr(new Date(props.value))
+      const propsValStr = convertTimeArrToStr(propsValArr)
+      setInputVal(propsValStr)
+    }
+  }, [props.value])
 
   // Time array --> Date object
   const convertTimeArrToDateObj = (timeArr: number[]) => {

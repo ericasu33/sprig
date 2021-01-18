@@ -15,8 +15,9 @@ const StepInputInt = function(props: any) {
   }
 
   const handleClick = (sign: number, stepSize: (string | number) = props.stepSize || '1') => {
-    const newValue: Number = validateVal(Number(value) + sign * Number(stepSize))
-    setValue(newValue)
+    const newValRounded = Math.ceil((Number(value) + sign * Number(stepSize)) / Number(stepSize)) * Number(stepSize)
+    const newValValid: Number = validateVal(newValRounded)
+    setValue(newValValid)
   }
 
   const handleBlur = (rawStr: string) => {

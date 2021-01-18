@@ -116,7 +116,7 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>% Work</label>
-        <StepInputInt disabled value={stats.p_work + "%"}/>
+        <StepInputInt disabled value={stats.p_work} max='100' min='0' stepSize='5'/>
       </div>
     </div>
   );
