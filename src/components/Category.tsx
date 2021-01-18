@@ -23,7 +23,6 @@ const Category = (props: any) => {
     })
   }
 
-  console.log(categoryColor)
 
   return (
     <>

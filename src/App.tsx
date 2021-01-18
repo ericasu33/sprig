@@ -1,21 +1,27 @@
 import './App.css';
 import StepInputInt from './components/StepInputInt';
 import StepInputTimer from './components/StepInputTimer';
-import StepInputClock from './components/StepInputClock';
+// import StepInputClock from './components/StepInputClock';
 import Stopwatch from './components/Stopwatch';
 
 function App() {
   return (
     <div>
+      STOPWATCH
+      <br />
       <Stopwatch />
       <br />
-      STEP INPUT INT
+      <br />
+      SET INTEGER
+      <br />
       <StepInputInt 
         name='integer'
         min='0'
       />
       <br />
-      STEP INPUT TIME h:m:s +-5min
+      <br />
+      SET TIMER
+      <br />
       <StepInputTimer
         name='timer'
       />
