@@ -85,6 +85,7 @@ const StepInputTimer = function(props: any) {
         name={props.name}
         type='text'
         step={props.format === 'clock' ? 60 : 1}
+        disabled={props.disabled}
       />
       <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
     </>

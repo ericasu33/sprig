@@ -3,22 +3,28 @@ import './PomodoroForm.scss';
 import StepInputInt from './StepInputInt';
 import StepInputTimer from './StepInputTimer';
 
+interface Sound {
+  id: number;
+  file: string;
+}
+
 const PomodoroForm = (props: any) => {
-  const [sounds, setSounds]: [Array<string | undefined>, Function] = useState([])
+  const [sounds, setSounds]: [Array<Sound>, Function] = useState([])
 
   useEffect(() => {
     setSounds([
-      "test1.mp3",
-      "test2.mp3",
-      "test3.mp3",
+      {id: 1, file: "test1.mp3"},
+      {id: 2, file: "test2.mp3"},
+      {id: 3, file: "test3.mp3"},
     ]);
   },[]);
   const soundOptions = sounds.map((sound) => {
     return (
       <option
-        value={sound}
+        key={sound.id}
+        value={sound.file}
       >
-        {sound}
+        {sound.file}
       </option>
     );
   });
@@ -27,9 +33,9 @@ const PomodoroForm = (props: any) => {
     <div className="pomodoro-form">
       <div>
         <label>Name</label>
-        <select>
+        <select defaultValue="new-pomodoro">
           {soundOptions}
-          <option selected disabled value="new-pomodoro">New Pomodoro</option>
+          <option value="new-pomodoro">New Pomodoro</option>
         </select>
       </div>
       <div>
@@ -40,13 +46,13 @@ const PomodoroForm = (props: any) => {
         <label>Short Break</label>
         <StepInputTimer></StepInputTimer>
         <div>
-          <select>
-            <option selected disabled value="none">Start Break Sound</option>
+          <select defaultValue="none">
+            <option disabled value="none">Start Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
           </select>
-          <select>
-            <option selected disabled value="none">End Break Sound</option>
+          <select defaultValue="none">
+            <option disabled value="none">End Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
           </select>
@@ -60,13 +66,13 @@ const PomodoroForm = (props: any) => {
         <label>Long Break</label>
         <StepInputTimer></StepInputTimer>
         <div>
-          <select>
-            <option selected disabled value="none">Start Long Break Sound</option>
+          <select defaultValue="none">
+            <option disabled value="none">Start Long Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
           </select>
-          <select>
-            <option selected disabled value="none">End Long Break Sound</option>
+          <select defaultValue="none">
+            <option disabled value="none">End Long Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
           </select>

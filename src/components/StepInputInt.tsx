@@ -34,6 +34,7 @@ const StepInputInt = function(props: any) {
         onBlur={e => handleBlur(e.target.value)}
         name={props.name}
         type='text'
+        disabled={props.disabled}
       />
       <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
     </>
