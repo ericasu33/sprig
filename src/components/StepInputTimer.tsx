@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import './StepInput.scss'
 
 const StepInputTimer = function(props: any) {
-  const [inputVal, setInputVal] = useState(props.value || '00:00:00')
+  const [inputVal, setInputVal] = useState('00:00:00')
   const [dbTime, setDbTime] = useState(new Date(0))
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const StepInputTimer = function(props: any) {
   }, [props.value])
 
   // Time array --> Date object
-  const convertTimeArrToDateObj = (timeArr: number[]) => {
+  const convertTimeArrToDateObj = (timeArr: (number)[] | string[]) => {
     const [h, m, s] = timeArr
     const seconds = Number(h) * 60 * 60 + Number(m) * 60 + Number (s)
     return new Date(seconds * 1000)
