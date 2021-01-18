@@ -3,11 +3,10 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Category from './Category';
-import Timer from './StopwatchTime';
+import StopwatchTime from './StopwatchTime';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './Stopwatch.scss'
-import StopwatchTime from './StopwatchTime';
 
 interface Data {
   [key: string]: Date | number | null;
@@ -150,6 +149,7 @@ const Stopwatch = () => {
         </div>
 
         {/* <StartEndTime />  */}
+        {timerObj.start_time &&
         <div>
           <StepInputClock
             name='startTime'
@@ -157,7 +157,7 @@ const Stopwatch = () => {
             startTimeAdjust={handleStartTimeAdjust}
             allowFuture='false'
           />
-        </div>
+        </div>}
 
         {/* <Intensity /> */}
         <span className='intensityPadding'>

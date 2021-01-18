@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import './StepInput.scss'
 
 const StepInputClock = function(props: any) {
-  const [inputVal, setInputVal] = useState(new Date(props.start_time || new Date()))
+  const [inputVal, setInputVal] = useState(new Date(props.start_time))
 
   // Get local 24-hr string of state value's timestamp, to display in input
   let timeStr: string = inputVal.toLocaleTimeString([], {
@@ -12,7 +12,7 @@ const StepInputClock = function(props: any) {
     minute: '2-digit',
   });
 
-  // Trigger Stopwatch function to set start_time on any 'inputVal' update
+  // Set start_time (as props from Stopwatch component) on any 'inputVal' update
   useEffect(() => {
     props.startTimeAdjust(inputVal)
   }, [inputVal])
