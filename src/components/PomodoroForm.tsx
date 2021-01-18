@@ -6,10 +6,29 @@ import StepInputTimer from './StepInputTimer';
 interface Sound {
   id: number;
   file: string;
-}
+};
+
+interface Stats {
+  duration: number;
+  work: number;
+  p_work: number;
+};
 
 const PomodoroForm = (props: any) => {
-  const [sounds, setSounds]: [Array<Sound>, Function] = useState([])
+  const [sounds, setSounds]: [Array<Sound>, Function] = useState([]);
+  const [stats, setStats]: [Stats, Function] = useState({
+    duration: 6000,
+    work: 1000,
+    p_work: 100,
+  });
+
+  const calcStats = ({work, short_break, long_break, cycles}: {[key:string]: number}) => {
+    const duration_time = (work + short_break) * cycles + work + long_break;
+    const work_time = work + work * cycles;
+    if (!duration_time || !work_time) return null;
+    const p_work = Math.floor((duration_time / work_time) * 100);
+    return { duration: duration_time, work: work_time, p_work};
+  };
 
   useEffect(() => {
     setSounds([
@@ -18,6 +37,15 @@ const PomodoroForm = (props: any) => {
       {id: 3, file: "test3.mp3"},
     ]);
   },[]);
+
+  useEffect(() => {
+    if (!props.pomo_timer) return;
+    setStats((prev: any) => {
+      const newStats = calcStats(props.pomo_timer);
+      return newStats || prev;
+    });
+  }, [props.pomo_timer]);
+
   const soundOptions = sounds.map((sound) => {
     return (
       <option
@@ -40,11 +68,11 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Work</label>
-        <StepInputTimer></StepInputTimer>
+        <StepInputTimer />
       </div>
       <div>
         <label>Short Break</label>
-        <StepInputTimer></StepInputTimer>
+        <StepInputTimer />
         <div>
           <select defaultValue="none">
             <option disabled value="none">Start Break Sound</option>
@@ -60,11 +88,11 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Repeats</label>
-        <StepInputInt></StepInputInt>
+        <StepInputInt />
       </div>
       <div>
         <label>Long Break</label>
-        <StepInputTimer></StepInputTimer>
+        <StepInputTimer />
         <div>
           <select defaultValue="none">
             <option disabled value="none">Start Long Break Sound</option>
@@ -80,15 +108,15 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Total Duration</label>
-        <StepInputTimer disabled/>
+        <StepInputTimer disabled value={stats.duration}/>
       </div>
       <div>
         <label>Total Work</label>
-        <StepInputTimer disabled/>
+        <StepInputTimer disabled value={stats.work}/>
       </div>
       <div>
         <label>% Work</label>
-        <StepInputTimer disabled/>
+        <StepInputInt disabled value={stats.p_work + "%"}/>
       </div>
     </div>
   );
