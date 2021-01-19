@@ -68,11 +68,15 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Work</label>
-        <StepInputTimer />
+        <StepInputTimer 
+          value={0}
+        />
       </div>
       <div>
         <label>Short Break</label>
-        <StepInputTimer />
+        <StepInputTimer 
+          value={0}
+        />
         <div>
           <select defaultValue="none">
             <option disabled value="none">Start Break Sound</option>
@@ -88,11 +92,15 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Repeats</label>
-        <StepInputInt />
+        <StepInputInt 
+          value={0}
+        />
       </div>
       <div>
         <label>Long Break</label>
-        <StepInputTimer />
+        <StepInputTimer 
+          value={0}
+        />
         <div>
           <select defaultValue="none">
             <option disabled value="none">Start Long Break Sound</option>
@@ -108,15 +116,21 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Total Duration</label>
-        <StepInputTimer disabled value={stats.duration}/>
+        <StepInputTimer disabled 
+          value={stats.duration}
+        />
       </div>
       <div>
         <label>Total Work</label>
-        <StepInputTimer disabled value={stats.work}/>
+        <StepInputTimer disabled 
+          value={stats.work}
+        />
       </div>
       <div>
         <label>% Work</label>
-        <StepInputInt disabled value={stats.p_work + "%"}/>
+        <StepInputInt disabled 
+          value={stats.p_work + "%"}
+        />
       </div>
     </div>
   );
