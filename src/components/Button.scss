@@ -1,28 +1,33 @@
 .button {
-  width: 100px;
-  height: 100px;
-  border: 1px solid black;
+  width: 50px;
+  height: 50px;
+  border: none;
   text-decoration: none;
   background: none;
-  &button--play {
-    width: 100px;
-    height: 100px;
+  &.button--play {
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
   }
-  &button--duplicate {
-    width: 100px;
-    height: 100px;
+  &.button--duplicate {
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
   }
-  &button--stop {
-    width: 100px;
-    height: 100px;
+  &.button--stop {
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
   }
-  &button--pause {
-    width: 100px;
-    height: 100px;
+  &.button--pause {
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
   }
-  &button--delete {
-    width: 100px;
-    height: 100px;
+  &.button--delete {
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
   }
   &button--close {
     width: 10px;
