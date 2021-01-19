@@ -7,8 +7,9 @@ const StepInputInt = function(props: any) {
   const [value, setValue] = useState(props.value || '0')
 
   const validateVal = (testVal: string | number) => {
-    if (Number(testVal) < Number(props.min)) {
-      return props.min
+    const defaultMinZero = props.min ? Number(props.min) : 0
+    if (Number(testVal) < Number(defaultMinZero)) {
+      return defaultMinZero
     } else if (Number(testVal) > Number(props.max)) {
       return props.max
     }
