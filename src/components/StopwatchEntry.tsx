@@ -122,19 +122,19 @@ const Stopwatch = (props: any) => {
   }
 
 
+  // <form
+  //   id="form1"
+  //   autoComplete='off'
+  //   onSubmit={event => event.preventDefault()}
+  // />
+  
+  // <form
+  //   id="form2"
+  //   autoComplete='off'
+  //   onSubmit={event => event.preventDefault()}
+  // />
   return (
     <div className='stopwatch'>
-      <form
-        id="form1"
-        autoComplete='off'
-        onSubmit={event => event.preventDefault()}
-      />
-      
-      <form
-        id="form2"
-        autoComplete='off'
-        onSubmit={event => event.preventDefault()}
-      />
 
       <Category />
 
@@ -154,7 +154,7 @@ const Stopwatch = (props: any) => {
       {/* <StartEndTime />  */}
       <div>
         <StepInputClock
-          name='startTime'
+          name='start_time'
           time={timerObj.start_time}
           timeAdjust={handleTimeAdjust}
           allowFuture='true'
@@ -163,7 +163,7 @@ const Stopwatch = (props: any) => {
 
       <div>
         <StepInputClock
-          name='endTime'
+          name='end_time'
           time={timerObj.end_time}
           timeAdjust={handleTimeAdjust}
           allowFuture='true'
