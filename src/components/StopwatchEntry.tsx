@@ -66,7 +66,7 @@ const Stopwatch = (props: any) => {
   }
 
   // Update start_time if InputClock is manually adjusted
-  const handleTimeAdjust = (timeType: string, newTime: Date) => {
+  const handleTimeAdjust = (newTime: Date, timeType: string) => {
     setTimerObj((prev: any) => {
       return {
         ...prev,

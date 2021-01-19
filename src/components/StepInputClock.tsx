@@ -15,7 +15,7 @@ const StepInputClock = function(props: any) {
 
   // Set start_time (as props from Stopwatch component) on any 'inputVal' update
   useEffect(() => {
-    props.timeAdjust(props.name, inputVal)
+    props.timeAdjust(inputVal, props.name)
   }, [inputVal])
 
   // Check if 'time' arg is in the past, return bool
