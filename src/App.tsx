@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import StepInputInt from './components/StepInputInt';
 import StepInputTimer from './components/StepInputTimer';
 import Stopwatch from './components/Stopwatch';
@@ -8,29 +8,13 @@ function App() {
   return (
     <div>
       POMODORO
-      <PomodoroForm >
-        
-      </PomodoroForm>
+      <br />
+      <PomodoroForm />
       <br />
       <br />
       STOPWATCH
       <br />
       <Stopwatch />
-      <br />
-      <br />
-      SET INTEGER
-      <br />
-      <StepInputInt 
-        name='integer'
-        min='0'
-      />
-      <br />
-      <br />
-      SET TIMER
-      <br />
-      <StepInputTimer
-        name='timer'
-      />
     </div>
   );
 }
