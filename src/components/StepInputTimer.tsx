@@ -1,13 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
 
 const StepInputTimer = function(props: any) {
-  const [value, setValue] = useState(props.value || '00:00:00')
+  const [inputVal, setInputVal] = useState('00:00:00')
   const [dbTime, setDbTime] = useState(new Date(0))
 
+  useEffect(() => {
+    if (typeof props.value === 'number') {
+      const propsValArr = convertDateObjToArr(new Date(props.value))
+      const propsValStr = convertTimeArrToStr(propsValArr)
+      setInputVal(propsValStr)
+    }
+  }, [props.value])
+
   // Time array --> Date object
-  const convertTimeArrToDateObj = (timeArr: number[]) => {
+  const convertTimeArrToDateObj = (timeArr: (number)[] | string[]) => {
     const [h, m, s] = timeArr
     const seconds = Number(h) * 60 * 60 + Number(m) * 60 + Number (s)
     return new Date(seconds * 1000)
@@ -44,7 +53,7 @@ const StepInputTimer = function(props: any) {
   
   // Adjust time with butttons
   const handleClick = (direction: number): void => {
-    let dateObj: (Date | number) = convertTimeArrToDateObj(value.split(':'))
+    let dateObj: (Date | number) = convertTimeArrToDateObj(inputVal.split(':'))
     dateObj.setUTCMinutes(dateObj.getUTCMinutes() + direction)
 
     // Disallow wrapping from 00:00:00 to 23:59:00
@@ -53,7 +62,7 @@ const StepInputTimer = function(props: any) {
     const timeArr: number[] = convertDateObjToArr(dateObj)
     setDbTime(convertTimeArrToDateObj(timeArr))
     const timeStr = convertTimeArrToStr(timeArr)
-    setValue(timeStr)
+    setInputVal(timeStr)
   }
 
   // Adjust time by manually entering a new time
@@ -67,27 +76,28 @@ const StepInputTimer = function(props: any) {
       const normalizedTimeArr = convertDateObjToArr(convertTimeArrToDateObj(timeArr))
       setDbTime(convertTimeArrToDateObj(normalizedTimeArr))
       const timeStr = convertTimeArrToStr(normalizedTimeArr)
-      setValue(timeStr)
+      setInputVal(timeStr)
     } else {
       const timeStr = convertTimeArrToStr(convertDateObjToArr(dbTime))
-      setValue(timeStr)
+      setInputVal(timeStr)
     }
   }
 
   return (
-    <>
-      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
+    <div className='step-input step-input-timer'>
+      {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
       <input
-        value={value}
+        value={inputVal}
         onFocus={e => e.target.select()}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => setInputVal(e.target.value)}
         onBlur={e => handleBlur(e.target.value)}
         name={props.name}
         type='text'
         step={props.format === 'clock' ? 60 : 1}
+        disabled={props.disabled}
       />
-      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
-    </>
+      {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
+    </div>
   )
 }
 

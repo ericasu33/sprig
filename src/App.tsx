@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import Stopwatch from './components/Stopwatch';
 import StopwatchEntry from './components/StopwatchEntry';
 

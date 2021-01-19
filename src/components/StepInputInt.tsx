@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
 
@@ -6,8 +7,9 @@ const StepInputInt = function(props: any) {
   const [value, setValue] = useState(props.value || '0')
 
   const validateVal = (testVal: string | number) => {
-    if (Number(testVal) < Number(props.min)) {
-      return props.min
+    const defaultMinZero = props.min ? Number(props.min) : 0
+    if (Number(testVal) < Number(defaultMinZero)) {
+      return defaultMinZero
     } else if (Number(testVal) > Number(props.max)) {
       return props.max
     }
@@ -15,8 +17,9 @@ const StepInputInt = function(props: any) {
   }
 
   const handleClick = (sign: number, stepSize: (string | number) = props.stepSize || '1') => {
-    const newValue: Number = validateVal(Number(value) + sign * Number(stepSize))
-    setValue(newValue)
+    const newValRounded = Math.ceil((Number(value) + sign * Number(stepSize)) / Number(stepSize)) * Number(stepSize)
+    const newValValid: Number = validateVal(newValRounded)
+    setValue(newValValid)
   }
 
   const handleBlur = (rawStr: string) => {
@@ -25,8 +28,8 @@ const StepInputInt = function(props: any) {
   }
 
   return (
-    <>
-      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
+    <div className='step-input step-input-int'>
+      {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={value}
         onFocus={e => e.target.select()}
@@ -34,9 +37,10 @@ const StepInputInt = function(props: any) {
         onBlur={e => handleBlur(e.target.value)}
         name={props.name}
         type='text'
+        disabled={props.disabled}
       />
-      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
-    </>
+      {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
+    </div>
   )
 }
 
