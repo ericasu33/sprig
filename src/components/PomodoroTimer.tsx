@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button'
+import PomodoroForm from './PomodoroForm';
 import './PomodoroTimer.scss';
 
 interface IObject {
@@ -9,6 +10,7 @@ const initData: IObject = {
   current: "",
   cycles: 3,
   playing: false,
+  stopped: true,
   work: 2,
   short_break: 2,
   long_break: 2,
@@ -23,53 +25,73 @@ const PomodoroTimer = (props: any) => {
 
   const togglePlay = () => {
     setTimes((prev) => {
-      return { ...prev, playing: !prev.playing }
-    })
+      return { 
+        ...prev, 
+        playing: !prev.playing,
+        stopped: false,
+      }
+    });
+  };
+
+  const handleStop = () => {
+    setTimes((prev) => {
+      return { 
+        ...prev, 
+        playing: false,
+        stopped: true,
+      }
+    });
+  };
+
+  const calcCycle = ({clock, work, short_break, long_break}: {[key:string]: number}) => {
+    const result = Math.ceil((clock - long_break - work) / (work + short_break));
+    return result < 0 ? 0 : result;
+  };
+
+  const calcTotalTime = ({cycles, work, short_break, long_break}: {[key:string]: number}) => {
+    return ((work + short_break) * cycles + long_break + work);
   };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (times.playing) {
-      if (!times.clock && times.cycles > 0) {
-        setTimes(prev => ({
-          ...prev,
-          clock: (prev.work + prev.short_break) * prev.cycles + prev.long_break + prev.work,
-          partition: prev.work,
-          current: "work",
-        }));
-      }
       timer = setInterval(() => {
         setTimes((prev: any) => {
-          let { partition, current, cycles } = prev;
+          let { partition, current, clock } = prev;
           if (partition === 0) {
-            if(cycles === 0) {
+            if(calcCycle(prev) === 0) {
               current = current === "work" ? "long_break" : "work";
             } else {
               current = current === "work" ? "short_break" : "work";
-              cycles = current === "work" ? cycles - 1 : cycles;
             }
             partition = prev[current];
           }
-          if (prev.clock === 0) {
+          if (clock === 0) {
             return {
               ...prev,
               playing: false,
               current: "",
-              cycles: 3,
-            }
+              clock: calcTotalTime(prev),
+            };
           }
           return {
             ...prev,
             current,
-            partition: partition - 1,
-            clock: prev.clock - 1,
-            cycles,
+            partition: !partition ? partition : partition - 1,
+            clock: clock - 1,
           }
-        })
+        });
       }, 1000);
+    } else if (times.clock !== calcTotalTime(times) && times.stopped) {
+      setTimes(prev => ({
+        ...prev,
+        clock: calcTotalTime(prev),
+        partition: prev.work,
+        current: "work",
+      }));
     }
     return () => (clearInterval(timer));
-  }, [times.playing, times.current]);
+  }, [times]);
 
   return (
     <div className="pomodoro-display">
@@ -79,9 +101,10 @@ const PomodoroTimer = (props: any) => {
         { (expand && "shrink") || "expand" }
       </Button>
       { (expand && (
-        <div>
-          expanded
-        </div>
+        <PomodoroForm 
+          pomo_timer={times}
+          setPomoTimer={setTimes}
+        />
       )) || ( 
         <>
           <div>
@@ -98,7 +121,7 @@ const PomodoroTimer = (props: any) => {
           </div>
           <div>
             <label>Cycles remaining</label>
-            <input type="text" disabled={true} value={times.cycles} />
+            <input type="text" disabled={true} value={calcCycle(times)} />
           </div>
           <div>
             <label>Long break</label>
@@ -114,12 +137,13 @@ const PomodoroTimer = (props: any) => {
             onClick={() => togglePlay()}
           >
             { (times.playing && 
-              <i className="far fa-play-circle fa-lg"></i>) ||
-              <i className="far fa-pause-circle fa-lg"></i>
+              <i className="far fa-pause-circle fa-lg"></i>) ||
+              <i className="far fa-play-circle fa-lg"></i>
             }
           </Button>
           <Button
             stop
+            onClick={() => handleStop()}
           >
             <i className="far fa-stop-circle fa-lg"></i>
           </Button>

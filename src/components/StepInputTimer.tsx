@@ -38,57 +38,59 @@ const isAllNumbers = (noColons: string): boolean => {
   return /^\d+$/.test(noColons)
 }
 
-const convertTime = (rawStr: string, dbTime: Date) => {
-  const noColons = rawStr.split(':').join('')
-  const isValid = isAllNumbers(noColons)
-  if (isValid) {
-    // noColons is a string of only numbers
-    const timeArr = convertTimeStrToArr(noColons)
-    // timeArr may include e.g. 90sec, convert to 1min30sec
-    const normalizedTimeArr = convertDateObjToArr(convertTimeArrToDateObj(timeArr))
-    return convertTimeArrToStr(normalizedTimeArr);
-  } else {
-    return convertTimeArrToStr(convertDateObjToArr(dbTime));
-  }
+const secToTimeStr = (sec: number) => {
+  const ss = sec % 60;
+  const mm = ((sec - ss) / 60) % 60;
+  const hh = ((((sec - ss) / 60) - mm) / 60) % 24;
+  return `${hh < 10 ? `0${hh}` : hh}:${mm < 10 ? `0${mm}` : mm}:${ss < 10 ? `0${ss}` : ss}`;
 };
 
 const StepInputTimer = function(props: any) {
-  const [value, setValue] = useState(convertTime(`${props.value}`, new Date(0)) || '00:00:00')
-  const [dbTime, setDbTime] = useState(new Date(0))
-  
+
+  const [time, setTime] = useState(secToTimeStr(props.value));
+
   // Adjust time with butttons
   const handleClick = (direction: number): void => {
-    let dateObj: (Date | number) = convertTimeArrToDateObj(value.split(':'))
+    let dateObj: (Date | number) = convertTimeArrToDateObj(`${time}`.split(':'))
     dateObj.setUTCMinutes(dateObj.getUTCMinutes() + direction)
 
     // Disallow wrapping from 00:00:00 to 23:59:00
     if (Number(dateObj) < 0) return
 
     const timeArr: number[] = convertDateObjToArr(dateObj)
-    setDbTime(convertTimeArrToDateObj(timeArr))
-    const timeStr = convertTimeArrToStr(timeArr)
-    setValue(timeStr)
+    setTime(convertTimeArrToStr(timeArr));
+    props.setValue(timeArr[0]*60*60 + timeArr[1]*60 + timeArr[2]);
   }
 
   // Adjust time by manually entering a new time
   const handleBlur = (rawStr: string) => {
-    setValue(convertTime(rawStr, dbTime));
+    const noColons = rawStr.split(':').join('');
+    if (!isAllNumbers(noColons)) return setTime(secToTimeStr(props.value));;
+    const [h, m, s] = convertTimeStrToArr(noColons);
+    let sec = h*60*60+m*60+s;
+    if (sec >= 60 * 60 * 24) sec = 60 * 60 * 24 - 1;
+    setTime(secToTimeStr(sec));
+    props.setValue(sec);
+  };
+
+  const handleChange = (str: string) => {
+    setTime(str);
   };
 
   return (
     <>
-      <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>
+      { props.disabled || <i className="fa fa-plus-square" onClick={e => handleClick(1)}></i>}
       <input
-        value={value}
+        value={time}
         onFocus={e => e.target.select()}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => handleChange(e.target.value)}
         onBlur={e => handleBlur(e.target.value)}
         name={props.name}
         type='text'
         step={props.format === 'clock' ? 60 : 1}
         disabled={props.disabled}
       />
-      <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>
+      { props.disabled || <i className="fa fa-minus-square" onClick={e => handleClick(-1)}></i>}
     </>
   )
 }

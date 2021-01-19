@@ -17,9 +17,9 @@ interface Stats {
 const PomodoroForm = (props: any) => {
   const [sounds, setSounds]: [Array<Sound>, Function] = useState([]);
   const [stats, setStats]: [Stats, Function] = useState({
-    duration: 6000,
-    work: 1000,
-    p_work: 100,
+    duration: 0,
+    work: 0,
+    p_work: 0,
   });
 
   const calcStats = ({work, short_break, long_break, cycles}: {[key:string]: number}) => {
@@ -57,6 +57,43 @@ const PomodoroForm = (props: any) => {
     );
   });
 
+  
+  const setWork = (time: number) => {
+    props.setPomoTimer((prev: any) => {
+      return {
+        ...prev,
+        work: time,
+      }
+    });
+  };
+
+  const setShortBreak = (time: number) => {
+    props.setPomoTimer((prev: any) => {
+      return {
+        ...prev,
+        short_break: time,
+      }
+    });
+  };
+
+  const setLongBreak = (time: number) => {
+    props.setPomoTimer((prev: any) => {
+      return {
+        ...prev,
+        long_break: time,
+      }
+    });
+  };
+
+  const setCycles = (num: number) => {
+    props.setPomoTimer((prev: any) => {
+      return {
+        ...prev,
+        cycles: num,
+      }
+    });
+  };
+
   return (
     <div className="pomodoro-form">
       <div>
@@ -69,13 +106,15 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Work</label>
         <StepInputTimer 
-          value={0}
+          value={props.pomo_timer.work}
+          setValue={setWork}
         />
       </div>
       <div>
         <label>Short Break</label>
         <StepInputTimer 
-          value={0}
+          value={props.pomo_timer.short_break}
+          setValue={setShortBreak}
         />
         <div>
           <select defaultValue="none">
@@ -93,13 +132,16 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Repeats</label>
         <StepInputInt 
-          value={0}
+          value={props.pomo_timer.cycles}
+          setValue={setCycles}
+          min={0}
         />
       </div>
       <div>
         <label>Long Break</label>
         <StepInputTimer 
-          value={0}
+          value={props.pomo_timer.long_break}
+          setValue={setLongBreak}
         />
         <div>
           <select defaultValue="none">
