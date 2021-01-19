@@ -54,7 +54,7 @@ const StepInputClock = function(props: any) {
   }
 
   return (
-    <>
+    <div className='step-input step-input-clock'>
       {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={timeStr}
@@ -64,7 +64,7 @@ const StepInputClock = function(props: any) {
         disabled={props.disabled}
       />
       {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
-    </>
+    </div>
   )
 }
 
