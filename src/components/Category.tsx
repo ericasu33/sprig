@@ -22,12 +22,11 @@ const Category = (props: any) => {
       background:color.hex
     })
   }
-
-
+  
   return (
     <>
       {/* show */}
-      <div className={categoryClass}> &#8226; {props.category_name} </div>
+      <div className={categoryClass}> {props.category_name} </div>
       
       <div
         onClick={(e) => setToggle(prev => {
@@ -38,8 +37,8 @@ const Category = (props: any) => {
           }
         )}
       > 
-        <i className="fas fa-plus"></i>
-        Create new project 
+        <i className="far fa-plus-square"></i>
+        New category
       </div>
 
       {/* create */}
