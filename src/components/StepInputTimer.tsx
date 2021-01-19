@@ -2,46 +2,29 @@ import React, { useState } from 'react'
 
 import './StepInput.scss'
 
-// Time array --> Date object
-const convertTimeArrToDateObj = (timeArr: string[] | number[]) => {
-  const [h, m, s] = timeArr
-  const seconds = Number(h) * 60 * 60 + Number(m) * 60 + Number (s)
-  return new Date(seconds * 1000)
-}
-// Date object --> Time array
-const convertDateObjToArr = (dateObj: Date) => {
-  let s: number = dateObj.getUTCSeconds()
-  let m: number = dateObj.getUTCMinutes()
-  let h: number = dateObj.getUTCHours()
-  return [h, m, s]
-}
-
-// Time array --> Time string
-const convertTimeArrToStr = ([h, m, s]: (number[])) => {
-  let ss = ("0" + s).slice(-2);
-  let mm = ("0" + m).slice(-2);
-  let hh = ("0" + h).slice(-2);
-  const timeStr = `${hh}:${mm}:${ss}`
-  return timeStr
-}
-// Time string --> Time array
-const convertTimeStrToArr = (rawStr: string | number) => {
-  // Let h, m, s from rawStr
-  let s: number = Math.floor(Number(rawStr) % 100)
-  let m: number = Math.floor((Number(rawStr) / 100) % 100)
-  let h: number = Math.floor((Number(rawStr) / 100 / 100) % 100)
-  return [h, m, s]
-}
-
 // Validity check for user's raw input
 const isAllNumbers = (noColons: string): boolean => {
-  return /^\d+$/.test(noColons)
+  return /^\d+$/.test(noColons);
 }
 
+const timeStrToSec = (timeStr: string) => {
+  const maxTime = 60 * 60 * 24;
+  let noColons = timeStr.split(':').join("");
+  if (!isAllNumbers(noColons)) return null;
+  const ss = noColons.slice(-2);
+  const mm = noColons.slice(-4,-2);
+  const hh = noColons.slice(-6,-4);
+  let totalSeconds = Number(hh) * 60 * 60 + Number(mm) * 60 + Number(ss);
+  if (totalSeconds >= maxTime) totalSeconds = maxTime - 1;
+  return totalSeconds;
+};
+
 const secToTimeStr = (sec: number) => {
+  let acc = Math.floor(sec / 60);
   const ss = sec % 60;
-  const mm = ((sec - ss) / 60) % 60;
-  const hh = ((((sec - ss) / 60) - mm) / 60) % 24;
+  const mm = acc % 60;
+  acc = Math.floor(acc / 60);
+  const hh = acc % 24;
   return `${hh < 10 ? `0${hh}` : hh}:${mm < 10 ? `0${mm}` : mm}:${ss < 10 ? `0${ss}` : ss}`;
 };
 
@@ -51,24 +34,16 @@ const StepInputTimer = function(props: any) {
 
   // Adjust time with butttons
   const handleClick = (direction: number): void => {
-    let dateObj: (Date | number) = convertTimeArrToDateObj(`${time}`.split(':'))
-    dateObj.setUTCMinutes(dateObj.getUTCMinutes() + direction)
-
-    // Disallow wrapping from 00:00:00 to 23:59:00
-    if (Number(dateObj) < 0) return
-
-    const timeArr: number[] = convertDateObjToArr(dateObj)
-    setTime(convertTimeArrToStr(timeArr));
-    props.setValue(timeArr[0]*60*60 + timeArr[1]*60 + timeArr[2]);
+    const newSec = props.value + direction;
+    if (newSec < 0) return;
+    setTime(secToTimeStr(newSec));
+    props.setValue(newSec);
   }
 
   // Adjust time by manually entering a new time
   const handleBlur = (rawStr: string) => {
-    const noColons = rawStr.split(':').join('');
-    if (!isAllNumbers(noColons)) return setTime(secToTimeStr(props.value));;
-    const [h, m, s] = convertTimeStrToArr(noColons);
-    let sec = h*60*60+m*60+s;
-    if (sec >= 60 * 60 * 24) sec = 60 * 60 * 24 - 1;
+    const sec = timeStrToSec(rawStr);
+    if (sec === null) return setTime(secToTimeStr(props.value));
     setTime(secToTimeStr(sec));
     props.setValue(sec);
   };
