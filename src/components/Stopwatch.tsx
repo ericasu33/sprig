@@ -122,7 +122,7 @@ const Stopwatch = () => {
 
 
   return (
-    <>
+    <div className='stopwatch'>
       <form
         id="form1"
         autoComplete='off'
@@ -172,7 +172,7 @@ const Stopwatch = () => {
         </span>
      
         <Button onClick={() => setShowCalendar(!showCalendar)}>
-          <i className='fa fa-calendar-alt fa-lg'></i>
+          <i className='fa fa-calendar-alt'></i>
         </Button>
  
         {showCalendar && 
@@ -189,22 +189,22 @@ const Stopwatch = () => {
 
         {!isTimerActive &&
           <Button play onClick={(e: any) => handleTimerState("PLAY")}>
-            <i className="far fa-play-circle fa-lg"></i>
+            <i className="far fa-play-circle"></i>
           </Button>
         }
 
         {isTimerActive &&
           <Button pause onClick={(e: any) => handleTimerState("PAUSE")}>
-            <i className="far fa-pause-circle fa-lg"></i>
+            <i className="far fa-pause-circle"></i>
           </Button>
         }
 
         <Button stop onClick={(e: any) => handleTimerState("SAVE")}>
-          <i className="far fa-save fa-lg"></i>
+          <i className="far fa-save"></i>
         </Button>
         
         <Category />
-    </>
+    </div>
   )
 }
 
