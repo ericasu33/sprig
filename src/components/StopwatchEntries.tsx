@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import StopwatchEntry from './StopwatchEntry'
 
 interface Data {
@@ -32,7 +32,9 @@ const records: Data[] = [
 
 const StopwatchEntries = () => {
 
-  const entriesList = records.map((entry: Data) => <StopwatchEntry
+  const [entries, setEntries] = useState(records);
+
+  const entriesList = entries.map((entry: Data) => <StopwatchEntry
       id={entry.id}
       category={entry.category}
       description={entry.description}
@@ -44,7 +46,7 @@ const StopwatchEntries = () => {
     />
   )
 
-  console.log('records:', records);
+  console.log('entries:', entries);
   console.log('entriesList:', entriesList);
   
 

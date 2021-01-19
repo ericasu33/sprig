@@ -6,6 +6,7 @@ import Category from './Category';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './StopwatchEntry.scss'
+import StepInputTimer from './StepInputTimer';
 
 // interface Data {
 //   start_time: (Date | null),
@@ -27,19 +28,14 @@ const Stopwatch = (props: any) => {
   const [description, setDescription] = useState(props.description);
   const [calendarDate, setCalendarDate] = useState(new Date(new Date(props.start_time).setHours(0,0,0,0)));
   const [showCalendar, setShowCalendar] = useState(false)
-  const [isTimerActive, setIsTimerActive] = useState(false)
+  const [totalTime, setTotalTime] = useState(0)
   const [timerObj, setTimerObj] = useState({
     start_time: props.start_time,
     end_time: props.end_time
   });
 
   useEffect(() => {
-    // Send data to DB and reset stopwatch on 'SAVE'
-    // if (timerObj.end_time) {
-    //   records.push(timerObj)
-    //   console.log(records);
-    //   setTimerObj({...dummyData})
-    // }
+    setTotalTime(props.end_time - props.start_time - props.cumulative_pause_duration)
 
     // Update calendarDate when timerObj.start_time is updated
     if (timerObj.start_time) {
@@ -173,17 +169,28 @@ const Stopwatch = (props: any) => {
       {/* <Intensity /> */}
       <StepInputInt
         name='intensity'
-        value='90'
+        value={props.intensity}
         stepSize='5'
         min='0'
         max='100'
-      /> 
-      %
+        percent
+      />
+
+      <StepInputTimer
+        name="Total time"
+        value={totalTime}
+        disabled
+      />
     
+      <StepInputTimer
+        name="Effective time"
+        value={totalTime * props.intensity / 100}
+        disabled
+      />
+      
       <Button onClick={() => setShowCalendar(!showCalendar)}>
         <i className='fa fa-calendar-alt'></i>
       </Button>
-
       {showCalendar && 
         <Calendar 
           value={calendarDate}
