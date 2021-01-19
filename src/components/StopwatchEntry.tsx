@@ -1,43 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
+import Calendar from 'react-calendar';
 import Button from './Button';
 import Category from './Category';
-import StopwatchTime from './StopwatchTime';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
-import './Stopwatch.scss'
+import './StopwatchEntry.scss'
 
 interface Data {
-  [key: string]: Date | number | null;
+  start_time: (Date | null),
+  end_time: (Date | null),
+  pause_start_time: (Date | null),
+  cumulative_pause_duration: (number | null)
 }
 
-const data: Data = {
-  start_time: null,
-  end_time: null,
+const dummyData: Data = {
+  start_time: new Date(1611021345965),
+  end_time: new Date(1611029345965),
   pause_start_time: null,
-  cumulative_pause_duration: 0
+  cumulative_pause_duration: 0,
 };
 
 const records: Data[] = []
 
-/* TODO
-- Render calendar as a layer on top of the rest of the page, so it doesn't move other elements around
-*/
-
 const Stopwatch = () => {
   const [description, setDescription] = useState('');
+  const [calendarDate, setCalendarDate] = useState(new Date(new Date().setHours(0,0,0,0)));
   const [showCalendar, setShowCalendar] = useState(false)
   const [isTimerActive, setIsTimerActive] = useState(false)
-  const [timerObj, setTimerObj] = useState({...data});
+  const [timerObj, setTimerObj] = useState({...dummyData});
 
   useEffect(() => {
     // Send data to DB and reset stopwatch on 'SAVE'
     if (timerObj.end_time) {
       records.push(timerObj)
       console.log(records);
-      setTimerObj({...data})
+      setTimerObj({...dummyData})
     }
-  }, [timerObj])
+
+    // Update calendarDate when timerObj.start_time is updated
+    if (timerObj.start_time) {
+      const newCalendarDate: number = new Date(Number(timerObj.start_time)).setHours(0,0,0,0)
+      setCalendarDate(new Date(newCalendarDate));
+    }
+
+  }, [timerObj.start_time, timerObj.end_time])
+
+  // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
+  const calendarState = (value: Date) => {
+    const dateDiff: number = Number(calendarDate) - Number(value);
+    setCalendarDate(value)
+    setShowCalendar(!showCalendar)
+    setTimerObj(prev => {
+      const startTime = new Date(Number(timerObj.start_time) - dateDiff)
+      const endTime = timerObj.end_time ? new Date(Number(timerObj.end_time) - dateDiff) : null
+      return {
+        ...prev,
+        start_time: startTime,
+        end_time: endTime
+      }
+    })    
+  }
 
   // Update start_time if InputClock is manually adjusted
   const handleStartTimeAdjust = (newTime: Date) => {
@@ -126,47 +149,55 @@ const Stopwatch = () => {
       </div>
 
       {/* <StartEndTime />  */}
-      <div className='clock-start-time'>
-        {timerObj.start_time &&
-          <StepInputClock
-            name='startTime'
-            time={timerObj.start_time}
-            timeAdjust={handleStartTimeAdjust}
-            allowFuture='false'
-          />}
-        </div>
+      <div>
+        <StepInputClock
+          name='startTime'
+          time={timerObj.start_time}
+          timeAdjust={handleStartTimeAdjust}
+          allowFuture='true'
+        />
+      </div>
+
+      <div>
+        <StepInputClock
+          name='endTime'
+          time={timerObj.end_time}
+          timeAdjust={handleStartTimeAdjust}
+          allowFuture='true'
+        />
+      </div>
 
       {/* <Intensity /> */}
-      <span className='intensityPadding'>
-        <StepInputInt
-          name='intensity'
-          value='90'
-          stepSize='5'
-          min='0'
-          max='100'
-        /> 
-        %
-      </span>
+      <StepInputInt
+        name='intensity'
+        value='90'
+        stepSize='5'
+        min='0'
+        max='100'
+      /> 
+      %
+    
+      <Button onClick={() => setShowCalendar(!showCalendar)}>
+        <i className='fa fa-calendar-alt'></i>
+      </Button>
 
-      <StopwatchTime
-        timerObj={timerObj}
-        isTimerActive={isTimerActive}
-      />
-
-      {!isTimerActive &&
-        <Button play onClick={(e: any) => handleTimerState("PLAY")}>
-          <i className="far fa-play-circle"></i>
-        </Button>
+      {showCalendar && 
+        <Calendar 
+          value={calendarDate}
+          onClickDay={(value: Date) => calendarState(value)}
+        />
       }
 
-      {isTimerActive &&
-        <Button pause onClick={(e: any) => handleTimerState("PAUSE")}>
-          <i className="far fa-pause-circle"></i>
-        </Button>
-      }
+      <Button play onClick={(e: any) => handleTimerState("PLAY")}>
+        <i className="far fa-play-circle"></i>
+      </Button>
 
-      <Button stop onClick={(e: any) => handleTimerState("SAVE")}>
-        <i className="far fa-save"></i>
+      <Button duplicate onClick={(e: any) => handleTimerState("SAVE")}>
+        <i className="far fa-clone"></i>
+      </Button>
+
+      <Button delete onClick={(e: any) => handleTimerState("SAVE")}>
+        <i className="far fa-trash-alt"></i>
       </Button>
     </div>
   )
