@@ -7,36 +7,39 @@ import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './StopwatchEntry.scss'
 
-interface Data {
-  start_time: (Date | null),
-  end_time: (Date | null),
-  pause_start_time: (Date | null),
-  cumulative_pause_duration: (number | null)
-}
+// interface Data {
+//   start_time: (Date | null),
+//   end_time: (Date | null),
+//   pause_start_time: (Date | null),
+//   cumulative_pause_duration: (number | null)
+// }
 
-const dummyData: Data = {
-  start_time: new Date(1611021345965),
-  end_time: new Date(1611029345965),
-  pause_start_time: null,
-  cumulative_pause_duration: 0,
-};
+// const dummyData: Data = {
+//   start_time: new Date(1611021345965),
+//   end_time: new Date(1611029345965),
+//   pause_start_time: null,
+//   cumulative_pause_duration: 0,
+// };
 
-const records: Data[] = []
+// const records: Data[] = []
 
-const Stopwatch = () => {
-  const [description, setDescription] = useState('');
-  const [calendarDate, setCalendarDate] = useState(new Date(new Date().setHours(0,0,0,0)));
+const Stopwatch = (props: any) => {
+  const [description, setDescription] = useState(props.description);
+  const [calendarDate, setCalendarDate] = useState(new Date(new Date(props.start_time).setHours(0,0,0,0)));
   const [showCalendar, setShowCalendar] = useState(false)
   const [isTimerActive, setIsTimerActive] = useState(false)
-  const [timerObj, setTimerObj] = useState({...dummyData});
+  const [timerObj, setTimerObj] = useState({
+    start_time: props.start_time,
+    end_time: props.end_time
+  });
 
   useEffect(() => {
     // Send data to DB and reset stopwatch on 'SAVE'
-    if (timerObj.end_time) {
-      records.push(timerObj)
-      console.log(records);
-      setTimerObj({...dummyData})
-    }
+    // if (timerObj.end_time) {
+    //   records.push(timerObj)
+    //   console.log(records);
+    //   setTimerObj({...dummyData})
+    // }
 
     // Update calendarDate when timerObj.start_time is updated
     if (timerObj.start_time) {
@@ -51,7 +54,7 @@ const Stopwatch = () => {
     const dateDiff: number = Number(calendarDate) - Number(value);
     setCalendarDate(value)
     setShowCalendar(!showCalendar)
-    setTimerObj(prev => {
+    setTimerObj((prev: any) => {
       const startTime = new Date(Number(timerObj.start_time) - dateDiff)
       const endTime = timerObj.end_time ? new Date(Number(timerObj.end_time) - dateDiff) : null
       return {
@@ -63,59 +66,59 @@ const Stopwatch = () => {
   }
 
   // Update start_time if InputClock is manually adjusted
-  const handleStartTimeAdjust = (newTime: Date) => {
-    setTimerObj(prev => {
+  const handleTimeAdjust = (timeType: string, newTime: Date) => {
+    setTimerObj((prev: any) => {
       return {
         ...prev,
-        start_time: newTime
+        [timeType]: newTime
       }
     })
   }
 
   // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
-    switch (timerState) {
-      case 'SAVE':
-        setIsTimerActive(false)
-        setTimerObj(prev => {
-          const endTime = timerObj.pause_start_time || new Date()
-          return {
-            ...prev, 
-            end_time: endTime
-          };
-        })
-        break;
-      case 'PAUSE':
-        setIsTimerActive(false)
-        setTimerObj(prev => {
-          return {
-            ...prev, 
-            pause_start_time: new Date()
-          }
-        })
-        break;
-      case 'PLAY':
-        setIsTimerActive(true);
-        if (timerObj.pause_start_time) {
-          const old_pause_dur = timerObj.cumulative_pause_duration
-          const new_pause_dur = Number(new Date()) - Number(timerObj.pause_start_time) + Number(old_pause_dur)
-          setTimerObj(prev => {
-            return {
-              ...prev, 
-              cumulative_pause_duration: new_pause_dur,
-              pause_start_time: null
-            };
-          })
-        } else {
-          setTimerObj(prev => {
-            const startTime = timerObj.start_time || new Date()
-            return {
-              ...prev, 
-              start_time: startTime
-            };
-          })
-        }
-    }
+    // switch (timerState) {
+    //   case 'SAVE':
+    //     setIsTimerActive(false)
+    //     setTimerObj(prev => {
+    //       const endTime = timerObj.pause_start_time || new Date()
+    //       return {
+    //         ...prev, 
+    //         end_time: endTime
+    //       };
+    //     })
+    //     break;
+    //   case 'PAUSE':
+    //     setIsTimerActive(false)
+    //     setTimerObj(prev => {
+    //       return {
+    //         ...prev, 
+    //         pause_start_time: new Date()
+    //       }
+    //     })
+    //     break;
+    //   case 'PLAY':
+    //     setIsTimerActive(true);
+    //     if (timerObj.pause_start_time) {
+    //       const old_pause_dur = timerObj.cumulative_pause_duration
+    //       const new_pause_dur = Number(new Date()) - Number(timerObj.pause_start_time) + Number(old_pause_dur)
+    //       setTimerObj(prev => {
+    //         return {
+    //           ...prev, 
+    //           cumulative_pause_duration: new_pause_dur,
+    //           pause_start_time: null
+    //         };
+    //       })
+    //     } else {
+    //       setTimerObj(prev => {
+    //         const startTime = timerObj.start_time || new Date()
+    //         return {
+    //           ...prev, 
+    //           start_time: startTime
+    //         };
+    //       })
+    //     }
+    // }
   }
 
 
@@ -153,7 +156,7 @@ const Stopwatch = () => {
         <StepInputClock
           name='startTime'
           time={timerObj.start_time}
-          timeAdjust={handleStartTimeAdjust}
+          timeAdjust={handleTimeAdjust}
           allowFuture='true'
         />
       </div>
@@ -162,7 +165,7 @@ const Stopwatch = () => {
         <StepInputClock
           name='endTime'
           time={timerObj.end_time}
-          timeAdjust={handleStartTimeAdjust}
+          timeAdjust={handleTimeAdjust}
           allowFuture='true'
         />
       </div>

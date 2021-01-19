@@ -1,6 +1,6 @@
 import './App.scss';
 import Stopwatch from './components/Stopwatch';
-import StopwatchEntry from './components/StopwatchEntry';
+import StopwatchEntries from './components/StopwatchEntries';
 
 function App() {
   return (
@@ -8,9 +8,9 @@ function App() {
       <Stopwatch />
       <br />
       <br />
-      STOPWATCH ENTRY
+      STOPWATCH ENTRIES
       <br />
-      <StopwatchEntry />
+      <StopwatchEntries />
     </div>
   );
 }
