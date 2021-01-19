@@ -13,7 +13,13 @@ export function useAxiosGet( url : string ) {
     category_color: string;
   }
 
-  const [request, setRequest] = useState({
+  interface Request {
+    loading: boolean;
+    data: Object | null;
+    error: boolean;
+  }
+  
+  const [request, setRequest] = useState<Request>({
     loading: false,
     data: null,
     error: false,
@@ -27,7 +33,7 @@ export function useAxiosGet( url : string ) {
       error: false,
     })
 
-    axios.get<Stopwatches>(url)
+    axios.get<Stopwatches[]>(url)
       .then(response => {
         setRequest({
           loading: false,

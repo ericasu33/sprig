@@ -1,5 +1,4 @@
 import { PieChart } from 'react-minimal-pie-chart';
-import axios from 'axios';
 import { useAxiosGet } from '../Hooks/HTTPRequest'
 
 //calculate by category
@@ -24,7 +23,7 @@ const PieEntry = (props: any) => {
     
   const shiftSize = 7;
   const lineWidth = 60;
-  console.log("HERE", stopwatches );
+  console.log("HERE", stopwatches.data[0] );
 
   return (
     <>
