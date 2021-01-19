@@ -7,7 +7,7 @@ const StepInputClock = function(props: any) {
   const [inputVal, setInputVal] = useState(new Date(props.time))
 
   // Get local 24-hr string of state value's timestamp, to display in input
-  let timeStr: string = inputVal.toLocaleTimeString([], {
+  let timeStr: string = inputVal.toLocaleTimeString(['en-GB'], {
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
@@ -15,7 +15,7 @@ const StepInputClock = function(props: any) {
 
   // Set start_time (as props from Stopwatch component) on any 'inputVal' update
   useEffect(() => {
-    props.timeAdjust(inputVal)
+    props.timeAdjust(props.name, inputVal)
   }, [inputVal])
 
   // Check if 'time' arg is in the past, return bool
