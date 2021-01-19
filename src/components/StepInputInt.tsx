@@ -4,10 +4,16 @@ import ButtonStepInput from './ButtonStepInput'
 import './StepInput.scss'
 
 const StepInputInt = function(props: any) {
-  const [value, setValue] = useState(props.value || '0')
+  
+  const concatPercent = (str: string) => str + (props.percent ? ' %' : '')
+  
+  const [value, setValue] = useState(concatPercent(String(props.value) || '0'))
+
+  const cleanInput = (rawStr: string) => String(rawStr).replace(/\D/g,'')
 
   const validateVal = (testVal: string | number) => {
     const defaultMinZero = props.min ? Number(props.min) : 0
+
     if (Number(testVal) < Number(defaultMinZero)) {
       return defaultMinZero
     } else if (Number(testVal) > Number(props.max)) {
@@ -16,15 +22,20 @@ const StepInputInt = function(props: any) {
     return testVal
   }
 
-  const handleClick = (sign: number, stepSize: (string | number) = props.stepSize || '1') => {
-    const newValRounded = Math.ceil((Number(value) + sign * Number(stepSize)) / Number(stepSize)) * Number(stepSize)
-    const newValValid: Number = validateVal(newValRounded)
-    setValue(newValValid)
+  const handleClick = (plusOrMinus: number, stepSize: (string | number) = props.stepSize || '1') => {
+    const cleaned: string = cleanInput(value)
+    const rounded = Math.ceil(
+      (Number(cleaned) + plusOrMinus * Number(stepSize)) / Number(stepSize)
+    ) * Number(stepSize)
+
+    const validated: Number = validateVal(rounded)
+    setValue(concatPercent(String(validated)))
   }
 
   const handleBlur = (rawStr: string) => {
-    const onlyNums: string = rawStr.replace(/\D/g,'')
-    setValue(validateVal(onlyNums))
+    const cleaned: string = cleanInput(rawStr)
+    const validated: string = validateVal(cleaned)
+    setValue(concatPercent(validated))
   }
 
   return (
