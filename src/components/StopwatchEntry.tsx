@@ -8,21 +8,6 @@ import StepInputClock from './StepInputClock'
 import './StopwatchEntry.scss'
 import StepInputTimer from './StepInputTimer';
 
-// interface Data {
-//   start_time: (Date | null),
-//   end_time: (Date | null),
-//   pause_start_time: (Date | null),
-//   cumulative_pause_duration: (number | null)
-// }
-
-// const dummyData: Data = {
-//   start_time: new Date(1611021345965),
-//   end_time: new Date(1611029345965),
-//   pause_start_time: null,
-//   cumulative_pause_duration: 0,
-// };
-
-// const records: Data[] = []
 
 const Stopwatch = (props: any) => {
   const [description, setDescription] = useState(props.description);
