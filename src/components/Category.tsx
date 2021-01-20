@@ -8,11 +8,9 @@ const Category = (props: any) => {
     'category': props.color
   })
 
-  const [categoryName, setCategoryName] = useState('')
-  const [toggle, setToggle] = useState({
-    category: false,
-    color: false,
-  })
+  const [categoryName, setCategoryName] = useState(props.category_name || '')
+  const [category, setCategory] = useState(false)
+  const [colour, setColour] = useState(false)
   const [categoryColor, setCategoryColor] = useState({
     background: '#ffffff'
   })
@@ -28,22 +26,14 @@ const Category = (props: any) => {
       {/* show */}
       <div className={categoryClass}> {props.category_name} </div>
       
-      <div
-        onClick={(e) => setToggle(prev => {
-            return {
-            ...prev,
-            category: !prev.category
-            };
-          }
-        )}
-      > 
+      <div onClick={(e) => setCategory(!category)}> 
         <i className="far fa-plus-square"></i>
         New category
       </div>
 
       {/* create */}
-      {toggle.category &&
-      <div>
+      {category &&
+        <div>
           <input
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
@@ -55,28 +45,19 @@ const Category = (props: any) => {
           />
 
           <div>
-            <Button
-            onClick={(e: any) => setToggle(prev => {
-              return {
-                ...prev,
-                color: !prev.color
-              };
-            })}
-            >
+            <Button category_colour onClick={(e: any) => setColour(!colour)}>
               Pick Color
             </Button>
-            {toggle.color &&
+            {colour &&
               <div>
-                  <ChromePicker
-                    color={categoryColor.background}
-                    onChangeComplete={handleChangeComplete}
-                  />
+                <ChromePicker
+                  color={categoryColor.background}
+                  onChangeComplete={handleChangeComplete}
+                />
               </div>
             }
           </div>
-        <Button
-          // onSubmit
-        >
+        <Button category_create>
           Create
         </Button>
       </div>
