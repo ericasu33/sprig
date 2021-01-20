@@ -41,7 +41,7 @@ const StepInputTimer = function(props: any) {
     const newSec = props.value + direction;
     if (newSec < 0) return;
     setTime(secToTimeStr(newSec));
-    props.setValue(newSec);
+    props.setValue(props.name, newSec);
   }
 
   // Adjust time by manually entering a new time
@@ -49,7 +49,7 @@ const StepInputTimer = function(props: any) {
     const sec = timeStrToSec(rawStr);
     if (sec === null) return setTime(secToTimeStr(props.value));
     setTime(secToTimeStr(sec));
-    props.setValue(sec);
+    props.setValue(props.name, sec);
   };
 
   const handleChange = (str: string) => {
