@@ -116,7 +116,7 @@ const Stopwatch = (props: any) => {
         label='Intensity'
         name='intensity'
         value={props.intensity}
-        onChange={updateEntry}
+        setValue={updateEntry}
         stepSize='5'
         min='0'
         max='100'
@@ -125,13 +125,13 @@ const Stopwatch = (props: any) => {
 
       <StepInputTimer
         label="Total time"
-        value={totalTime}
+        value={totalTime / 1000}
         disabled
       />
     
       <StepInputTimer
         label="Effective time"
-        value={totalTime * props.intensity / 100}
+        value={totalTime / 1000 * props.intensity / 100}
         disabled
       />
       
