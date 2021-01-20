@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
@@ -13,7 +13,7 @@ const StepInputInt = function(props: any) {
 
   useEffect(() => {
     if (Number.isNaN(Number(props.value))) return;
-    setValue(props.value);
+    setValue(concatPercent(props.value));
   }, [props.value]);
 
   const validateVal = (testVal: string | number) => {
@@ -43,7 +43,7 @@ const StepInputInt = function(props: any) {
 
   return (
     <div className='step-input step-input-int'>
-      <label>{props.name}</label>
+      <label>{props.label}</label>
       <br />
       {props.disabled || <ButtonStepInput plus onClick={handleClick}/>}
       <input
