@@ -26,7 +26,7 @@ const PomodoroForm = (props: any) => {
     const duration_time = (work + short_break) * cycles + work + long_break;
     const work_time = work + work * cycles;
     if (!duration_time || !work_time) return null;
-    const p_work = Math.floor((duration_time / work_time) * 100);
+    const p_work = Math.floor((work_time / duration_time) * 100);
     return { duration: duration_time, work: work_time, p_work};
   };
 
@@ -171,7 +171,7 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>% Work</label>
         <StepInputInt disabled 
-          value={stats.p_work + "%"}
+          value={stats.p_work}
         />
       </div>
     </div>

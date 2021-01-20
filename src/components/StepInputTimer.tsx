@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './StepInput.scss'
 
@@ -32,6 +32,10 @@ const StepInputTimer = function(props: any) {
 
   const [time, setTime] = useState(secToTimeStr(props.value));
 
+  useEffect(() => {
+    if (Number.isNaN(Number(props.value))) return;
+    setTime(secToTimeStr(props.value));
+  }, [props.value]);
   // Adjust time with butttons
   const handleClick = (direction: number): void => {
     const newSec = props.value + direction;

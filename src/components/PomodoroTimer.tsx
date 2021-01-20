@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Button from './Button'
 import PomodoroForm from './PomodoroForm';
 import './PomodoroTimer.scss';
+import StepInputTimer from './StepInputTimer';
+import StepInputInt from './StepInputInt';
 
 interface IObject {
   [key: string]: any;
 }
 const initData: IObject = {
+  id: 1,
+  name: "Pomodoro Timer",
   current: "",
   cycles: 3,
   playing: false,
@@ -109,27 +113,37 @@ const PomodoroTimer = (props: any) => {
         <>
           <div>
             <label>Name</label>
-            <input type="text" disabled={true} value={props.name} />
+            <input type="text" disabled={true} value={times.name} />
           </div>
           <div>
             <label>Work</label>
-            <input type="text" disabled={true} value={times.current === "work" ? times.partition : times.work} />
+            <StepInputTimer disabled
+              value={times.current === "work" ? times.partition : times.work}
+            />
           </div>
           <div>
             <label>Short break</label>
-            <input type="text" disabled={true} value={times.current === "short_break" ? times.partition : times.short_break} />
+            <StepInputTimer disabled
+              value={times.current === "short_break" ? times.partition : times.short_break}
+            />
           </div>
           <div>
             <label>Cycles remaining</label>
-            <input type="text" disabled={true} value={calcCycle(times)} />
+            <StepInputInt disabled
+              value={calcCycle(times)}
+            />
           </div>
           <div>
             <label>Long break</label>
-            <input type="text" disabled={true} value={times.current === "long_break" ? times.partition : times.long_break} />
+            <StepInputTimer disabled
+              value={times.current === "long_break" ? times.partition : times.long_break}
+            />
           </div>
           <div>
             <label>Time remaining</label>
-            <input type="text" disabled={true} value={times.clock} />
+            <StepInputTimer disabled
+              value={times.clock}
+            />
           </div>
           <Button
             play={times.playing}

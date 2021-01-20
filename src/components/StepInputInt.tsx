@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './StepInput.scss'
 
 const StepInputInt = function(props: any) {
   const [value, setValue] = useState(props.value || '0')
+
+  useEffect(() => {
+    if (Number.isNaN(Number(props.value))) return;
+    setValue(props.value);
+  }, [props.value]);
 
   const validateVal = (testVal: string | number) => {
     if (Number(testVal) < Number(props.min)) {
