@@ -14,30 +14,30 @@ const Stopwatch = (props: any) => {
   const [calendarDate, setCalendarDate] = useState(new Date(new Date(props.start_time).setHours(0,0,0,0)));
   const [showCalendar, setShowCalendar] = useState(false)
   const [totalTime, setTotalTime] = useState(0)
-  const [timerObj, setTimerObj] = useState({
-    start_time: props.start_time,
-    end_time: props.end_time
-  });
+  const [entry, setEntry] = useState(props);
+
+  console.log('entry:', entry);
+  
 
   useEffect(() => {
     setTotalTime(props.end_time - props.start_time - props.cumulative_pause_duration)
 
     // Update calendarDate when timerObj.start_time is updated
-    if (timerObj.start_time) {
-      const newCalendarDate: number = new Date(Number(timerObj.start_time)).setHours(0,0,0,0)
+    if (props.start_time) {
+      const newCalendarDate: number = new Date(Number(props.start_time)).setHours(0,0,0,0)
       setCalendarDate(new Date(newCalendarDate));
     }
 
-  }, [timerObj.start_time, timerObj.end_time])
+  }, [props])
 
   // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
   const calendarState = (value: Date) => {
     const dateDiff: number = Number(calendarDate) - Number(value);
     setCalendarDate(value)
     setShowCalendar(!showCalendar)
-    setTimerObj((prev: any) => {
-      const startTime = new Date(Number(timerObj.start_time) - dateDiff)
-      const endTime = timerObj.end_time ? new Date(Number(timerObj.end_time) - dateDiff) : null
+    setEntry((prev: any) => {
+      const startTime = new Date(Number(props.start_time) - dateDiff)
+      const endTime = new Date(Number(props.end_time) - dateDiff)
       return {
         ...prev,
         start_time: startTime,
@@ -47,59 +47,16 @@ const Stopwatch = (props: any) => {
   }
 
   // Update start_time if InputClock is manually adjusted
-  const handleTimeAdjust = (newTime: Date, timeType: string) => {
-    setTimerObj((prev: any) => {
-      return {
-        ...prev,
-        [timeType]: newTime
-      }
+  const updateEntry = (key: string, value: Date | string | number) => {
+    props.onChange({
+      ...props,
+      [key]: value
     })
   }
 
   // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
-    // switch (timerState) {
-    //   case 'SAVE':
-    //     setIsTimerActive(false)
-    //     setTimerObj(prev => {
-    //       const endTime = timerObj.pause_start_time || new Date()
-    //       return {
-    //         ...prev, 
-    //         end_time: endTime
-    //       };
-    //     })
-    //     break;
-    //   case 'PAUSE':
-    //     setIsTimerActive(false)
-    //     setTimerObj(prev => {
-    //       return {
-    //         ...prev, 
-    //         pause_start_time: new Date()
-    //       }
-    //     })
-    //     break;
-    //   case 'PLAY':
-    //     setIsTimerActive(true);
-    //     if (timerObj.pause_start_time) {
-    //       const old_pause_dur = timerObj.cumulative_pause_duration
-    //       const new_pause_dur = Number(new Date()) - Number(timerObj.pause_start_time) + Number(old_pause_dur)
-    //       setTimerObj(prev => {
-    //         return {
-    //           ...prev, 
-    //           cumulative_pause_duration: new_pause_dur,
-    //           pause_start_time: null
-    //         };
-    //       })
-    //     } else {
-    //       setTimerObj(prev => {
-    //         const startTime = timerObj.start_time || new Date()
-    //         return {
-    //           ...prev, 
-    //           start_time: startTime
-    //         };
-    //       })
-    //     }
-    // }
+
   }
 
 
@@ -124,6 +81,7 @@ const Stopwatch = (props: any) => {
         <input
           value={description}
           onChange={(event) => setDescription(event.target.value)}
+          onBlur={e => updateEntry('description', e.target.value)}
           name='desc'
           type='text'
           form='form1'
@@ -135,18 +93,20 @@ const Stopwatch = (props: any) => {
       {/* <StartEndTime />  */}
       <div>
         <StepInputClock
+          label='Start time'
           name='start_time'
-          time={timerObj.start_time}
-          timeAdjust={handleTimeAdjust}
+          time={props.start_time}
+          onChange={updateEntry}
           allowFuture='true'
         />
       </div>
 
       <div>
         <StepInputClock
+          label='End time'
           name='end_time'
-          time={timerObj.end_time}
-          timeAdjust={handleTimeAdjust}
+          time={props.end_time}
+          onChange={updateEntry}
           allowFuture='true'
         />
       </div>

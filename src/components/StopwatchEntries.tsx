@@ -25,14 +25,24 @@ const dummyData: Data = {
 
 const records: Data[] = [
   {...dummyData, id: 0,start_time: new Date(1611020000000), end_time: new Date(1611021000000)},
-  {...dummyData, id: 1,start_time: new Date(1611022000000), end_time: new Date(1611033000000)},
-  {...dummyData, id: 2,start_time: new Date(1611023000000), end_time: new Date(1611025000000)},
+  {...dummyData, id: 1,start_time: new Date(1611022000000), end_time: new Date(1611023000000)},
+  {...dummyData, id: 2,start_time: new Date(1611024000000), end_time: new Date(1611025000000)},
   {...dummyData, id: 3,start_time: new Date(1411024000000), end_time: new Date(1411027000000)},
 ]
 
 const StopwatchEntries = () => {
 
   const [entries, setEntries] = useState(records);
+
+  const update = (newEntry: any) => {
+    const id = newEntry.id;
+    setEntries(entries.map((entry: Data) => {
+      if (entry.id === id) {
+        return newEntry
+      }
+      return entry
+    }))
+  }
 
   const entriesList = entries.map((entry: Data) => <StopwatchEntry
       id={entry.id}
@@ -41,14 +51,15 @@ const StopwatchEntries = () => {
       start_time={entry.start_time}
       end_time={entry.end_time}
       intensity={entry.intensity}
-      pause_start_time={entry.pause_start_time}
       cumulative_pause_duration={entry.cumulative_pause_duration}
+      onChange={update}
     />
   )
 
-  console.log('entries:', entries);
-  console.log('entriesList:', entriesList);
+  // console.log('entries:', entries);
+  // console.log('entriesList:', entriesList);
   
+
 
   return (
     <section className="entries">
