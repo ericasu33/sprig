@@ -1,16 +1,16 @@
 import './App.scss';
-import Stopwatch from './components/Stopwatch';
-import StopwatchEntries from './components/StopwatchEntries';
+import StopwatchActive from './components/StopwatchActive';
+import StopwatchList from './components/StopwatchList';
 
 function App() {
   return (
     <div>
-      <Stopwatch />
+      <StopwatchActive />
       <br />
       <br />
       STOPWATCH ENTRIES
       <br />
-      <StopwatchEntries />
+      <StopwatchList />
     </div>
   );
 }

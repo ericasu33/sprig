@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import StopwatchEntry from './StopwatchEntry'
+import StopwatchListItem from './StopwatchListItem'
 
 interface Tag {
   id: number,
@@ -47,7 +47,7 @@ const dummyEntries: Entries = {
   '3': {...dummyData, id: 3, start_time: new Date(1411024000000), end_time: new Date(1411027000000)},
 }
 
-const StopwatchEntries = () => {
+const StopwatchList = () => {
 
   const [entries, setEntries] = useState(dummyEntries);
 
@@ -61,7 +61,7 @@ const StopwatchEntries = () => {
     })
   }
 
-  const entriesList = Object.values(entries).map((entry: Data) => <StopwatchEntry
+  const entriesList = Object.values(entries).map((entry: Data) => <StopwatchListItem
       key={entry.id}
       id={entry.id}
       category={entry.category}
@@ -83,4 +83,4 @@ const StopwatchEntries = () => {
   )
 }
 
-export default StopwatchEntries;
+export default StopwatchList;

@@ -44,7 +44,7 @@ const dummyData: Data = {
 
 const records: Data[] = []
 
-const Stopwatch = () => {
+const StopwatchActive = () => {
   const [description, setDescription] = useState('');
   const [isTimerActive, setIsTimerActive] = useState(false)
   const [timerObj, setTimerObj] = useState({...dummyData});
@@ -204,4 +204,4 @@ const Stopwatch = () => {
   )
 }
 
-export default Stopwatch;
+export default StopwatchActive;
