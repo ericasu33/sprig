@@ -167,7 +167,7 @@ const StopwatchActive = () => {
         </div>
 
       {/* <Intensity /> */}
-      <span className='intensityPadding'>
+      <div className='stopwatch-input-int'>
         <StepInputInt
           label='Intensity'
           name='intensity'
@@ -176,9 +176,9 @@ const StopwatchActive = () => {
           stepSize='5'
           min='0'
           max='100'
-        /> 
-        %
-      </span>
+          percent
+        />
+      </div>
 
       <StopwatchTime
         timerObj={timerObj}

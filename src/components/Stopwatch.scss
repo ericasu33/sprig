@@ -11,32 +11,15 @@
   }
 }
 
-
-
 .stopwatch {
   display: flex;
   flex-direction: row;
-  border: 1px solid lightgrey;
+  justify-content: space-between;
   align-items: center;
-}
-
-.entries-buttons-right {
-  display: flex;
-  justify-content: right;
-}
-
-.clock-start-time {
-  width: 160px;
-}
-
-.intensityPadding {
-  border: 1px inset #ccc;
-  &input {
-    width: 50px;
-    border: 1px solid peru;
-    padding:0;
-    text-align: right;
-    outline: none;
+  border: 1px solid lightgrey;
+  .stopwatch-group {
+    display: flex;
+    justify-content: center;
   }
 }
 

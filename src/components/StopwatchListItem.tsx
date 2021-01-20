@@ -74,7 +74,7 @@ const Stopwatch = (props: any) => {
       />
 
       {/* <Task description />  */}
-      <div>
+      <div className='stopwatch-group sw-description'>
         <input
           value={description}
           onChange={(event) => setDescription(event.target.value)}
@@ -87,52 +87,58 @@ const Stopwatch = (props: any) => {
         />
       </div>
 
-      {/* <StartEndTime />  */}
-      <div>
-        <StepInputClock
-          label='Start time'
-          name='start_time'
-          time={props.start_time}
-          onChange={updateEntry}
-          allowFuture='true'
-        />
+      <div className='stopwatch-group sw-inputs'>
+
+        <div className='stopwatch-input-clock'>
+          <StepInputClock
+            label='Start time'
+            name='start_time'
+            time={props.start_time}
+            onChange={updateEntry}
+            allowFuture='true'
+          />
+        </div>
+
+        <div className='stopwatch-input-clock'>
+          <StepInputClock
+            label='End time'
+            name='end_time'
+            time={props.end_time}
+            onChange={updateEntry}
+            allowFuture='true'
+          />
+        </div>
+
+        <div className='stopwatch-input-int'>
+          <StepInputInt
+            label='Intensity'
+            name='intensity'
+            value={props.intensity}
+            setValue={updateEntry}
+            stepSize='5'
+            min='0'
+            max='100'
+            percent
+          />
+        </div>
+        
       </div>
 
-      <div>
-        <StepInputClock
-          label='End time'
-          name='end_time'
-          time={props.end_time}
-          onChange={updateEntry}
-          allowFuture='true'
+      <div className='stopwatch-group sw-calc-times'>
+        <StepInputTimer
+          label="Total time"
+          value={totalTime / 1000}
+          disabled
         />
-      </div>
-
-      {/* <Intensity /> */}
-      <StepInputInt
-        label='Intensity'
-        name='intensity'
-        value={props.intensity}
-        setValue={updateEntry}
-        stepSize='5'
-        min='0'
-        max='100'
-        percent
-      />
-
-      <StepInputTimer
-        label="Total time"
-        value={totalTime / 1000}
-        disabled
-      />
-    
-      <StepInputTimer
-        label="Effective time"
-        value={totalTime / 1000 * props.intensity / 100}
-        disabled
-      />
       
-      <div className='entries-buttons-right'>
+        <StepInputTimer
+          label="Effective time"
+          value={totalTime / 1000 * props.intensity / 100}
+          disabled
+        />
+      </div>
+
+      <div className='stopwatch-group sw-buttons-right'>
         <div className='calendar'>
           <Button onClick={() => setShowCalendar(!showCalendar)}>
             <i className='fa fa-calendar-alt'></i>
