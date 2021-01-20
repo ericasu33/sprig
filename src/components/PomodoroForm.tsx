@@ -15,7 +15,6 @@ interface Stats {
 };
 
 const PomodoroForm = (props: any) => {
-  const [sounds, setSounds]: [Array<Sound>, Function] = useState([]);
   const [stats, setStats]: [Stats, Function] = useState({
     duration: 0,
     work: 0,
@@ -31,14 +30,6 @@ const PomodoroForm = (props: any) => {
   };
 
   useEffect(() => {
-    setSounds([
-      {id: 1, file: "test1.mp3"},
-      {id: 2, file: "test2.mp3"},
-      {id: 3, file: "test3.mp3"},
-    ]);
-  },[]);
-
-  useEffect(() => {
     if (!props.pomo_timer) return;
     setStats((prev: any) => {
       const newStats = calcStats(props.pomo_timer);
@@ -46,7 +37,7 @@ const PomodoroForm = (props: any) => {
     });
   }, [props.pomo_timer]);
 
-  const soundOptions = sounds.map((sound) => {
+  const soundOptions = props.sounds.map((sound: Sound) => {
     return (
       <option
         key={sound.id}

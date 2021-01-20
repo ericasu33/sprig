@@ -8,6 +8,12 @@ import StepInputInt from './StepInputInt';
 interface IObject {
   [key: string]: any;
 }
+
+interface Sound {
+  id: number;
+  file: string;
+};
+
 const initData: IObject = {
   id: 1,
   name: "Pomodoro Timer",
@@ -21,6 +27,12 @@ const initData: IObject = {
   clock: 0,
   partition: 0,
 }
+
+const sounds: Sound[] = [
+  {id: 1, file: "test1.mp3"},
+  {id: 2, file: "test2.mp3"},
+  {id: 3, file: "test3.mp3"},
+]
 
 
 const PomodoroTimer = (props: any) => {
@@ -86,7 +98,7 @@ const PomodoroTimer = (props: any) => {
           }
         });
       }, 1000);
-    } else if (times.clock !== calcTotalTime(times) && times.stopped) {
+    } else if (times.stopped) {
       setTimes(prev => ({
         ...prev,
         clock: calcTotalTime(prev),
@@ -95,7 +107,7 @@ const PomodoroTimer = (props: any) => {
       }));
     }
     return () => (clearInterval(timer));
-  }, [times]);
+  }, [times.stopped, times.playing]);
 
   return (
     <div className="pomodoro-display">
@@ -108,6 +120,7 @@ const PomodoroTimer = (props: any) => {
         <PomodoroForm 
           pomo_timer={times}
           setPomoTimer={setTimes}
+          sounds={sounds}
         />
       )) || ( 
         <>
