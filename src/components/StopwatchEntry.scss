@@ -1,3 +1,15 @@
+.calendar {
+  display: flex;
+  justify-content: center;
+  .button {
+    align-items: center;
+  }
+  .react-calendar {
+    position: absolute;
+    margin-top: 60px;
+  }
+}
+
 .stopwatch {
   display: flex;
   flex-direction: row;
