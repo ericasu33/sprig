@@ -16,7 +16,7 @@ const Stopwatch = (props: any) => {
   const [totalTime, setTotalTime] = useState(0)
   const [entry, setEntry] = useState(props);
 
-  console.log('entry:', entry);
+  // console.log('entry:', entry);
   
 
   useEffect(() => {
@@ -113,8 +113,10 @@ const Stopwatch = (props: any) => {
 
       {/* <Intensity /> */}
       <StepInputInt
+        label='Intensity'
         name='intensity'
         value={props.intensity}
+        onChange={updateEntry}
         stepSize='5'
         min='0'
         max='100'
@@ -122,13 +124,13 @@ const Stopwatch = (props: any) => {
       />
 
       <StepInputTimer
-        name="Total time"
+        label="Total time"
         value={totalTime}
         disabled
       />
     
       <StepInputTimer
-        name="Effective time"
+        label="Effective time"
         value={totalTime * props.intensity / 100}
         disabled
       />

@@ -35,6 +35,8 @@ const StopwatchEntries = () => {
   const [entries, setEntries] = useState(records);
 
   const update = (newEntry: any) => {
+    console.log('updated entry:', newEntry);
+    
     const id = newEntry.id;
     setEntries(entries.map((entry: Data) => {
       if (entry.id === id) {
@@ -45,6 +47,7 @@ const StopwatchEntries = () => {
   }
 
   const entriesList = entries.map((entry: Data) => <StopwatchEntry
+      key={entry.id}
       id={entry.id}
       category={entry.category}
       description={entry.description}

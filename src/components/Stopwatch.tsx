@@ -26,7 +26,6 @@ const records: Data[] = []
 
 const Stopwatch = () => {
   const [description, setDescription] = useState('');
-  const [showCalendar, setShowCalendar] = useState(false)
   const [isTimerActive, setIsTimerActive] = useState(false)
   const [timerObj, setTimerObj] = useState({...data});
 
@@ -40,6 +39,13 @@ const Stopwatch = () => {
   }, [timerObj])
 
   // Update start_time if InputClock is manually adjusted
+  const updateTimerObj = (key: string, value: Date | number | null) => {
+    setTimerObj({
+      ...timerObj,
+      [key]: value
+    })
+  }
+
   const handleStartTimeAdjust = (newTime: Date) => {
     setTimerObj(prev => {
       return {
@@ -117,6 +123,7 @@ const Stopwatch = () => {
         <input
           value={description}
           onChange={(event) => setDescription(event.target.value)}
+          // onBlur={e => updateTimerObj('description', e.target.value)}
           name='desc'
           type='text'
           form='form1'
@@ -129,9 +136,10 @@ const Stopwatch = () => {
       <div className='clock-start-time'>
         {timerObj.start_time &&
           <StepInputClock
-            name='startTime'
+            label='Start Time'
+            name='start_time'
             time={timerObj.start_time}
-            timeAdjust={handleStartTimeAdjust}
+            onChange={handleStartTimeAdjust}
             allowFuture='false'
           />}
         </div>
@@ -139,8 +147,10 @@ const Stopwatch = () => {
       {/* <Intensity /> */}
       <span className='intensityPadding'>
         <StepInputInt
+          label='Intensity'
           name='intensity'
           value='90'
+          // onChange={}
           stepSize='5'
           min='0'
           max='100'
