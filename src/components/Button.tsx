@@ -9,6 +9,9 @@ const Button = (props: any) => {
     'button--duplicate': props.duplicate,
     'button--delete': props.delete,
     'button--pause': props.pause,
+    'button--close': props.close,
+    'button--category_create': props.category_create,
+    'button--category_colour': props.category_colour
  });
   return (
     <button type="button" disabled={props.disabled} className={buttonClass} onClick={props.onClick}>
