@@ -22,14 +22,14 @@ const StepInputInt = function(props: any) {
   const handleClick = (sign: number, stepSize: (string | number) = props.stepSize || '1') => {
     const newValue: Number = validateVal(Number(value) + sign * Number(stepSize));
     setValue(newValue);
-    props.setValue(newValue);
+    props.setValue(props.name, newValue);
   }
 
   const handleBlur = (rawStr: string) => {
     const onlyNums: string = rawStr.replace(/\D/g,'');
     const num = validateVal(onlyNums);
     setValue(num || props.value);
-    props.setValue(num || props.value);
+    props.setValue(props.name, (num || props.value));
   };
 
   const handleChange = (rawStr: string) => {

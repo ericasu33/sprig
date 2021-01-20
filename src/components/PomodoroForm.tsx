@@ -57,39 +57,11 @@ const PomodoroForm = (props: any) => {
     );
   });
 
-  
-  const setWork = (time: number) => {
+  const updateState = (key: string, value: number) => {
     props.setPomoTimer((prev: any) => {
       return {
         ...prev,
-        work: time,
-      }
-    });
-  };
-
-  const setShortBreak = (time: number) => {
-    props.setPomoTimer((prev: any) => {
-      return {
-        ...prev,
-        short_break: time,
-      }
-    });
-  };
-
-  const setLongBreak = (time: number) => {
-    props.setPomoTimer((prev: any) => {
-      return {
-        ...prev,
-        long_break: time,
-      }
-    });
-  };
-
-  const setCycles = (num: number) => {
-    props.setPomoTimer((prev: any) => {
-      return {
-        ...prev,
-        cycles: num,
+        [key]: value,
       }
     });
   };
@@ -105,16 +77,18 @@ const PomodoroForm = (props: any) => {
       </div>
       <div>
         <label>Work</label>
-        <StepInputTimer 
+        <StepInputTimer
+          name='work'
           value={props.pomo_timer.work}
-          setValue={setWork}
+          setValue={updateState}
         />
       </div>
       <div>
         <label>Short Break</label>
-        <StepInputTimer 
+        <StepInputTimer
+          name='short_break'
           value={props.pomo_timer.short_break}
-          setValue={setShortBreak}
+          setValue={updateState}
         />
         <div>
           <select defaultValue="none">
@@ -132,16 +106,18 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Repeats</label>
         <StepInputInt 
+          name='cycles'
           value={props.pomo_timer.cycles}
-          setValue={setCycles}
+          setValue={updateState}
           min={0}
         />
       </div>
       <div>
         <label>Long Break</label>
         <StepInputTimer 
+          name='long_break'
           value={props.pomo_timer.long_break}
-          setValue={setLongBreak}
+          setValue={updateState}
         />
         <div>
           <select defaultValue="none">
