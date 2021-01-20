@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ButtonStepInput from './ButtonStepInput'
 
 import './StepInput.scss'
@@ -11,6 +11,11 @@ const StepInputInt = function(props: any) {
 
   const cleanInput = (rawStr: string) => String(rawStr).replace(/\D/g,'')
 
+  useEffect(() => {
+    if (Number.isNaN(Number(props.value))) return;
+    setValue(props.value);
+  }, [props.value]);
+
   const validateVal = (testVal: string | number) => {
     const defaultMinZero = props.min ? Number(props.min) : 0
 
@@ -19,30 +24,29 @@ const StepInputInt = function(props: any) {
     } else if (Number(testVal) > Number(props.max)) {
       return props.max
     }
-    return testVal
-  }
+    return testVal || props.value
+  };
 
   const handleClick = (plusOrMinus: number, stepSize: (string | number) = props.stepSize || '1') => {
     const cleaned: string = cleanInput(value)
-    const rounded = Math.ceil(
-      (Number(cleaned) + plusOrMinus * Number(stepSize)) / Number(stepSize)
-    ) * Number(stepSize)
-
+    const rounded = Math.ceil((Number(cleaned) + plusOrMinus * Number(stepSize)) / Number(stepSize)) * Number(stepSize)
     const validated: Number = validateVal(rounded)
     setValue(concatPercent(String(validated)))
-  }
+    props.setValue(props.name, validated);
+  };
 
   const handleBlur = (rawStr: string) => {
     const cleaned: string = cleanInput(rawStr)
     const validated: string = validateVal(cleaned)
     setValue(concatPercent(validated))
-  }
+    props.setValue(props.name, validated);
+  };
 
   return (
     <div className='step-input step-input-int'>
       <label>{props.name}</label>
       <br />
-      {!props.disabled && <ButtonStepInput plus onClick={handleClick}/>}
+      {props.disabled || <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={value}
         onFocus={e => e.target.select()}
@@ -52,7 +56,7 @@ const StepInputInt = function(props: any) {
         type='text'
         disabled={props.disabled}
       />
-      {!props.disabled && <ButtonStepInput minus onClick={handleClick}/>}
+      {props.disabled || <ButtonStepInput minus onClick={handleClick}/>}
     </div>
   )
 }
