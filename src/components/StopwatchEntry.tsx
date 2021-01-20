@@ -3,31 +3,25 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Category from './Category';
-import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
-import './StopwatchEntry.scss'
+import StepInputInt from './StepInputInt'
 import StepInputTimer from './StepInputTimer';
+import './StopwatchEntry.scss'
 
+// This function sets hours, minutes, seconds, milliseconds to zero
+// ... used so that calendarDate is always midnight, consistent with return from 'react-calendar'
+const setDateToLocalMidnight = (date: Date) => new Date(new Date(date).setHours(0,0,0,0))
 
 const Stopwatch = (props: any) => {
   const [description, setDescription] = useState(props.description);
-  const [calendarDate, setCalendarDate] = useState(new Date(new Date(props.start_time).setHours(0,0,0,0)));
+  const [calendarDate, setCalendarDate] = useState(setDateToLocalMidnight(props.start_time));
   const [showCalendar, setShowCalendar] = useState(false)
   const [totalTime, setTotalTime] = useState(0)
-  const [entry, setEntry] = useState(props);
-
-  // console.log('entry:', entry);
-  
+  const [entry, setEntry] = useState(props);  
 
   useEffect(() => {
     setTotalTime(props.end_time - props.start_time - props.cumulative_pause_duration)
-
-    // Update calendarDate when timerObj.start_time is updated
-    if (props.start_time) {
-      const newCalendarDate: number = new Date(Number(props.start_time)).setHours(0,0,0,0)
-      setCalendarDate(new Date(newCalendarDate));
-    }
-
+    setCalendarDate(setDateToLocalMidnight(props.start_time));
   }, [props])
 
   // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
@@ -44,7 +38,7 @@ const Stopwatch = (props: any) => {
         end_time: endTime
       }
     })    
-  }
+  };
 
   // Update start_time if InputClock is manually adjusted
   const updateEntry = (key: string, value: Date | string | number) => {
@@ -52,7 +46,7 @@ const Stopwatch = (props: any) => {
       ...props,
       [key]: value
     })
-  }
+  };
 
   // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
@@ -60,21 +54,23 @@ const Stopwatch = (props: any) => {
   }
 
 
-  // <form
-  //   id="form1"
-  //   autoComplete='off'
-  //   onSubmit={event => event.preventDefault()}
-  // />
-  
-  // <form
-  //   id="form2"
-  //   autoComplete='off'
-  //   onSubmit={event => event.preventDefault()}
-  // />
   return (
     <div className='stopwatch'>
+      <form
+        id="form1"
+        autoComplete='off'
+        onSubmit={event => event.preventDefault()}
+      />
+      
+      <form
+        id="form2"
+        autoComplete='off'
+        onSubmit={event => event.preventDefault()}
+      />
 
-      <Category />
+      <Category 
+        category_name={props.category}
+      />
 
       {/* <Task description />  */}
       <div>
