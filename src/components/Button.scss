@@ -34,4 +34,11 @@
   //   width: 10px;
   //   height: 10px;
   // }
+  &.button--category_create {
+    font-size: small;
+  }
+  &.button--category_colour {
+    font-size: small;
+    border: 1px solid peru;
+  }
 }
