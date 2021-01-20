@@ -7,34 +7,54 @@ import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
 import './Stopwatch.scss'
 
-interface Data {
-  [key: string]: Date | number | null;
+interface Tag {
+  id: number,
+  tag: string | null
 }
 
-const data: Data = {
+interface Category {
+  id: number,
+  name: string | null,
+  color: string | null
+}
+
+interface Data {
+  id: number,
+  category: Category | null,
+  tags: Tag[] | null,
+  description: string | null,
+  start_time: Date | null,
+  end_time: Date | null,
+  intensity: number | null
+  pause_start_time: Date | null,
+  cumulative_pause_duration: number | null
+}
+
+const dummyData: Data = {
+  id: 1,
+  category: null,
+  tags: null,
+  description: null,
   start_time: null,
   end_time: null,
+  intensity: 100,
   pause_start_time: null,
-  cumulative_pause_duration: 0
+  cumulative_pause_duration: 0,
 };
 
 const records: Data[] = []
 
-/* TODO
-- Render calendar as a layer on top of the rest of the page, so it doesn't move other elements around
-*/
-
 const Stopwatch = () => {
   const [description, setDescription] = useState('');
   const [isTimerActive, setIsTimerActive] = useState(false)
-  const [timerObj, setTimerObj] = useState({...data});
+  const [timerObj, setTimerObj] = useState({...dummyData});
 
   useEffect(() => {
     // Send data to DB and reset stopwatch on 'SAVE'
     if (timerObj.end_time) {
       records.push(timerObj)
       console.log(records);
-      setTimerObj({...data})
+      setTimerObj({...dummyData})
     }
   }, [timerObj])
 
@@ -116,7 +136,9 @@ const Stopwatch = () => {
         onSubmit={event => event.preventDefault()}
       />
 
-      <Category />
+      <Category 
+        category={{name: 'hair', color: '#ababab'}}
+      />
 
       {/* <Task description />  */}
       <div>

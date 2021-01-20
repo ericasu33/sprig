@@ -6,7 +6,7 @@ import Category from './Category';
 import StepInputClock from './StepInputClock'
 import StepInputInt from './StepInputInt'
 import StepInputTimer from './StepInputTimer';
-import './StopwatchEntry.scss'
+import './Stopwatch.scss'
 
 // This function sets hours, minutes, seconds, milliseconds to zero
 // ... used so that calendarDate is always midnight, consistent with return from 'react-calendar'
@@ -69,7 +69,8 @@ const Stopwatch = (props: any) => {
       />
 
       <Category 
-        category_name={props.category}
+        category={props.category}
+        updateCategory={updateEntry}
       />
 
       {/* <Task description />  */}
@@ -131,27 +132,31 @@ const Stopwatch = (props: any) => {
         disabled
       />
       
-      <Button onClick={() => setShowCalendar(!showCalendar)}>
-        <i className='fa fa-calendar-alt'></i>
-      </Button>
-      {showCalendar && 
-        <Calendar 
-          value={calendarDate}
-          onClickDay={(value: Date) => calendarState(value)}
-        />
-      }
+      <div className='entries-buttons-right'>
+        <div className='calendar'>
+          <Button onClick={() => setShowCalendar(!showCalendar)}>
+            <i className='fa fa-calendar-alt'></i>
+          </Button>
+          {showCalendar && 
+            <Calendar
+              value={calendarDate}
+              onClickDay={(value: Date) => calendarState(value)}
+            />
+          }
+        </div>
+      
+        <Button play onClick={(e: any) => handleTimerState("PLAY")}>
+          <i className="far fa-play-circle"></i>
+        </Button>
 
-      <Button play onClick={(e: any) => handleTimerState("PLAY")}>
-        <i className="far fa-play-circle"></i>
-      </Button>
+        <Button duplicate onClick={(e: any) => handleTimerState("DUPLICATE")}>
+          <i className="far fa-clone"></i>
+        </Button>
 
-      <Button duplicate onClick={(e: any) => handleTimerState("SAVE")}>
-        <i className="far fa-clone"></i>
-      </Button>
-
-      <Button delete onClick={(e: any) => handleTimerState("SAVE")}>
-        <i className="far fa-trash-alt"></i>
-      </Button>
+        <Button delete onClick={(e: any) => handleTimerState("DELETE")}>
+          <i className="far fa-trash-alt"></i>
+        </Button>
+      </div>
     </div>
   )
 }
