@@ -73,7 +73,8 @@ const StopwatchList = () => {
     })
   }
 
-  const entriesList = Object.values(entries).map((entry: Data) => <StopwatchListItem
+  const entriesList = Object.values(entries).map((entry: Data) => 
+    <StopwatchListItem
       key={entry.id}
       id={entry.id}
 

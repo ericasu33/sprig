@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
 import Categories from './Categories';
+import Tags from './Tags';
 import StepInputClock from './StepInputClock'
 import StepInputInt from './StepInputInt'
 import StepInputTimer from './StepInputTimer';
-import Tags from './Tags';
+import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
-// This function sets hours, minutes, seconds, milliseconds to zero
-// ... used so that calendarDate is always midnight, consistent with return from 'react-calendar'
+/*  setDateToLocalMidnight sets hours, minutes, seconds, milliseconds to zero
+    so that calendarDate is always midnight, consistent with return value
+    from 'react-calendar' */
 const setDateToLocalMidnight = (date: Date) => new Date(new Date(date).setHours(0,0,0,0))
 
-const Stopwatch = (props: any) => {
-  const [description, setDescription] = useState(props.description);
+const StopwatchListItem = (props: any) => {
   const [calendarDate, setCalendarDate] = useState(setDateToLocalMidnight(props.start_time));
   const [showCalendar, setShowCalendar] = useState(false)
   const [totalTime, setTotalTime] = useState(0)
@@ -67,7 +67,6 @@ const Stopwatch = (props: any) => {
         />
       </div>
 
-      {/* <Task description />  */}
       <div className='stopwatch-group sw-tags'>
         <Tags
           allTags={props.allTags}
@@ -158,4 +157,4 @@ const Stopwatch = (props: any) => {
   )
 }
 
-export default Stopwatch;
+export default StopwatchListItem;
