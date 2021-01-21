@@ -42,8 +42,8 @@ const Stopwatch = (props: any) => {
   };
 
   // Update start_time if InputClock is manually adjusted
-  const updateTimes = (key: string, value: Date | string | number) => {
-    props.updateTimes({
+  const updateEntry = (key: string, value: Date | string | number) => {
+    props.updateEntry({
       ...props,
       [key]: value
     })
@@ -60,16 +60,20 @@ const Stopwatch = (props: any) => {
 
       <div className='stopwatch-group sw-categories'>
         <Categories 
-          categories={props.categories}
-          onChange={props.updateCategories}
+          allCategories={props.allCategories}
+          updateCategories={props.updateCategories}
+          category={props.category}
+          onChange={updateEntry}
         />
       </div>
 
       {/* <Task description />  */}
       <div className='stopwatch-group sw-tags'>
         <Tags
+          allTags={props.allTags}
+          updateTags={props.updateTags}
           tags={props.tags}
-          onChange={props.updateTags}
+          onChange={updateEntry}
         />
       </div>
 
@@ -80,7 +84,7 @@ const Stopwatch = (props: any) => {
             label='Start time'
             name='start_time'
             time={props.start_time}
-            onChange={updateTimes}
+            onChange={updateEntry}
             allowFuture='true'
           />
         </div>
@@ -90,7 +94,7 @@ const Stopwatch = (props: any) => {
             label='End time'
             name='end_time'
             time={props.end_time}
-            onChange={updateTimes}
+            onChange={updateEntry}
             allowFuture='true'
           />
         </div>
@@ -100,7 +104,7 @@ const Stopwatch = (props: any) => {
             label='Intensity'
             name='intensity'
             value={props.intensity}
-            setValue={updateTimes}
+            setValue={updateEntry}
             stepSize='5'
             min='0'
             max='100'

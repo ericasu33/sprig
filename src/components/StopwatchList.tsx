@@ -17,6 +17,8 @@ interface Category {
 
 interface Data {
   id: number,
+  category: Category | null,
+  tags: Tag[] | null,
   start_time: Date | null,
   end_time: Date | null,
   intensity: number | null
@@ -41,6 +43,8 @@ const dummyTags: Tag[] = [
 
 const dummyTime: Data = {
   id: 1,
+  category: dummyCategories[1],
+  tags: [dummyTags[0], dummyTags[1]],
   start_time: new Date(1611021345965),
   end_time: new Date(1611029345965),
   intensity: 90,
@@ -57,11 +61,11 @@ const dummyTimes: Entries = {
 const StopwatchList = () => {
 
   const [entries, setEntries] = useState(dummyTimes);
-  const [categories, setCategories] = useState(dummyCategories);
-  const [tags, setTags] = useState(dummyTags);
+  const [allCategories, setAllCategories] = useState(dummyCategories);
+  const [allTags, setAllTags] = useState(dummyTags);
 
-  const updateTimes = (newObj: any) => {
-    console.log('updated times:', newObj);
+  const updateEntry = (newObj: any) => {
+    console.log('updated entry:', newObj);
     setEntries(prev => {
       return {
         ...prev,
@@ -73,15 +77,19 @@ const StopwatchList = () => {
   const entriesList = Object.values(entries).map((entry: Data) => <StopwatchListItem
       key={entry.id}
       id={entry.id}
-      categories={categories}
-      updateCategories={setCategories}
-      tags={tags}
-      updateTags={setTags}
+
+      allCategories={allCategories}
+      updateAllCategories={setAllCategories}
+      allTags={allTags}
+      updateAllTags={setAllTags}
+
+      category={entry.category}
+      tags={entry.tags}
       start_time={entry.start_time}
       end_time={entry.end_time}
       intensity={entry.intensity}
       cumulative_pause_duration={entry.cumulative_pause_duration}
-      updateTimes={updateTimes}
+      updateEntry={updateEntry}
     />
   )
 

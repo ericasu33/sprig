@@ -18,24 +18,24 @@ const createCategory = (label: string) => ({
 
 const Category = (props: any) => {
 
-  const [categories, setCategories] = useState(props.categories)
-  const [value, setValue] = useState(createCategory(''))
+  const [allCategories, setAllCategories] = useState(props.allCategories)
+  const [value, setValue] = useState(props.category)
   
-  console.log('categories:', categories);
+  console.log('categories:', allCategories);
   
   useEffect(() => {
     if (!props.categories) return
-    setCategories(props.categories)
-  }, [props.categories])
+    setAllCategories(props.allCategories)
+  }, [props.allCategories])
   
   const handleChange = (newValue: any) => {
-    setValue(newValue);
+    setValue(createCategory(newValue));
   };
 
   const handleCreate = (inputValue: any) => {
     const newCategory = createCategory(inputValue);
-    props.onChange([...categories, newCategory])
-    setValue(newCategory)
+    props.updateCategories([...allCategories, newCategory])
+    setValue(newCategory);
   };
 
   return (
@@ -44,7 +44,7 @@ const Category = (props: any) => {
       isClearable
       onChange={handleChange}
       onCreateOption={handleCreate}
-      options={categories}
+      options={allCategories}
       value={value}
     />
   );
