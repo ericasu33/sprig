@@ -29,7 +29,6 @@ const Tags = (props: any) => {
   }, [props.allTags])
 
   useEffect(() => {
-    console.log('props.tags:', props.tags);
     setValue(props.tags || [])
   }, [props.tags])
 
@@ -42,7 +41,6 @@ const Tags = (props: any) => {
 
   const handleCreate = (inputValue: any) => {
     const newTag = createTag(inputValue);
-    console.log('handleCreate newTag:', newTag);
     props.updateAllTags([...allTags, newTag])
     props.onChange('tags', [...value, newTag])
     setValue([...value, newTag])

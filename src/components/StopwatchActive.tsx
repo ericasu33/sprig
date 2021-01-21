@@ -74,8 +74,6 @@ const StopwatchActive = (props: any) => {
   const [allTags, setAllTags] = useState(dummyTags);
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [activeEntry, setActiveEntry] = useState(incomingData);
-
-  // console.log('activeEntry:', activeEntry);
   
   useEffect(() => {
     if (activeEntry.id) {
@@ -93,7 +91,6 @@ const StopwatchActive = (props: any) => {
 
   // Update start_time if InputClock is manually adjusted
   const updateActiveEntry = (key: string, value: Date | number | null | Category | Tag) => {
-    console.log('updateActiveEntry:', key, value);
     setActiveEntry({
       ...activeEntry,
       [key]: value
