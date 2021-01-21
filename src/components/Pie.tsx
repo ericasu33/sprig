@@ -76,7 +76,7 @@ const PieEntry = ( props : any ) => {
           const nameColorArr = entry.split(",")
           result.push({
             name: nameColorArr[0],
-            value: Math.floor(entryObj[entry]/sumOfValue * 100),
+            value: +((entryObj[entry]/sumOfValue * 100).toFixed(2)),
             color: nameColorArr[1]
           })
         }
