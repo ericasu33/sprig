@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './PomodoroForm.scss';
+import CreatableSelect from 'react-select/creatable';
 import StepInputInt from './StepInputInt';
 import StepInputTimer from './StepInputTimer';
+import Button from './Button';
+
+import './PomodoroForm.scss';
 
 interface Sound {
   id: number;
@@ -22,7 +25,11 @@ const PomodoroForm = (props: any) => {
     p_work: 0,
   });
 
-  const [name, setName] = useState(props.pomo_timer.name);
+  const [name, setName] = useState({
+    id: props.pomo_timer.id,
+    name: props.pomo_timer.name,
+    label: props.pomo_timer.name,
+  });
 
   const calcStats = ({work, short_break, long_break, cycles}: {[key:string]: number}) => {
     const duration_time = (work + short_break) * cycles + work + long_break;
@@ -52,12 +59,11 @@ const PomodoroForm = (props: any) => {
   });
 
   const timerOptions = props.timers.map((timer: any) => {
-    return (
-      <option
-        key={timer.id}
-        value={timer.name}
-      />
-    );
+    return {
+        id: timer.id,
+        name: timer.name,
+        label: timer.name,
+    };
   });
 
   const updateState = (key: string, value: number) => {
@@ -69,28 +75,36 @@ const PomodoroForm = (props: any) => {
     });
   };
 
-  const handleTimerChange = (name: string) => {
-    setName(name);
-    props.changeTimer(name);
+  const handleTimerChange = (obj: any) => {
+    setName(obj);
+    if (obj !== null) {
+      props.changeTimer({ id: obj.id, name: obj.name});
+    }
+  };
+
+  const handleCreate = (name: any) => {
+    setName({ id: null, name, label: name});
+    props.changeTimer({ id: null, name});
   };
 
   return (
     <div className="pomodoro-form">
+      <Button
+            disabled={props.disabled}
+            onClick={props.onSave}
+          >SAVE</Button>
       <div>
         <label>Name</label>
-        <input 
-          list="timer-name"
-          disabled={props.disabled}
+        <CreatableSelect
+          isDisabled={props.disabled}
+          className='step-input'
+          isClearable
+          onChange={handleTimerChange}
+          onCreateOption={handleCreate}
+          options={timerOptions}
           value={name}
-          placeholder={props.pomo_timer.name}
-          onChange={(e) => handleTimerChange(e.target.value)}
-          onClick={() => setName("")}
-          onBlur={() => setName(props.pomo_timer.name)}
+          formatCreateLabel={(input) => `Create timer: "${input}"`}
         />
-        <datalist id="timer-name">
-          {timerOptions}
-          <option value="New Pomodoro" />
-          </datalist>
       </div>
       <div>
         <label>Work</label>

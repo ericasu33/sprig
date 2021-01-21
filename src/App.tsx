@@ -10,6 +10,7 @@ interface Sound {
 
 interface ITimer {
     id: number,
+    uid: number | never,
     name: string,
     cycles: number,
     work: number,
@@ -24,6 +25,7 @@ interface ITimer {
 const timerData = [
   {
     id: 1,
+    uid: 0,
     name: "Classic Pomodoro",
     cycles: 2,
     work: 25 * 60,
@@ -36,6 +38,7 @@ const timerData = [
   },
   {
     id: 2,
+    uid: 0,
     name: "Classic Eye-Strain",
     cycles: 3,
     work: 2,
@@ -48,6 +51,7 @@ const timerData = [
   },
   {
     id: 3,
+    uid: 0,
     name: "Classic 50-7",
     cycles: 3,
     work: 50 * 60,
@@ -72,12 +76,11 @@ function App() {
   const [soundFiles, setSoundFiles] = useState(sounds);
 
   const handleAddTimer = (timer: ITimer) => {
-    timer.id = timerPresets.length + 1;
     setTimerPresets((prev) => {
-      return [
-        ...prev,
-        timer,
-      ];
+      if (timer.id === null) {
+        return [ ...prev, { ...timer, id: timerPresets.length + 1 } ];
+      }
+      return prev.map((t) => t.id === timer.id ? timer : t);
     });
   };
 
@@ -85,7 +88,7 @@ function App() {
     <div>
       <PomodoroTimer 
         timers={timerPresets}
-        addTimer={handleAddTimer}
+        saveTimer={handleAddTimer}
         sounds={soundFiles}
       />
     </div>

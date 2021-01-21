@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button'
 import PomodoroForm from './PomodoroForm';
-import './PomodoroTimer.scss';
 import StepInputTimer from './StepInputTimer';
 import StepInputInt from './StepInputInt';
+
+import './PomodoroTimer.scss';
 
 interface IObject {
   [key: string]: any;
@@ -11,7 +12,10 @@ interface IObject {
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
-  const [curTimer, setCurTimer] = useState(props.timers && props.timers[0].name);
+  const [curTimer, setCurTimer] = useState(props.timers && {
+    id: props.timers[0].id,
+    name: props.timers[0].name,
+  });
   const [timer, setTimer]: [any, any] = useState(props.timers && props.timers[0]);
   const [clock, setClock] = useState({
     playing: false,
@@ -94,13 +98,13 @@ const PomodoroTimer = (props: any) => {
   }, [clock.stopped, clock.playing, timer]);
 
   useEffect(() => {
-    let new_timer = props.timers.find((data: any) => curTimer.toLowerCase() === data.name.toLowerCase());
+    let new_timer = props.timers.find((data: any) => curTimer.id === data.id);
     if (!new_timer) {
       setTimer((prev: any) => {
         return {
           ...prev,
-          id: -1,
-          name: curTimer,
+          id: curTimer.id,
+          name: curTimer.name,
         }
       });
     } else {
@@ -115,30 +119,32 @@ const PomodoroTimer = (props: any) => {
     });
   }, [curTimer, props.timers]);
 
-  const handleViewChange = () => {
-    if (timer.id < 0) {
-      props.addTimer(timer);
+  const handleSave = () => {
+    if (timer.uid === 0) {
+      return;
     }
-    setExpand((prev: boolean) => (!prev));
+    props.saveTimer(timer);
   };
 
   return (
     <div className="pomodoro-display">
       <Button
-        onClick={() => handleViewChange()}
+        onClick={() => setExpand((prev: boolean) => (!prev))}
       >
         { (expand && "shrink") || "expand" }
       </Button>
       { (expand && (
-        <PomodoroForm 
-          disabled={clock.playing}
-          pomo_timer={timer}
-          setPomoTimer={setTimer}
-          timer={curTimer}
-          changeTimer={setCurTimer}
-          sounds={props.sounds}
-          timers={props.timers}
-        />
+        <>
+          <PomodoroForm 
+            disabled={clock.playing}
+            pomo_timer={timer}
+            setPomoTimer={setTimer}
+            changeTimer={setCurTimer}
+            sounds={props.sounds}
+            timers={props.timers}
+            onSave={() => handleSave()}
+          />
+        </>
       )) || ( 
         <>
           <div>
