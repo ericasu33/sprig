@@ -42,8 +42,8 @@ const Stopwatch = (props: any) => {
   };
 
   // Update start_time if InputClock is manually adjusted
-  const updateEntry = (key: string, value: Date | string | number) => {
-    props.onChange({
+  const updateTimes = (key: string, value: Date | string | number) => {
+    props.updateTimes({
       ...props,
       [key]: value
     })
@@ -61,7 +61,7 @@ const Stopwatch = (props: any) => {
       <div className='stopwatch-group sw-categories'>
         <Category 
           categories={props.categories}
-          updateCategory={updateEntry}
+          onChange={props.updateCategories}
         />
       </div>
 
@@ -69,7 +69,7 @@ const Stopwatch = (props: any) => {
       <div className='stopwatch-group sw-tags'>
         <Tags
           tags={props.tags}
-          onChange={updateEntry}
+          onChange={props.updateTags}
         />
       </div>
 
@@ -80,7 +80,7 @@ const Stopwatch = (props: any) => {
             label='Start time'
             name='start_time'
             time={props.start_time}
-            onChange={updateEntry}
+            onChange={updateTimes}
             allowFuture='true'
           />
         </div>
@@ -90,7 +90,7 @@ const Stopwatch = (props: any) => {
             label='End time'
             name='end_time'
             time={props.end_time}
-            onChange={updateEntry}
+            onChange={updateTimes}
             allowFuture='true'
           />
         </div>
@@ -100,7 +100,7 @@ const Stopwatch = (props: any) => {
             label='Intensity'
             name='intensity'
             value={props.intensity}
-            setValue={updateEntry}
+            setValue={updateTimes}
             stepSize='5'
             min='0'
             max='100'

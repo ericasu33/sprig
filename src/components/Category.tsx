@@ -2,40 +2,49 @@ import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import './Category.scss'
 
-const createTag = (label: string) => ({
+interface Category {
+  id: number | null,
+  name: string,
+  color: string | null,
+  label?: string,
+}
+
+const createCategory = (label: string) => ({
   id: null,
   label,
-  value: label.toLowerCase().replace(/\W/g, ''),
+  value: label,
+  color: '#115'
 });
-
-const defaultOptions = [
-  createTag('One'),
-  createTag('Two'),
-  createTag('Three'),
-];
 
 const Category = (props: any) => {
 
-  const [options, setOptions] = useState(defaultOptions)
-  const [value, setValue] = useState(createTag(''))
+  const [categories, setCategories] = useState(props.categories)
+  const [value, setValue] = useState(createCategory(''))
+  
+  console.log('categories:', categories);
+  
+  useEffect(() => {
+    if (!props.categories) return
+    setCategories(props.categories)
+  }, [props.categories])
   
   const handleChange = (newValue: any) => {
     setValue(newValue);
   };
 
   const handleCreate = (inputValue: any) => {
-    const newOption = createTag(inputValue);
-    console.log(newOption);
-    setOptions(prev => [...options, newOption])
-    setValue(newOption)
+    const newCategory = createCategory(inputValue);
+    props.onChange([...categories, newCategory])
+    setValue(newCategory)
   };
 
   return (
     <CreatableSelect
       className='category'
+      isClearable
       onChange={handleChange}
       onCreateOption={handleCreate}
-      options={options}
+      options={categories}
       value={value}
     />
   );

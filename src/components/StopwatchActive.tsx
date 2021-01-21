@@ -12,11 +12,11 @@ interface Tag {
   tag: string | null
 }
 
-interface Category {
-  id: number,
-  name: string | null,
-  color: string | null
-}
+// interface Category {
+//   id: number,
+//   name: string | null,
+//   color: string | null
+// }
 
 interface Data {
   id: number,
@@ -122,37 +122,23 @@ const StopwatchActive = () => {
   }
 
 
+      // <div className='stopwatch-group sw-categories'>
+      //   <Category 
+      //     categories={props.categories}
+      //     updateCategory={updateEntry}
+      //   />
+      // </div>
+
+      // {/* <Task description />  */}
+      // <div className='stopwatch-group sw-tags'>
+      //   <Tags
+      //     tags={props.tags}
+      //     onChange={updateEntry}
+      //   />
+      // </div>
   return (
     <div className='stopwatch'>
-      <form
-        id="form1"
-        autoComplete='off'
-        onSubmit={event => event.preventDefault()}
-      />
-      
-      <form
-        id="form2"
-        autoComplete='off'
-        onSubmit={event => event.preventDefault()}
-      />
 
-      <Category 
-        category={{name: 'hair', color: '#ababab'}}
-      />
-
-      {/* <Task description />  */}
-      <div>
-        <input
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          // onBlur={e => updateTimerObj('description', e.target.value)}
-          name='desc'
-          type='text'
-          form='form1'
-          placeholder='enter task description'
-          size={50}
-        />
-      </div>
 
       {/* <StartEndTime />  */}
       <div className='clock-start-time'>
