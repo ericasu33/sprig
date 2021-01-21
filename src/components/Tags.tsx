@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
+import { handleInputChange } from 'react-select/src/utils';
 import './Tags.scss'
 
 interface Tag {
@@ -16,59 +17,43 @@ const createTag = (label: string) => ({
   color: '#115'
 });
 
-const Tag = (props: any) => {
+const Tags = (props: any) => {
 
-  const [tags, setTags] = useState(props.tags)
+  const [allTags, setAllTags] = useState(props.allTags)
+  const [value, setValue] = useState(props.tags)
   const [inputValue, setInputValue] = useState('')
-  const [value, setValue] = useState<Tag[]>([])
-  
-  console.log('tags:', tags);
-  
+    
   useEffect(() => {
-    if (!props.tags) return
-    setTags(props.tags)
-  }, [props.tags])
+    if (!props.allTags) return
+    setAllTags(props.allTags)
+  }, [props.allTags])
 
-  useEffect(() => {
-
-  })
+  const handleInputChange = (inputValue: string) => setInputValue(inputValue)
   
   const handleChange = (newValue: any) => {
-    return
-    const newTag = createTag(newValue);
-    setTags([...tags, newTag])
+    setValue(newValue)
   };
 
   const handleCreate = (inputValue: any) => {
     const newTag = createTag(inputValue);
-    props.onChange([...tags, newTag])
-    // setValue(newTag)
+    console.log('handleCreate newTag:', newTag);
+    props.updateAllTags([...allTags, newTag])
+    setValue([...value, newTag])
   };
-
-  // const handleKeyDown = (event: any) => {
-  //   if (!inputValue) return;
-  //   switch (event.key) {
-  //     case 'Enter':
-  //     case 'Tab':
-  //       setValue([...value, ])
-  //       this.setState({
-  //         inputValue: '',
-  //         value: [...value, createOption(inputValue)],
-  //       });
-  //       event.preventDefault();
-  //   }
-  // };
 
   return (
     <CreatableSelect
       className='tags'
       isMulti
       isClearable
-      onChange={handleChange}
+      options={allTags}
       onCreateOption={handleCreate}
-      options={tags}
+      value={value}
+      onChange={handleChange}
+      inputValue={inputValue}
+      onInputChange={handleInputChange}
     />
   );
 }
 
-export default Tag;
+export default Tags;

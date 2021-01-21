@@ -65,7 +65,6 @@ const StopwatchList = () => {
   const [allTags, setAllTags] = useState(dummyTags);
 
   const updateEntry = (newObj: any) => {
-    console.log('updated entry:', newObj);
     setEntries(prev => {
       return {
         ...prev,

@@ -6,8 +6,8 @@ import Categories from './Categories';
 import StepInputClock from './StepInputClock'
 import StepInputInt from './StepInputInt'
 import StepInputTimer from './StepInputTimer';
-import './Stopwatch.scss'
 import Tags from './Tags';
+import './Stopwatch.scss'
 
 // This function sets hours, minutes, seconds, milliseconds to zero
 // ... used so that calendarDate is always midnight, consistent with return from 'react-calendar'
@@ -71,7 +71,7 @@ const Stopwatch = (props: any) => {
       <div className='stopwatch-group sw-tags'>
         <Tags
           allTags={props.allTags}
-          updateTags={props.updateTags}
+          updateAllTags={props.updateAllTags}
           tags={props.tags}
           onChange={updateEntry}
         />
