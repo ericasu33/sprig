@@ -20,11 +20,19 @@ const Category = (props: any) => {
 
   const [allCategories, setAllCategories] = useState(props.allCategories)
   const [value, setValue] = useState(props.category)
+
+  // console.log('Categories props.category:', props.category);
+  
     
   useEffect(() => {
     if (!props.allCategories) return
     setAllCategories(props.allCategories)
   }, [props.allCategories])
+
+  useEffect(() => {
+    setValue(props.category || '')
+    // console.log('running props.category useEffect');
+  }, [props.category])
   
   const handleChange = (newValue: any) => {
     props.onChange('category', newValue)
