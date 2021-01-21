@@ -9,90 +9,20 @@ interface IObject {
   [key: string]: any;
 }
 
-interface Sound {
-  id: number;
-  file: string;
-};
-
-const timerData = [
-  {
-    id: 0,
-    name: "New Pomodoro",
-    cycles: 0,
-    work: 0,
-    short_break: 0,
-    long_break: 0,
-    short_b_start_sound: 0,
-    short_b_end_sound: 0,
-    long_b_start_sound: 0,
-    long_b_end_sound: 0,
-  },
-  {
-    id: 1,
-    name: "Classic Pomodoro",
-    cycles: 2,
-    work: 25 * 60,
-    short_break: 5 * 60,
-    long_break: 35 * 60,
-    short_b_start_sound: 0,
-    short_b_end_sound: 0,
-    long_b_start_sound: 0,
-    long_b_end_sound: 0,
-  },
-  {
-    id: 2,
-    name: "Classic Eye-Strain",
-    cycles: 3,
-    work: 2,
-    short_break: 2,
-    long_break: 2,
-    short_b_start_sound: 0,
-    short_b_end_sound: 0,
-    long_b_start_sound: 0,
-    long_b_end_sound: 0,
-  },
-  {
-    id: 3,
-    name: "Classic 50-7",
-    cycles: 3,
-    work: 50 * 60,
-    short_break: 7 * 60,
-    long_break: 0,
-    short_b_start_sound: 0,
-    short_b_end_sound: 0,
-    long_b_start_sound: 0,
-    long_b_end_sound: 0,
-  },
-  
-];
-
-const sounds: Sound[] = [
-  {id: 1, file: "test1.mp3"},
-  {id: 2, file: "test2.mp3"},
-  {id: 3, file: "test3.mp3"},
-];
-
-const timers = [
-  { id: 1, name: "Classic Pomodoro"},
-  { id: 2, name: "Classic Eye-Strain"},
-  { id: 3, name: "Classic 50-7"},
-];
-
-
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
-  const [curTimer, setCurTimer] = useState(timerData[0].name);
-  const [times, setTimes]: [any, any] = useState(timerData[0]);
-  const [activeTimer, setActiveTimer] = useState({
+  const [curTimer, setCurTimer] = useState(props.timers && props.timers[0].name);
+  const [timer, setTimer]: [any, any] = useState(props.timers && props.timers[0]);
+  const [clock, setClock] = useState({
     playing: false,
     stopped: true,
     current: "work",
-    clock: 0,
+    time: 0,
     partition: 0,
   });
 
   const togglePlay = () => {
-    setActiveTimer((prev) => {
+    setClock((prev) => {
       return { 
         ...prev, 
         playing: !prev.playing,
@@ -102,7 +32,7 @@ const PomodoroTimer = (props: any) => {
   };
 
   const handleStop = () => {
-    setActiveTimer((prev) => {
+    setClock((prev) => {
       return { 
         ...prev, 
         playing: false,
@@ -111,9 +41,9 @@ const PomodoroTimer = (props: any) => {
     });
   };
 
-  const calcCycle = ({clock, work, short_break, long_break}: IObject) => {
+  const calcCycle = ({time, work, short_break, long_break}: IObject) => {
     if (!work && ! short_break) return 0;
-    const result = Math.ceil((clock - long_break - work) / (work + short_break));
+    const result = Math.ceil((time - long_break - work) / (work + short_break));
     return result < 0 ? 0 : result;
   };
 
@@ -122,51 +52,51 @@ const PomodoroTimer = (props: any) => {
   };
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (activeTimer.playing) {
-      const {cycles, work, short_break, long_break} = times;
-      timer = setInterval(() => {
-        setActiveTimer((prev: any) => {
-          let { partition, current, clock } = prev;
+    let interval: NodeJS.Timeout;
+    if (clock.playing) {
+      const {cycles, work, short_break, long_break} = timer;
+      interval = setInterval(() => {
+        setClock((prev: any) => {
+          let { partition, current, time } = prev;
           if (partition === 0) {
-            if(calcCycle({clock, work, short_break, long_break}) === 0) {
+            if(calcCycle({time, work, short_break, long_break}) === 0) {
               current = current === "work" ? "long_break" : "work";
             } else {
               current = current === "work" ? "short_break" : "work";
             }
-            partition = times[current];
+            partition = timer[current];
           }
-          if (clock === 0) {
+          if (time === 0) {
             return {
               ...prev,
               playing: false,
               current: "",
-              clock: calcTotalTime({cycles, work, short_break, long_break}),
+              time: calcTotalTime({cycles, work, short_break, long_break}),
             };
           }
           return {
             ...prev,
             current,
             partition: !partition ? partition : partition - 1,
-            clock: clock - 1,
+            time: time - 1,
           }
         });
       }, 1000);
-    } else if (activeTimer.stopped) {
-      setActiveTimer(prev => ({
+    } else if (clock.stopped) {
+      setClock(prev => ({
         ...prev,
-        clock: calcTotalTime(times),
-        partition: times.work,
+        time: calcTotalTime(timer),
+        partition: timer.work,
         current: "work",
       }));
     }
-    return () => (clearInterval(timer));
-  }, [activeTimer.stopped, activeTimer.playing, times]);
+    return () => (clearInterval(interval));
+  }, [clock.stopped, clock.playing, timer]);
 
   useEffect(() => {
-    let new_timer = timerData.find((data) => curTimer.toLowerCase() === data.name.toLowerCase());
+    let new_timer = props.timers.find((data: any) => curTimer.toLowerCase() === data.name.toLowerCase());
     if (!new_timer) {
-      setTimes((prev: any) => {
+      setTimer((prev: any) => {
         return {
           ...prev,
           id: -1,
@@ -174,76 +104,83 @@ const PomodoroTimer = (props: any) => {
         }
       });
     } else {
-      setTimes(new_timer);
+      setTimer(new_timer);
     }
-    setActiveTimer((prev) => {
+    setClock((prev) => {
       return {
         ...prev,
         playing: false,
         stopped: true,
       };
     });
-  }, [curTimer]);
+  }, [curTimer, props.timers]);
+
+  const handleViewChange = () => {
+    if (timer.id < 0) {
+      props.addTimer(timer);
+    }
+    setExpand((prev: boolean) => (!prev));
+  };
 
   return (
     <div className="pomodoro-display">
       <Button
-        onClick={(e: any) => setExpand((prev: boolean) => (!prev))}
+        onClick={() => handleViewChange()}
       >
         { (expand && "shrink") || "expand" }
       </Button>
       { (expand && (
         <PomodoroForm 
-          disabled={activeTimer.playing}
-          pomo_timer={times}
-          setPomoTimer={setTimes}
+          disabled={clock.playing}
+          pomo_timer={timer}
+          setPomoTimer={setTimer}
           timer={curTimer}
           changeTimer={setCurTimer}
-          sounds={sounds}
-          timers={timers}
+          sounds={props.sounds}
+          timers={props.timers}
         />
       )) || ( 
         <>
           <div>
             <label>Name</label>
-            <input type="text" disabled={true} value={times.name} />
+            <input type="text" disabled={true} value={timer.name} />
           </div>
           <div>
             <label>Work</label>
             <StepInputTimer disabled
-              value={activeTimer.current === "work" ? activeTimer.partition : times.work}
+              value={clock.current === "work" ? clock.partition : timer.work}
             />
           </div>
           <div>
             <label>Short break</label>
             <StepInputTimer disabled
-              value={activeTimer.current === "short_break" ? activeTimer.partition : times.short_break}
+              value={clock.current === "short_break" ? clock.partition : timer.short_break}
             />
           </div>
           <div>
             <label>Cycles remaining</label>
             <StepInputInt disabled
-              value={calcCycle({...times, clock: activeTimer.clock})}
+              value={calcCycle({...timer, time: clock.time})}
             />
           </div>
           <div>
             <label>Long break</label>
             <StepInputTimer disabled
-              value={activeTimer.current === "long_break" ? activeTimer.partition : times.long_break}
+              value={clock.current === "long_break" ? clock.partition : timer.long_break}
             />
           </div>
           <div>
             <label>Time remaining</label>
             <StepInputTimer disabled
-              value={activeTimer.clock}
+              value={clock.time}
             />
           </div>
           <Button
-            play={activeTimer.playing}
-            pause={!activeTimer.playing}
+            play={clock.playing}
+            pause={!clock.playing}
             onClick={() => togglePlay()}
           >
-            { (activeTimer.playing && 
+            { (clock.playing && 
               <i className="far fa-pause-circle fa-lg"></i>) ||
               <i className="far fa-play-circle fa-lg"></i>
             }
