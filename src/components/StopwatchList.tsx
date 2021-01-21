@@ -3,7 +3,8 @@ import StopwatchListItem from './StopwatchListItem'
 
 interface Tag {
   id: number,
-  tag: string | null
+  name: string | null,
+  color: string | null
 }
 
 interface Category {
@@ -31,7 +32,7 @@ interface Entries {
 const dummyData: Data = {
   id: 1,
   category: {id: 0, name: 'waffles', color: '#efefef'},
-  tags: [{id: 0, tag: 'food'}, {id: 1, tag: 'dessert'}],
+  tags: [{id: 0, name: 'food', color: '#ee0'}, {id: 1, name: 'dessert', color: '#e0e'}],
   description: 'just eating some waffles',
   start_time: new Date(1611021345965),
   end_time: new Date(1611029345965),

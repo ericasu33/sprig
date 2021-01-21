@@ -7,6 +7,7 @@ import StepInputClock from './StepInputClock'
 import StepInputInt from './StepInputInt'
 import StepInputTimer from './StepInputTimer';
 import './Stopwatch.scss'
+import Tags from './Tags';
 
 // This function sets hours, minutes, seconds, milliseconds to zero
 // ... used so that calendarDate is always midnight, consistent with return from 'react-calendar'
@@ -74,16 +75,9 @@ const Stopwatch = (props: any) => {
       />
 
       {/* <Task description />  */}
-      <div className='stopwatch-group sw-description'>
-        <input
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          onBlur={e => updateEntry('description', e.target.value)}
-          name='desc'
-          type='text'
-          form='form1'
-          placeholder='enter task description'
-          size={50}
+      <div className='stopwatch-group sw-tags'>
+        <Tags
+          tags={props.tags}
         />
       </div>
 

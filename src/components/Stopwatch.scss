@@ -21,6 +21,9 @@
     display: flex;
     justify-content: center;
   }
+  .sw-tags {
+    width: 300px;
+  }
 }
 
 .calendar {
@@ -33,4 +36,8 @@
     position: absolute;
     margin-top: 60px;
   }
+}
+
+.tags {
+  width: inherit;
 }
