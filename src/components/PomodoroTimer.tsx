@@ -56,10 +56,9 @@ const PomodoroTimer = (props: any) => {
   };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
     if (clock.playing) {
       const {cycles, work, short_break, long_break} = timer;
-      interval = setInterval(() => {
+      const interval: NodeJS.Timeout = setInterval(() => {
         setClock((prev: any) => {
           let { partition, current, time } = prev;
           if (partition === 0) {
@@ -86,7 +85,9 @@ const PomodoroTimer = (props: any) => {
           }
         });
       }, 1000);
-    } else if (clock.stopped) {
+      return () => (clearInterval(interval));
+    }
+    if (clock.stopped) {
       setClock(prev => ({
         ...prev,
         time: calcTotalTime(timer),
@@ -94,8 +95,16 @@ const PomodoroTimer = (props: any) => {
         current: "work",
       }));
     }
-    return () => (clearInterval(interval));
   }, [clock.stopped, clock.playing, timer]);
+
+  useEffect(() => {
+    setClock(prev => ({
+      ...prev,
+      time: calcTotalTime(timer),
+      partition: timer.work,
+      current: "work",
+    }));
+  }, [timer]);
 
   useEffect(() => {
     let new_timer = props.timers.find((data: any) => curTimer.id === data.id);
