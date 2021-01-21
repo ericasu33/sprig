@@ -1,12 +1,34 @@
 import { PieChart } from 'react-minimal-pie-chart';
 import { useAxiosGet } from '../Hooks/HTTPRequest'
+import entries from "./data"
 
 //calculate by category
 //based on total time
 
-const PieEntry = (props: any) => {
+const PieEntry = ( props : any ) => {
   const url = "http://localhost:8080/api/stopwatches"
   const stopwatches = useAxiosGet(url)
+
+  console.log("HERE", stopwatches.data[0] );
+  console.log ("DATA", entries)
+
+
+
+  const aggregateTotalDurationByCategory = (entries : any) => {
+    const result : any  = {};
+
+    for (const entry of entries) {
+      if (result[entry.category_name]) {
+        result[entry.category_name] = result[entry.category_name] + entry.total_duration_ms;
+      } else {
+         result[entry.category_name] = entry.total_duration_ms;
+      }
+    }
+
+    return result
+  }
+
+  console.log(aggregateTotalDurationByCategory(entries)) 
 
   const defaultLabelStyle = {
     fontSize: '5px',
@@ -23,7 +45,7 @@ const PieEntry = (props: any) => {
     
   const shiftSize = 7;
   const lineWidth = 60;
-  console.log("HERE", stopwatches.data[0] );
+  
 
   return (
     <>
