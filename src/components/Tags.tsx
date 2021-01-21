@@ -20,13 +20,17 @@ const createTag = (label: string) => ({
 const Tags = (props: any) => {
 
   const [allTags, setAllTags] = useState(props.allTags)
-  const [value, setValue] = useState(props.tags)
+  const [value, setValue] = useState(props.tags || [])
   const [inputValue, setInputValue] = useState('')
     
   useEffect(() => {
     if (!props.allTags) return
     setAllTags(props.allTags)
   }, [props.allTags])
+
+  useEffect(() => {
+    setValue(props.tags || [])
+  }, [props.tags])
 
   const handleInputChange = (inputValue: string) => setInputValue(inputValue)
   

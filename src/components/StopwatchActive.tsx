@@ -104,22 +104,11 @@ const StopwatchActive = () => {
     switch (timerState) {
       case 'SAVE':
         setIsTimerRunning(false)
-        setActiveEntry(prev => {
-          const endTime = activeEntry.pause_start_time || new Date()
-          return {
-            ...prev, 
-            end_time: endTime
-          };
-        })
+        updateActiveEntry('end_time', activeEntry.pause_start_time || new Date())
         break;
       case 'PAUSE':
         setIsTimerRunning(false)
-        setActiveEntry(prev => {
-          return {
-            ...prev, 
-            pause_start_time: new Date()
-          }
-        })
+        updateActiveEntry('pause_start_time', new Date())
         break;
       case 'PLAY':
         setIsTimerRunning(true);
@@ -134,13 +123,7 @@ const StopwatchActive = () => {
             };
           })
         } else {
-          setActiveEntry(prev => {
-            const startTime = activeEntry.start_time || new Date()
-            return {
-              ...prev, 
-              start_time: startTime
-            };
-          })
+          updateActiveEntry('start_time', activeEntry.start_time || new Date())
         }
     }
   }
@@ -210,9 +193,11 @@ const StopwatchActive = () => {
         </Button>
       }
 
-      <Button stop onClick={(e: any) => handleTimerState("SAVE")}>
-        <i className="far fa-save"></i>
-      </Button>
+      {activeEntry.start_time &&
+        <Button stop onClick={(e: any) => handleTimerState("SAVE")}>
+          <i className="far fa-save"></i>
+        </Button>
+      }
     </div>
   )
 }
