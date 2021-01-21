@@ -1,34 +1,50 @@
 import { PieChart } from 'react-minimal-pie-chart';
 import { useAxiosGet } from '../Hooks/HTTPRequest'
-import entries from "./data"
 
 //calculate by category
 //based on total time
 
 const PieEntry = ( props : any ) => {
   const url = "http://localhost:8080/api/stopwatches"
-  const stopwatches = useAxiosGet(url)
+  const stopwatches : any = useAxiosGet(url)
+  let content = null;
 
-  console.log("HERE", stopwatches.data[0] );
-  console.log ("DATA", entries)
+  if (stopwatches.data) {
+    content = true;
 
+    const aggregateTotalDurationByCategory = ( entries : any ) => {
+    
+      const result : any  = {};
 
+      for (let entry of entries.data) {
+        for (const [key] of Object.entries(entry)) {
+          if (key === "category_name") {
+            result.name = entry.category_name
+          }
 
-  const aggregateTotalDurationByCategory = (entries : any) => {
-    const result : any  = {};
+          if (key === "total_duration_ms") {
+            result.value = entry.total_duration_ms
+          }
 
-    for (const entry of entries) {
-      if (result[entry.category_name]) {
-        result[entry.category_name] = result[entry.category_name] + entry.total_duration_ms;
-      } else {
-         result[entry.category_name] = entry.total_duration_ms;
+          if (key === "category_color") {
+            result.color = `#${entry.category_color}`
+          }
+        }
+
+        if (result.name) {
+          result.value = result.value + entry.total_duration_ms;
+        } else {
+          result.value = entry.total_duration_ms;
+        }
       }
-    }
 
-    return result
-  }
-
-  console.log(aggregateTotalDurationByCategory(entries)) 
+      return result
+    } 
+  
+    console.log(aggregateTotalDurationByCategory(stopwatches))
+    const pieChartData = [aggregateTotalDurationByCategory(stopwatches)];
+    console.log(pieChartData) 
+  } 
 
   const defaultLabelStyle = {
     fontSize: '5px',
@@ -36,37 +52,35 @@ const PieEntry = ( props : any ) => {
     fill: '#FFF'
   };
 
-  const chartData = 
-    [
-      { title: 'One', value: 10, color: '#E38627' },
-      { title: 'Two', value: 15, color: '#C13C37' },
-      { title: 'Three', value: 20, color: '#6A2135' },
-    ]
+  const chartData = pieChartData
     
   const shiftSize = 7;
   const lineWidth = 60;
   
 
-  return (
-    <>
-    <PieChart
-      data = {chartData}
-      style= {{
-        height: '300px',
-        fontFamily: '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
-        fontSize: '8px',
-      }}
-      radius = {PieChart.defaultProps.radius - shiftSize}
-      lineWidth = {60}
-      segmentsShift={(index) => (index === 0 ? 0.5 : 0.5)}
-      label={({ dataEntry }) => dataEntry.value + "%"}
-      labelPosition={100 - lineWidth / 2}
-      labelStyle={{
-        ...defaultLabelStyle,
-      }}
-    />
-    </>
-  )
+    return (
+      <>
+      {content && 
+        <PieChart
+          data = {chartData}
+          style= {{
+            height: '300px',
+            fontFamily: '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
+            fontSize: '8px',
+          }}
+          radius = {PieChart.defaultProps.radius - shiftSize}
+          lineWidth = {60}
+          segmentsShift={(index) => (index === 0 ? 0.5 : 0.5)}
+          label={({ dataEntry }) => dataEntry.value + "%"}
+          labelPosition={100 - lineWidth / 2}
+          labelStyle={{
+            ...defaultLabelStyle,
+          }}
+        />
+        }
+      </>
+    )
+  
 }
 
 
