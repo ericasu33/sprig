@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import 'react-calendar/dist/Calendar.css';
 import Button from './Button';
 import Categories from './Categories';
-import StopwatchTime from './StopwatchTime';
-import StepInputInt from './StepInputInt'
+import Tags from './Tags';
 import StepInputClock from './StepInputClock'
+import StepInputInt from './StepInputInt'
+import StopwatchTime from './StopwatchTime';
+import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
 interface Tag {
-  id: number,
-  tag: string | null
+  id: number | null,
+  label: string | null,
+  value?: string,
+  color: string | null
 }
 
 interface Category {
-  id: number,
-  name: string | null,
+  id: number | null,
+  label: string | null,
+  value?: string,
   color: string | null
 }
 
@@ -22,7 +26,6 @@ interface Data {
   id: number,
   category: Category | null,
   tags: Tag[] | null,
-  description: string | null,
   start_time: Date | null,
   end_time: Date | null,
   intensity: number | null
@@ -30,11 +33,22 @@ interface Data {
   cumulative_pause_duration: number | null
 }
 
-const dummyData: Data = {
-  id: 1,
+const dummyCategories: Category[] = [
+  {id: 0, label: 'waffles', value: 'waffles', color: '#efefef'},
+  {id: 1, label: 'pancakes', value: 'pancakes', color: '#efefef'},
+  {id: 2, label: 'sneezing', value: 'sneezing', color: '#efefef'},
+]
+
+const dummyTags: Tag[] = [
+  {id: 0, label: 'food', value: 'food', color: '#ee0'},
+  {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
+  {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
+]
+
+const dummyNewTime: Data = {
+  id: 0,
   category: null,
   tags: null,
-  description: null,
   start_time: null,
   end_time: null,
   intensity: 100,
@@ -42,46 +56,56 @@ const dummyData: Data = {
   cumulative_pause_duration: 0,
 };
 
-const records: Data[] = []
+const dummyContinueEntry: Data = {
+  id: 1,
+  category: dummyCategories[1],
+  tags: [dummyTags[0], dummyTags[1]],
+  start_time: new Date(1611021345965),
+  end_time: null,
+  intensity: 90,
+  pause_start_time: null,
+  cumulative_pause_duration: 60000,
+};
+
+const incomingData: Data = dummyNewTime
 
 const StopwatchActive = () => {
-  const [description, setDescription] = useState('');
-  const [isTimerActive, setIsTimerActive] = useState(false)
-  const [timerObj, setTimerObj] = useState({...dummyData});
+  const [allCategories, setAllCategories] = useState(dummyCategories);
+  const [allTags, setAllTags] = useState(dummyTags);
+  const [isTimerRunning, setIsTimerRunning] = useState(false)
+  const [activeEntry, setActiveEntry] = useState(incomingData);
+
+  console.log('activeEntry:', activeEntry);
+  
+  // useEffect(() => {
+  //   if (activeEntry.id) {
+  //     setIsTimerRunning(true)
+  //   }
+  // }, [])
 
   useEffect(() => {
-    // Send data to DB and reset stopwatch on 'SAVE'
-    if (timerObj.end_time) {
-      records.push(timerObj)
-      console.log(records);
-      setTimerObj({...dummyData})
+    // updateDatabase(activeEntry)
+    if (activeEntry.end_time) {
+      console.log('SAVED ENTRY:', activeEntry);
+      setActiveEntry({...dummyNewTime})
     }
-  }, [timerObj])
+  }, [activeEntry])
 
   // Update start_time if InputClock is manually adjusted
-  const updateTimerObj = (key: string, value: Date | number | null) => {
-    setTimerObj({
-      ...timerObj,
+  const updateActiveEntry = (key: string, value: Date | number | null | Category | Tag) => {
+    setActiveEntry({
+      ...activeEntry,
       [key]: value
     })
   }
 
-  const handleStartTimeAdjust = (newTime: Date) => {
-    setTimerObj(prev => {
-      return {
-        ...prev,
-        start_time: newTime
-      }
-    })
-  }
-
-  // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
+  // Manage activeEntry data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
     switch (timerState) {
       case 'SAVE':
-        setIsTimerActive(false)
-        setTimerObj(prev => {
-          const endTime = timerObj.pause_start_time || new Date()
+        setIsTimerRunning(false)
+        setActiveEntry(prev => {
+          const endTime = activeEntry.pause_start_time || new Date()
           return {
             ...prev, 
             end_time: endTime
@@ -89,8 +113,8 @@ const StopwatchActive = () => {
         })
         break;
       case 'PAUSE':
-        setIsTimerActive(false)
-        setTimerObj(prev => {
+        setIsTimerRunning(false)
+        setActiveEntry(prev => {
           return {
             ...prev, 
             pause_start_time: new Date()
@@ -98,11 +122,11 @@ const StopwatchActive = () => {
         })
         break;
       case 'PLAY':
-        setIsTimerActive(true);
-        if (timerObj.pause_start_time) {
-          const old_pause_dur = timerObj.cumulative_pause_duration
-          const new_pause_dur = Number(new Date()) - Number(timerObj.pause_start_time) + Number(old_pause_dur)
-          setTimerObj(prev => {
+        setIsTimerRunning(true);
+        if (activeEntry.pause_start_time) {
+          const old_pause_dur = activeEntry.cumulative_pause_duration
+          const new_pause_dur = Number(new Date()) - Number(activeEntry.pause_start_time) + Number(old_pause_dur)
+          setActiveEntry(prev => {
             return {
               ...prev, 
               cumulative_pause_duration: new_pause_dur,
@@ -110,8 +134,8 @@ const StopwatchActive = () => {
             };
           })
         } else {
-          setTimerObj(prev => {
-            const startTime = timerObj.start_time || new Date()
+          setActiveEntry(prev => {
+            const startTime = activeEntry.start_time || new Date()
             return {
               ...prev, 
               start_time: startTime
@@ -121,33 +145,36 @@ const StopwatchActive = () => {
     }
   }
 
-
-      // <div className='stopwatch-group sw-categories'>
-      //   <Category 
-      //     categories={props.categories}
-      //     updateCategory={updateEntry}
-      //   />
-      // </div>
-
-      // {/* <Task description />  */}
-      // <div className='stopwatch-group sw-tags'>
-      //   <Tags
-      //     tags={props.tags}
-      //     onChange={updateEntry}
-      //   />
-      // </div>
   return (
     <div className='stopwatch'>
+
+      <div className='stopwatch-group sw-categories'>
+        <Categories 
+          allCategories={allCategories}
+          updateAllCategories={setAllCategories}
+          category={activeEntry.category}
+          onChange={updateActiveEntry}
+        />
+      </div>
+
+      <div className='stopwatch-group sw-tags'>
+        <Tags
+          allTags={allTags}
+          updateAllTags={setAllTags}
+          tags={activeEntry.tags}
+          onChange={updateActiveEntry}
+        />
+      </div>
 
 
       {/* <StartEndTime />  */}
       <div className='clock-start-time'>
-        {timerObj.start_time &&
+        {activeEntry.start_time &&
           <StepInputClock
             label='Start Time'
             name='start_time'
-            time={timerObj.start_time}
-            onChange={handleStartTimeAdjust}
+            time={activeEntry.start_time}
+            onChange={updateActiveEntry}
             allowFuture='false'
           />}
         </div>
@@ -157,27 +184,27 @@ const StopwatchActive = () => {
         <StepInputInt
           label='Intensity'
           name='intensity'
-          value='90'
-          // onChange={}
+          value={activeEntry.intensity}
+          setValue={updateActiveEntry}
           stepSize='5'
           min='0'
           max='100'
           percent
-        />
+      />
       </div>
 
       <StopwatchTime
-        timerObj={timerObj}
-        isTimerActive={isTimerActive}
+        activeEntry={activeEntry}
+        isTimerRunning={isTimerRunning}
       />
 
-      {!isTimerActive &&
+      {!isTimerRunning &&
         <Button play onClick={(e: any) => handleTimerState("PLAY")}>
           <i className="far fa-play-circle"></i>
         </Button>
       }
 
-      {isTimerActive &&
+      {isTimerRunning &&
         <Button pause onClick={(e: any) => handleTimerState("PAUSE")}>
           <i className="far fa-pause-circle"></i>
         </Button>

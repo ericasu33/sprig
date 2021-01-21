@@ -38,7 +38,7 @@ const StopwatchListItem = (props: any) => {
         start_time: startTime,
         end_time: endTime
       }
-    })    
+    })
   };
 
   // Update start_time if InputClock is manually adjusted

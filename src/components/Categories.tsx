@@ -4,7 +4,7 @@ import './Categories.scss'
 
 interface Category {
   id: number | null,
-  name: string,
+  value: string,
   color: string | null,
   label?: string,
 }
@@ -27,12 +27,14 @@ const Category = (props: any) => {
   }, [props.allCategories])
   
   const handleChange = (newValue: any) => {
+    props.onChange('category', newValue)
     setValue(newValue);
   };
 
   const handleCreate = (inputValue: any) => {
     const newCategory = createCategory(inputValue);
     props.updateAllCategories([...allCategories, newCategory])
+    props.onChange('category', newCategory)
     setValue(newCategory);
   };
 

@@ -21,28 +21,28 @@ const StopwatchTime = (props: any) => {
     When timer is saved, reset timerVal 
   */
   useEffect(() => {
-    if (props.isTimerActive) {
+    if (props.isTimerRunning) {
       const timer = setInterval(() => {
         setTimerVal(
           Number(new Date()) -
-          Number(props.timerObj.start_time) -
-          Number(props.timerObj.cumulative_pause_duration)
+          Number(props.activeEntry.start_time) -
+          Number(props.activeEntry.cumulative_pause_duration)
         );
       }, 10);
       
       return () => clearInterval(timer);
     }
-    if (props.timerObj.pause_start_time) {
+    if (props.activeEntry.pause_start_time) {
       setTimerVal(
-        Number(props.timerObj.pause_start_time) - 
-        Number(props.timerObj.start_time) - 
-        Number(props.timerObj.cumulative_pause_duration)
+        Number(props.activeEntry.pause_start_time) - 
+        Number(props.activeEntry.start_time) - 
+        Number(props.activeEntry.cumulative_pause_duration)
       )
     }
-    if (!props.timerObj.start_time) {
+    if (!props.activeEntry.start_time) {
       setTimerVal(0)
     }
-  }, [props.timerObj, props.isTimerActive]);
+  }, [props.activeEntry, props.isTimerRunning]);
 
   return (
     <>

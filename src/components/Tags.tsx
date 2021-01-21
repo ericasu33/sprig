@@ -5,7 +5,7 @@ import './Tags.scss'
 
 interface Tag {
   id: number | null,
-  name: string,
+  value: string,
   color: string | null,
   label?: string,
 }
@@ -31,6 +31,7 @@ const Tags = (props: any) => {
   const handleInputChange = (inputValue: string) => setInputValue(inputValue)
   
   const handleChange = (newValue: any) => {
+    props.onChange('tags', newValue)
     setValue(newValue)
   };
 
