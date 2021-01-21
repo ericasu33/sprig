@@ -27,18 +27,21 @@ export function useAxiosGet( url : string ) {
 
   useEffect(() => {
     // Give loader prior to image being loaded
-    setRequest({
-      loading: true,
-      data: null,
-      error: false,
+    setRequest((prev) => {
+      return {
+        ...prev,
+        loading: true,
+      }
     })
 
     axios.get<Stopwatches[]>(url)
       .then(response => {
-        setRequest({
-          loading: false,
-          data: response.data,
-          error: false,
+        setRequest((prev) => {
+          return {
+            ...prev,
+            loading: false,
+            data: response.data,
+          }
         })
       })
       .catch(() => {
