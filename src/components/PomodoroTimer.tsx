@@ -18,53 +18,38 @@ const timerData = [
   {
     id: 1,
     name: "Classic Pomodoro",
-    current: "",
     cycles: 2,
-    playing: false,
-    stopped: true,
     work: 25 * 60,
     short_break: 5 * 60,
     long_break: 35 * 60,
-    short_b_start_sound: "",
-    short_b_end_sound: "",
-    long_b_start_sound: "",
-    long_b_end_sound: "",
-    clock: 0,
-    partition: 0,
+    short_b_start_sound: 0,
+    short_b_end_sound: 0,
+    long_b_start_sound: 0,
+    long_b_end_sound: 0,
   },
   {
     id: 2,
     name: "Classic Eye-Strain",
-    current: "",
     cycles: 3,
-    playing: false,
-    stopped: true,
     work: 2,
     short_break: 2,
     long_break: 2,
-    short_b_start_sound: "",
-    short_b_end_sound: "",
-    long_b_start_sound: "",
-    long_b_end_sound: "",
-    clock: 0,
-    partition: 0,
+    short_b_start_sound: 0,
+    short_b_end_sound: 0,
+    long_b_start_sound: 0,
+    long_b_end_sound: 0,
   },
   {
     id: 3,
     name: "Classic 50-7",
-    current: "",
     cycles: 3,
-    playing: false,
-    stopped: true,
     work: 50 * 60,
     short_break: 7 * 60,
     long_break: 0,
-    short_b_start_sound: "",
-    short_b_end_sound: "",
-    long_b_start_sound: "",
-    long_b_end_sound: "",
-    clock: 0,
-    partition: 0,
+    short_b_start_sound: 0,
+    short_b_end_sound: 0,
+    long_b_start_sound: 0,
+    long_b_end_sound: 0,
   },
   
 ];
@@ -85,10 +70,17 @@ const timers = [
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
   const [curTimer, setCurTimer] = useState(1);
-  const [times, setTimes] = useState(timerData[0]);
+  const [times, setTimes]: [any, any] = useState(timerData[0]);
+  const [activeTimer, setActiveTimer] = useState({
+    playing: false,
+    stopped: true,
+    current: "work",
+    clock: 0,
+    partition: 0,
+  });
 
   const togglePlay = () => {
-    setTimes((prev) => {
+    setActiveTimer((prev) => {
       return { 
         ...prev, 
         playing: !prev.playing,
@@ -98,7 +90,7 @@ const PomodoroTimer = (props: any) => {
   };
 
   const handleStop = () => {
-    setTimes((prev) => {
+    setActiveTimer((prev) => {
       return { 
         ...prev, 
         playing: false,
@@ -118,24 +110,25 @@ const PomodoroTimer = (props: any) => {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (times.playing) {
+    if (activeTimer.playing) {
+      const {cycles, work, short_break, long_break} = times;
       timer = setInterval(() => {
-        setTimes((prev: any) => {
+        setActiveTimer((prev: any) => {
           let { partition, current, clock } = prev;
           if (partition === 0) {
-            if(calcCycle(prev) === 0) {
+            if(calcCycle({clock, work, short_break, long_break}) === 0) {
               current = current === "work" ? "long_break" : "work";
             } else {
               current = current === "work" ? "short_break" : "work";
             }
-            partition = prev[current];
+            partition = times[current];
           }
           if (clock === 0) {
             return {
               ...prev,
               playing: false,
               current: "",
-              clock: calcTotalTime(prev),
+              clock: calcTotalTime({cycles, work, short_break, long_break}),
             };
           }
           return {
@@ -146,16 +139,16 @@ const PomodoroTimer = (props: any) => {
           }
         });
       }, 1000);
-    } else if (times.stopped) {
-      setTimes(prev => ({
+    } else if (activeTimer.stopped) {
+      setActiveTimer(prev => ({
         ...prev,
-        clock: calcTotalTime(prev),
-        partition: prev.work,
+        clock: calcTotalTime(times),
+        partition: times.work,
         current: "work",
       }));
     }
     return () => (clearInterval(timer));
-  }, [times.stopped, times.playing]);
+  }, [activeTimer.stopped, activeTimer.playing, times]);
 
   useEffect(() => {
     const new_timer = timerData.find((data) => curTimer === data.id);
@@ -172,6 +165,7 @@ const PomodoroTimer = (props: any) => {
       </Button>
       { (expand && (
         <PomodoroForm 
+          disabled={activeTimer.playing}
           pomo_timer={times}
           setPomoTimer={setTimes}
           timer={curTimer}
@@ -188,39 +182,39 @@ const PomodoroTimer = (props: any) => {
           <div>
             <label>Work</label>
             <StepInputTimer disabled
-              value={times.current === "work" ? times.partition : times.work}
+              value={activeTimer.current === "work" ? activeTimer.partition : times.work}
             />
           </div>
           <div>
             <label>Short break</label>
             <StepInputTimer disabled
-              value={times.current === "short_break" ? times.partition : times.short_break}
+              value={activeTimer.current === "short_break" ? activeTimer.partition : times.short_break}
             />
           </div>
           <div>
             <label>Cycles remaining</label>
             <StepInputInt disabled
-              value={calcCycle(times)}
+              value={calcCycle({...times, clock: activeTimer.clock})}
             />
           </div>
           <div>
             <label>Long break</label>
             <StepInputTimer disabled
-              value={times.current === "long_break" ? times.partition : times.long_break}
+              value={activeTimer.current === "long_break" ? activeTimer.partition : times.long_break}
             />
           </div>
           <div>
             <label>Time remaining</label>
             <StepInputTimer disabled
-              value={times.clock}
+              value={activeTimer.clock}
             />
           </div>
           <Button
-            play={times.playing}
-            pause={!times.playing}
+            play={activeTimer.playing}
+            pause={!activeTimer.playing}
             onClick={() => togglePlay()}
           >
-            { (times.playing && 
+            { (activeTimer.playing && 
               <i className="far fa-pause-circle fa-lg"></i>) ||
               <i className="far fa-play-circle fa-lg"></i>
             }

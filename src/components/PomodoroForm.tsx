@@ -41,7 +41,7 @@ const PomodoroForm = (props: any) => {
     return (
       <option
         key={sound.id}
-        value={sound.file}
+        value={sound.id}
       >
         {sound.file}
       </option>
@@ -59,7 +59,7 @@ const PomodoroForm = (props: any) => {
     );
   });
 
-  const updateState = (key: string, value: number | string) => {
+  const updateState = (key: string, value: number) => {
     props.setPomoTimer((prev: any) => {
       return {
         ...prev,
@@ -77,6 +77,7 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Name</label>
         <select 
+          disabled={props.disabled}
           value={props.timer}
           onChange={(e) => handleTimerChange(Number(e.target.value))}
           defaultValue="0"
@@ -88,6 +89,7 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Work</label>
         <StepInputTimer
+          disabled={props.disabled}
           name='work'
           value={props.pomo_timer.work}
           setValue={updateState}
@@ -96,27 +98,30 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Short Break</label>
         <StepInputTimer
+          disabled={props.disabled}
           name='short_break'
           value={props.pomo_timer.short_break}
           setValue={updateState}
         />
         <div>
           <select 
+            disabled={props.disabled}
             value={props.pomo_timer.short_b_start_sound}
-            onChange={(e) => updateState("short_b_start_sound", e.target.value)}
-            defaultValue="none"
+            onChange={(e) => updateState("short_b_start_sound", Number(e.target.value))}
+            defaultValue="0"
           >
-            <option disabled value="none">Start Break Sound</option>
-            <option value="none">none</option>
+            <option disabled value="0">Start Break Sound</option>
+            <option value="0">none</option>
             {soundOptions}
           </select>
           <select 
+            disabled={props.disabled}
             value={props.pomo_timer.short_b_end_sound}
-            onChange={(e) => updateState("short_b_end_sound", e.target.value)}
-            defaultValue="none"
+            onChange={(e) => updateState("short_b_end_sound", Number(e.target.value))}
+            defaultValue="0"
           >
-            <option disabled value="none">End Break Sound</option>
-            <option value="none">none</option>
+            <option disabled value="0">End Break Sound</option>
+            <option value="0">none</option>
             {soundOptions}
           </select>
         </div>
@@ -124,6 +129,7 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Repeats</label>
         <StepInputInt 
+          disabled={props.disabled}
           name='cycles'
           value={props.pomo_timer.cycles}
           setValue={updateState}
@@ -133,27 +139,30 @@ const PomodoroForm = (props: any) => {
       <div>
         <label>Long Break</label>
         <StepInputTimer 
+          disabled={props.disabled}
           name='long_break'
           value={props.pomo_timer.long_break}
           setValue={updateState}
         />
         <div>
           <select 
+            disabled={props.disabled}
             value={props.pomo_timer.long_b_start_sound}
-            onChange={(e) => updateState("long_b_start_sound", e.target.value)}
-            defaultValue="none"
+            onChange={(e) => updateState("long_b_start_sound", Number(e.target.value))}
+            defaultValue="0"
           >
-            <option disabled value="none">Start Long Break Sound</option>
-            <option value="none">none</option>
+            <option disabled value="0">Start Long Break Sound</option>
+            <option value="0">none</option>
             {soundOptions}
           </select>
           <select 
+            disabled={props.disabled}
             value={props.pomo_timer.long_b_end_sound}
-            onChange={(e) => updateState("long_b_end_sound", e.target.value)}
-            defaultValue="none"
+            onChange={(e) => updateState("long_b_end_sound", Number(e.target.value))}
+            defaultValue="0"
           >
-            <option disabled value="none">End Long Break Sound</option>
-            <option value="none">none</option>
+            <option disabled value="0">End Long Break Sound</option>
+            <option value="0">none</option>
             {soundOptions}
           </select>
         </div>
