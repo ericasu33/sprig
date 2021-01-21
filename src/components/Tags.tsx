@@ -19,7 +19,8 @@ const createTag = (label: string) => ({
 const Tag = (props: any) => {
 
   const [tags, setTags] = useState(props.tags)
-  const [value, setValue] = useState(createTag(''))
+  const [inputValue, setInputValue] = useState('')
+  const [value, setValue] = useState<Tag[]>([])
   
   console.log('tags:', tags);
   
@@ -27,16 +28,36 @@ const Tag = (props: any) => {
     if (!props.tags) return
     setTags(props.tags)
   }, [props.tags])
+
+  useEffect(() => {
+
+  })
   
   const handleChange = (newValue: any) => {
-    setValue(newValue);
+    return
+    const newTag = createTag(newValue);
+    setTags([...tags, newTag])
   };
 
   const handleCreate = (inputValue: any) => {
     const newTag = createTag(inputValue);
     props.onChange([...tags, newTag])
-    setValue(newTag)
+    // setValue(newTag)
   };
+
+  // const handleKeyDown = (event: any) => {
+  //   if (!inputValue) return;
+  //   switch (event.key) {
+  //     case 'Enter':
+  //     case 'Tab':
+  //       setValue([...value, ])
+  //       this.setState({
+  //         inputValue: '',
+  //         value: [...value, createOption(inputValue)],
+  //       });
+  //       event.preventDefault();
+  //   }
+  // };
 
   return (
     <CreatableSelect
@@ -46,7 +67,6 @@ const Tag = (props: any) => {
       onChange={handleChange}
       onCreateOption={handleCreate}
       options={tags}
-      value={value}
     />
   );
 }

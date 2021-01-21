@@ -28,15 +28,15 @@ interface Entries {
 }
 
 const dummyCategories: Category[] = [
-  {id: 0, label: 'waffles', color: '#efefef'},
-  {id: 1, label: 'pancakes', color: '#efefef'},
-  {id: 2, label: 'sneezing', color: '#efefef'},
+  {id: 0, label: 'Waffles', value: 'waffles', color: '#efefef'},
+  {id: 1, label: 'pancakes', value: 'pancakes', color: '#efefef'},
+  {id: 2, label: 'sneezing', value: 'sneezing', color: '#efefef'},
 ]
 
 const dummyTags: Tag[] = [
-  {id: 0, label: 'food', color: '#ee0'},
-  {id: 1, label: 'dessert', color: '#e0e'},
-  {id: 2, label: 'icecream', color: '#e0e'},
+  {id: 0, label: 'food', value: 'food', color: '#ee0'},
+  {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
+  {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
 ]
 
 const dummyTime: Data = {
@@ -70,18 +70,13 @@ const StopwatchList = () => {
     })
   }
 
-  const updateTags = (newTag: any) => {
-    console.log('updated entry:', newTag);
-    setTags([...tags, newTag])
-  }
-
   const entriesList = Object.values(entries).map((entry: Data) => <StopwatchListItem
       key={entry.id}
       id={entry.id}
       categories={categories}
       updateCategories={setCategories}
       tags={tags}
-      updateTags={updateTags}
+      updateTags={setTags}
       start_time={entry.start_time}
       end_time={entry.end_time}
       intensity={entry.intensity}
