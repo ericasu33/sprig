@@ -57,33 +57,25 @@ const Stopwatch = (props: any) => {
 
   return (
     <div className='stopwatch'>
-      <form
-        id="form1"
-        autoComplete='off'
-        onSubmit={event => event.preventDefault()}
-      />
-      
-      <form
-        id="form2"
-        autoComplete='off'
-        onSubmit={event => event.preventDefault()}
-      />
 
-      <Category 
-        category={props.category}
-        updateCategory={updateEntry}
-      />
+      <div className='stopwatch-group sw-categories'>
+        <Category 
+          categories={props.categories}
+          updateCategory={updateEntry}
+        />
+      </div>
 
       {/* <Task description />  */}
       <div className='stopwatch-group sw-tags'>
         <Tags
           tags={props.tags}
+          onChange={updateEntry}
         />
       </div>
 
       <div className='stopwatch-group sw-inputs'>
 
-        <div className='stopwatch-input-clock'>
+        <div className='sw-input-clock'>
           <StepInputClock
             label='Start time'
             name='start_time'
@@ -93,7 +85,7 @@ const Stopwatch = (props: any) => {
           />
         </div>
 
-        <div className='stopwatch-input-clock'>
+        <div className='sw-input-clock'>
           <StepInputClock
             label='End time'
             name='end_time'
@@ -103,7 +95,7 @@ const Stopwatch = (props: any) => {
           />
         </div>
 
-        <div className='stopwatch-input-int'>
+        <div className='sw-input-int'>
           <StepInputInt
             label='Intensity'
             name='intensity'
@@ -114,6 +106,18 @@ const Stopwatch = (props: any) => {
             max='100'
             percent
           />
+        </div>
+
+        <div className='sw-calendar'>
+          <Button onClick={() => setShowCalendar(!showCalendar)}>
+            <i className='fa fa-calendar-alt'></i>
+          </Button>
+          {showCalendar && 
+            <Calendar
+              value={calendarDate}
+              onClickDay={(value: Date) => calendarState(value)}
+            />
+          }
         </div>
         
       </div>
@@ -133,17 +137,6 @@ const Stopwatch = (props: any) => {
       </div>
 
       <div className='stopwatch-group sw-buttons-right'>
-        <div className='calendar'>
-          <Button onClick={() => setShowCalendar(!showCalendar)}>
-            <i className='fa fa-calendar-alt'></i>
-          </Button>
-          {showCalendar && 
-            <Calendar
-              value={calendarDate}
-              onClickDay={(value: Date) => calendarState(value)}
-            />
-          }
-        </div>
       
         <Button play onClick={(e: any) => handleTimerState("PLAY")}>
           <i className="far fa-play-circle"></i>

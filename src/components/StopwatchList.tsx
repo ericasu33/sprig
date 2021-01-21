@@ -2,20 +2,20 @@ import React, { useState } from 'react'
 import StopwatchListItem from './StopwatchListItem'
 
 interface Tag {
-  id: number,
-  name: string | null,
+  id: number | null,
+  label: string | null,
   color: string | null
 }
 
 interface Category {
-  id: number,
+  id: number | null,
   name: string | null,
   color: string | null
 }
 
 interface Data {
   id: number,
-  category: Category | null,
+  categories: Category[] | null,
   tags: Tag[] | null,
   description: string | null,
   start_time: Date | null,
@@ -31,8 +31,8 @@ interface Entries {
 
 const dummyData: Data = {
   id: 1,
-  category: {id: 0, name: 'waffles', color: '#efefef'},
-  tags: [{id: 0, name: 'food', color: '#ee0'}, {id: 1, name: 'dessert', color: '#e0e'}],
+  categories: [{id: 0, name: 'waffles', color: '#efefef'}, {id: 1, name: 'pancakes', color: '#efefef'}, {id: 2, name: 'sneezing', color: '#efefef'}],
+  tags: [{id: 0, label: 'food', color: '#ee0'}, {id: 1, label: 'dessert', color: '#e0e'}],
   description: 'just eating some waffles',
   start_time: new Date(1611021345965),
   end_time: new Date(1611029345965),
@@ -65,7 +65,7 @@ const StopwatchList = () => {
   const entriesList = Object.values(entries).map((entry: Data) => <StopwatchListItem
       key={entry.id}
       id={entry.id}
-      category={entry.category}
+      categories={entry.categories}
       tags={entry.tags}
       description={entry.description}
       start_time={entry.start_time}

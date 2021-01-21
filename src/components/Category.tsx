@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
 import CreatableSelect from 'react-select/creatable';
+import './Category.scss'
 
 const createTag = (label: string) => ({
   id: null,
@@ -27,11 +27,12 @@ const Category = (props: any) => {
     const newOption = createTag(inputValue);
     console.log(newOption);
     setOptions(prev => [...options, newOption])
+    setValue(newOption)
   };
 
   return (
     <CreatableSelect
-      isClearable
+      className='category'
       onChange={handleChange}
       onCreateOption={handleCreate}
       options={options}

@@ -20,13 +20,17 @@
   .stopwatch-group {
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+  .sw-categories {
+    width: 180px;
   }
   .sw-tags {
     width: 300px;
   }
 }
 
-.calendar {
+.sw-calendar {
   display: flex;
   justify-content: center;
   .button {
