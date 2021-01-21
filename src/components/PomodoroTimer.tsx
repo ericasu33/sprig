@@ -103,6 +103,7 @@ const PomodoroTimer = (props: any) => {
       setTimer((prev: any) => {
         return {
           ...prev,
+          uid: null,
           id: curTimer.id,
           name: curTimer.name,
         }
@@ -121,6 +122,7 @@ const PomodoroTimer = (props: any) => {
 
   const handleSave = () => {
     if (timer.uid === 0) {
+      console.log("can't edit timer :(", timer);
       return;
     }
     props.saveTimer(timer);
