@@ -61,7 +61,7 @@ const Stopwatch = (props: any) => {
       <div className='stopwatch-group sw-categories'>
         <Categories 
           allCategories={props.allCategories}
-          updateCategories={props.updateCategories}
+          updateAllCategories={props.updateAllCategories}
           category={props.category}
           onChange={updateEntry}
         />
