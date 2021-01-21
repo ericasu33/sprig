@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import Button from './Button';
-import Category from './Category';
+import Categories from './Categories';
 import StopwatchTime from './StopwatchTime';
 import StepInputInt from './StepInputInt'
 import StepInputClock from './StepInputClock'
@@ -12,11 +12,11 @@ interface Tag {
   tag: string | null
 }
 
-// interface Category {
-//   id: number,
-//   name: string | null,
-//   color: string | null
-// }
+interface Category {
+  id: number,
+  name: string | null,
+  color: string | null
+}
 
 interface Data {
   id: number,

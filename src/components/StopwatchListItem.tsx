@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import Button from './Button';
-import Category from './Category';
+import Categories from './Categories';
 import StepInputClock from './StepInputClock'
 import StepInputInt from './StepInputInt'
 import StepInputTimer from './StepInputTimer';
@@ -59,7 +59,7 @@ const Stopwatch = (props: any) => {
     <div className='stopwatch'>
 
       <div className='stopwatch-group sw-categories'>
-        <Category 
+        <Categories 
           categories={props.categories}
           onChange={props.updateCategories}
         />
