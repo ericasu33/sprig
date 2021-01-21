@@ -16,6 +16,18 @@ interface Sound {
 
 const timerData = [
   {
+    id: 0,
+    name: "New Pomodoro",
+    cycles: 0,
+    work: 0,
+    short_break: 0,
+    long_break: 0,
+    short_b_start_sound: 0,
+    short_b_end_sound: 0,
+    long_b_start_sound: 0,
+    long_b_end_sound: 0,
+  },
+  {
     id: 1,
     name: "Classic Pomodoro",
     cycles: 2,
@@ -69,7 +81,7 @@ const timers = [
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
-  const [curTimer, setCurTimer] = useState(1);
+  const [curTimer, setCurTimer] = useState(timerData[0].name);
   const [times, setTimes]: [any, any] = useState(timerData[0]);
   const [activeTimer, setActiveTimer] = useState({
     playing: false,
@@ -100,6 +112,7 @@ const PomodoroTimer = (props: any) => {
   };
 
   const calcCycle = ({clock, work, short_break, long_break}: IObject) => {
+    if (!work && ! short_break) return 0;
     const result = Math.ceil((clock - long_break - work) / (work + short_break));
     return result < 0 ? 0 : result;
   };
@@ -151,9 +164,25 @@ const PomodoroTimer = (props: any) => {
   }, [activeTimer.stopped, activeTimer.playing, times]);
 
   useEffect(() => {
-    const new_timer = timerData.find((data) => curTimer === data.id);
-    if (!new_timer) return;
-    setTimes(new_timer);
+    let new_timer = timerData.find((data) => curTimer.toLowerCase() === data.name.toLowerCase());
+    if (!new_timer) {
+      setTimes((prev: any) => {
+        return {
+          ...prev,
+          id: -1,
+          name: curTimer,
+        }
+      });
+    } else {
+      setTimes(new_timer);
+    }
+    setActiveTimer((prev) => {
+      return {
+        ...prev,
+        playing: false,
+        stopped: true,
+      };
+    });
   }, [curTimer]);
 
   return (

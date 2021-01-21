@@ -15,11 +15,14 @@ interface Stats {
 };
 
 const PomodoroForm = (props: any) => {
+
   const [stats, setStats]: [Stats, Function] = useState({
     duration: 0,
     work: 0,
     p_work: 0,
   });
+
+  const [name, setName] = useState(props.pomo_timer.name);
 
   const calcStats = ({work, short_break, long_break, cycles}: {[key:string]: number}) => {
     const duration_time = (work + short_break) * cycles + work + long_break;
@@ -52,10 +55,8 @@ const PomodoroForm = (props: any) => {
     return (
       <option
         key={timer.id}
-        value={timer.id}
-      >
-        {timer.name}
-      </option>
+        value={timer.name}
+      />
     );
   });
 
@@ -68,23 +69,28 @@ const PomodoroForm = (props: any) => {
     });
   };
 
-  const handleTimerChange = (id: number) => {
-    props.changeTimer(id);
+  const handleTimerChange = (name: string) => {
+    setName(name);
+    props.changeTimer(name);
   };
 
   return (
     <div className="pomodoro-form">
       <div>
         <label>Name</label>
-        <select 
+        <input 
+          list="timer-name"
           disabled={props.disabled}
-          value={props.timer}
-          onChange={(e) => handleTimerChange(Number(e.target.value))}
-          defaultValue="0"
-        >
+          value={name}
+          placeholder={props.pomo_timer.name}
+          onChange={(e) => handleTimerChange(e.target.value)}
+          onClick={() => setName("")}
+          onBlur={() => setName(props.pomo_timer.name)}
+        />
+        <datalist id="timer-name">
           {timerOptions}
-          <option value="new-pomodoro">New Pomodoro</option>
-        </select>
+          <option value="New Pomodoro" />
+          </datalist>
       </div>
       <div>
         <label>Work</label>
@@ -108,7 +114,6 @@ const PomodoroForm = (props: any) => {
             disabled={props.disabled}
             value={props.pomo_timer.short_b_start_sound}
             onChange={(e) => updateState("short_b_start_sound", Number(e.target.value))}
-            defaultValue="0"
           >
             <option disabled value="0">Start Break Sound</option>
             <option value="0">none</option>
@@ -118,7 +123,6 @@ const PomodoroForm = (props: any) => {
             disabled={props.disabled}
             value={props.pomo_timer.short_b_end_sound}
             onChange={(e) => updateState("short_b_end_sound", Number(e.target.value))}
-            defaultValue="0"
           >
             <option disabled value="0">End Break Sound</option>
             <option value="0">none</option>
@@ -149,7 +153,6 @@ const PomodoroForm = (props: any) => {
             disabled={props.disabled}
             value={props.pomo_timer.long_b_start_sound}
             onChange={(e) => updateState("long_b_start_sound", Number(e.target.value))}
-            defaultValue="0"
           >
             <option disabled value="0">Start Long Break Sound</option>
             <option value="0">none</option>
@@ -159,7 +162,6 @@ const PomodoroForm = (props: any) => {
             disabled={props.disabled}
             value={props.pomo_timer.long_b_end_sound}
             onChange={(e) => updateState("long_b_end_sound", Number(e.target.value))}
-            defaultValue="0"
           >
             <option disabled value="0">End Long Break Sound</option>
             <option value="0">none</option>
