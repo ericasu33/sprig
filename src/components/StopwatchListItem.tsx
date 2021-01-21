@@ -145,7 +145,7 @@ const StopwatchListItem = (props: any) => {
           <i className="far fa-play-circle"></i>
         </Button>
 
-        <Button duplicate onClick={(e: any) => handleTimerState("DUPLICATE")}>
+        <Button clone onClick={(e: any) => handleTimerState("CLONE")}>
           <i className="far fa-clone"></i>
         </Button>
 
