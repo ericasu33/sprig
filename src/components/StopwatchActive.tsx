@@ -60,7 +60,7 @@ const dummyContinueEntry: Data = {
   id: 1,
   category: dummyCategories[1],
   tags: [dummyTags[0], dummyTags[1]],
-  start_time: new Date(1611021345965),
+  start_time: new Date(),
   end_time: null,
   intensity: 90,
   pause_start_time: null,
@@ -69,7 +69,7 @@ const dummyContinueEntry: Data = {
 
 const incomingData: Data = dummyNewTime
 
-const StopwatchActive = () => {
+const StopwatchActive = (props: any) => {
   const [allCategories, setAllCategories] = useState(dummyCategories);
   const [allTags, setAllTags] = useState(dummyTags);
   const [isTimerRunning, setIsTimerRunning] = useState(false)

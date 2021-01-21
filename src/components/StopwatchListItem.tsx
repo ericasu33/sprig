@@ -51,7 +51,16 @@ const StopwatchListItem = (props: any) => {
 
   // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
-
+    switch (timerState) {
+      case 'DELETE':
+        props.deleteEntry(entry.id)
+        break;
+      case 'CLONE':
+        props.cloneEntry(entry.id)
+        break;
+      case 'PLAY':
+        console.log('play buttton')
+    }
   }
 
 

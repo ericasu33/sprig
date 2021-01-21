@@ -64,13 +64,27 @@ const StopwatchList = () => {
   const [allCategories, setAllCategories] = useState(dummyCategories);
   const [allTags, setAllTags] = useState(dummyTags);
 
+  console.log('entries:', entries);
+  
   const updateEntry = (newObj: any) => {
-    setEntries(prev => {
-      return {
+    setEntries(prev => ({
         ...prev,
         [newObj.id]: newObj
-      }
+    }))
+  }
+
+  const deleteEntry = (id: number) => {
+    setEntries(prev => {
+      delete prev[id];
+      return {...prev}
     })
+  }
+
+  const cloneEntry = (id: number) => {
+    setEntries(prev => ({
+      ...prev, 
+      null: prev[id]
+    }))
   }
 
   const entriesList = Object.values(entries).map((entry: Data) => 
@@ -90,6 +104,8 @@ const StopwatchList = () => {
       intensity={entry.intensity}
       cumulative_pause_duration={entry.cumulative_pause_duration}
       updateEntry={updateEntry}
+      deleteEntry={deleteEntry}
+      cloneEntry={cloneEntry}
     />
   )
 
