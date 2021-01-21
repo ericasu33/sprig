@@ -14,30 +14,78 @@ interface Sound {
   file: string;
 };
 
-const initData: IObject = {
-  id: 1,
-  name: "Pomodoro Timer",
-  current: "",
-  cycles: 3,
-  playing: false,
-  stopped: true,
-  work: 2,
-  short_break: 2,
-  long_break: 2,
-  clock: 0,
-  partition: 0,
-}
+const timerData = [
+  {
+    id: 1,
+    name: "Classic Pomodoro",
+    current: "",
+    cycles: 2,
+    playing: false,
+    stopped: true,
+    work: 25 * 60,
+    short_break: 5 * 60,
+    long_break: 35 * 60,
+    short_b_start_sound: "",
+    short_b_end_sound: "",
+    long_b_start_sound: "",
+    long_b_end_sound: "",
+    clock: 0,
+    partition: 0,
+  },
+  {
+    id: 2,
+    name: "Classic Eye-Strain",
+    current: "",
+    cycles: 3,
+    playing: false,
+    stopped: true,
+    work: 2,
+    short_break: 2,
+    long_break: 2,
+    short_b_start_sound: "",
+    short_b_end_sound: "",
+    long_b_start_sound: "",
+    long_b_end_sound: "",
+    clock: 0,
+    partition: 0,
+  },
+  {
+    id: 3,
+    name: "Classic 50-7",
+    current: "",
+    cycles: 3,
+    playing: false,
+    stopped: true,
+    work: 50 * 60,
+    short_break: 7 * 60,
+    long_break: 0,
+    short_b_start_sound: "",
+    short_b_end_sound: "",
+    long_b_start_sound: "",
+    long_b_end_sound: "",
+    clock: 0,
+    partition: 0,
+  },
+  
+];
 
 const sounds: Sound[] = [
   {id: 1, file: "test1.mp3"},
   {id: 2, file: "test2.mp3"},
   {id: 3, file: "test3.mp3"},
-]
+];
+
+const timers = [
+  { id: 1, name: "Classic Pomodoro"},
+  { id: 2, name: "Classic Eye-Strain"},
+  { id: 3, name: "Classic 50-7"},
+];
 
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
-  const [times, setTimes] = useState(initData);
+  const [curTimer, setCurTimer] = useState(1);
+  const [times, setTimes] = useState(timerData[0]);
 
   const togglePlay = () => {
     setTimes((prev) => {
@@ -59,12 +107,12 @@ const PomodoroTimer = (props: any) => {
     });
   };
 
-  const calcCycle = ({clock, work, short_break, long_break}: {[key:string]: number}) => {
+  const calcCycle = ({clock, work, short_break, long_break}: IObject) => {
     const result = Math.ceil((clock - long_break - work) / (work + short_break));
     return result < 0 ? 0 : result;
   };
 
-  const calcTotalTime = ({cycles, work, short_break, long_break}: {[key:string]: number}) => {
+  const calcTotalTime = ({cycles, work, short_break, long_break}: IObject) => {
     return ((work + short_break) * cycles + long_break + work);
   };
 
@@ -109,6 +157,12 @@ const PomodoroTimer = (props: any) => {
     return () => (clearInterval(timer));
   }, [times.stopped, times.playing]);
 
+  useEffect(() => {
+    const new_timer = timerData.find((data) => curTimer === data.id);
+    if (!new_timer) return;
+    setTimes(new_timer);
+  }, [curTimer]);
+
   return (
     <div className="pomodoro-display">
       <Button
@@ -120,7 +174,10 @@ const PomodoroTimer = (props: any) => {
         <PomodoroForm 
           pomo_timer={times}
           setPomoTimer={setTimes}
+          timer={curTimer}
+          changeTimer={setCurTimer}
           sounds={sounds}
+          timers={timers}
         />
       )) || ( 
         <>

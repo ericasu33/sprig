@@ -48,7 +48,18 @@ const PomodoroForm = (props: any) => {
     );
   });
 
-  const updateState = (key: string, value: number) => {
+  const timerOptions = props.timers.map((timer: any) => {
+    return (
+      <option
+        key={timer.id}
+        value={timer.id}
+      >
+        {timer.name}
+      </option>
+    );
+  });
+
+  const updateState = (key: string, value: number | string) => {
     props.setPomoTimer((prev: any) => {
       return {
         ...prev,
@@ -57,12 +68,20 @@ const PomodoroForm = (props: any) => {
     });
   };
 
+  const handleTimerChange = (id: number) => {
+    props.changeTimer(id);
+  };
+
   return (
     <div className="pomodoro-form">
       <div>
         <label>Name</label>
-        <select defaultValue="new-pomodoro">
-          {soundOptions}
+        <select 
+          value={props.timer}
+          onChange={(e) => handleTimerChange(Number(e.target.value))}
+          defaultValue="0"
+        >
+          {timerOptions}
           <option value="new-pomodoro">New Pomodoro</option>
         </select>
       </div>
@@ -82,12 +101,20 @@ const PomodoroForm = (props: any) => {
           setValue={updateState}
         />
         <div>
-          <select defaultValue="none">
+          <select 
+            value={props.pomo_timer.short_b_start_sound}
+            onChange={(e) => updateState("short_b_start_sound", e.target.value)}
+            defaultValue="none"
+          >
             <option disabled value="none">Start Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
           </select>
-          <select defaultValue="none">
+          <select 
+            value={props.pomo_timer.short_b_end_sound}
+            onChange={(e) => updateState("short_b_end_sound", e.target.value)}
+            defaultValue="none"
+          >
             <option disabled value="none">End Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
@@ -111,12 +138,20 @@ const PomodoroForm = (props: any) => {
           setValue={updateState}
         />
         <div>
-          <select defaultValue="none">
+          <select 
+            value={props.pomo_timer.long_b_start_sound}
+            onChange={(e) => updateState("long_b_start_sound", e.target.value)}
+            defaultValue="none"
+          >
             <option disabled value="none">Start Long Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
           </select>
-          <select defaultValue="none">
+          <select 
+            value={props.pomo_timer.long_b_end_sound}
+            onChange={(e) => updateState("long_b_end_sound", e.target.value)}
+            defaultValue="none"
+          >
             <option disabled value="none">End Long Break Sound</option>
             <option value="none">none</option>
             {soundOptions}
