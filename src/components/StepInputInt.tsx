@@ -44,8 +44,6 @@ const StepInputInt = function(props: any) {
 
   return (
     <div className='step-input step-input-int'>
-      <label>{props.label}</label>
-      <br />
       {props.disabled || <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={value}

@@ -55,8 +55,6 @@ const StepInputTimer = function(props: any) {
 
   return (
     <div className='step-input step-input-timer'>
-      <label>{props.label}</label>
-      <br />
       {props.disabled || <ButtonStepInput plus onClick={handleClick}/>}
       <input
         value={time}
