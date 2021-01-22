@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAxiosGet } from '../Hooks/HTTPRequest';
+import { useAxiosGet } from '../Hooks/HTTPRequestStopwatch';
 import "./ProgressBar.scss";
 import Loader from './Loader';
 import ProgressBar from './ProgressBar';
