@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import colourStyles from '../styles/reactSelect'
+import reactSelectColours from '../styles/reactSelectColours'
 import './Categories.scss'
 
 interface Category {
@@ -46,7 +46,7 @@ const Category = (props: any) => {
 
   return (
     <CreatableSelect
-      styles={colourStyles(props.allCategories)}
+      styles={reactSelectColours(props.allCategories)}
       className='category'
       isClearable
       onChange={handleChange}

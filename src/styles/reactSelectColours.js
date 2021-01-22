@@ -1,7 +1,7 @@
 import chroma from 'chroma-js';
 
 /* Code lifted from https://react-select.com/styles */
-const reactSelectStyles = (data) => {
+const reactSelectColours = (data) => {
   const dot = (color = '#ccc') => ({
     alignItems: 'center',
     display: 'flex',
@@ -20,6 +20,8 @@ const reactSelectStyles = (data) => {
   const colourStyles = {
     control: styles => ({ ...styles, backgroundColor: 'white' }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      // Set default colour to #000
+      if (!data.color) data.color = '#000';
       const color = chroma(data.color);
       return {
         ...styles,
@@ -54,4 +56,4 @@ const reactSelectStyles = (data) => {
   return colourStyles;
 }
 
-export default reactSelectStyles;
+export default reactSelectColours;
