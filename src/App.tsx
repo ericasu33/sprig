@@ -1,8 +1,10 @@
 import './App.css';
+import Bar from './components/Bar'
 
 function App() {
   return (
     <div>
+      <Bar />
     </div>
   );
 }
