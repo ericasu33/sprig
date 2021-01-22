@@ -14,6 +14,15 @@
     font-size: 0.7em;
     border: 1px solid peru;
   }
+  &.button--increment, &.button--decrement {
+    width: 100%;
+    height: 10px;
+    border: none;
+    text-decoration: none;
+    background: none;
+    font-size: 15px;
+    margin: 2px;
+  }
   
   cursor: pointer;
   &:hover {

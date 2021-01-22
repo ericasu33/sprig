@@ -79,9 +79,7 @@ const StopwatchListItem = (props: any) => {
       </div>
 
       <div>
-        <Button colourPicker onClick={() => setShowColourPicker(!showColourPicker)}>
-        <i className="fas fa-palette"></i>
-        </Button>
+        <Button colourPicker onClick={() => setShowColourPicker(!showColourPicker)} />
         {showColourPicker && 
           <div className='colour-picker'>
             <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowColourPicker(false)} />
@@ -140,9 +138,7 @@ const StopwatchListItem = (props: any) => {
         </div>
 
         <div>
-          <Button calendar onClick={() => setShowCalendar(!showCalendar)}>
-            <i className='fa fa-calendar-alt'></i>
-          </Button>
+          <Button calendar onClick={() => setShowCalendar(!showCalendar)} />
           {showCalendar && 
             <div className='calendar'>
               <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowCalendar(false)} />
@@ -171,18 +167,9 @@ const StopwatchListItem = (props: any) => {
       </div>
 
       <div className='stopwatch-group sw-buttons-right'>
-      
-        <Button play onClick={(e: any) => handleTimerState("PLAY")}>
-          <i className="far fa-play-circle"></i>
-        </Button>
-
-        <Button clone onClick={(e: any) => handleTimerState("CLONE")}>
-          <i className="far fa-clone"></i>
-        </Button>
-
-        <Button delete onClick={(e: any) => handleTimerState("DELETE")}>
-          <i className="far fa-trash-alt"></i>
-        </Button>
+        <Button play onClick={(e: any) => handleTimerState("PLAY")} />
+        <Button clone onClick={(e: any) => handleTimerState("CLONE")} />
+        <Button delete onClick={(e: any) => handleTimerState("DELETE")} />
       </div>
     </div>
   )

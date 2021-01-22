@@ -174,28 +174,16 @@ const StopwatchActive = (props: any) => {
       />
       </div>
 
-      <StopwatchTime
-        activeEntry={activeEntry}
-        isTimerRunning={isTimerRunning}
-      />
+      <StopwatchTime activeEntry={activeEntry} isTimerRunning={isTimerRunning} />
 
-      {!isTimerRunning &&
-        <Button play onClick={(e: any) => handleTimerState("PLAY")}>
-          <i className="far fa-play-circle"></i>
-        </Button>
-      }
-
-      {isTimerRunning &&
-        <Button pause onClick={(e: any) => handleTimerState("PAUSE")}>
-          <i className="far fa-pause-circle"></i>
-        </Button>
-      }
-
-      {activeEntry.start_time &&
-        <Button stop onClick={(e: any) => handleTimerState("SAVE")}>
-          <i className="far fa-save"></i>
-        </Button>
-      }
+      <div className='stopwatch-group sw-buttons-right'>
+        {!isTimerRunning && 
+          <Button play onClick={(e: any) => handleTimerState("PLAY")} />}
+        {isTimerRunning && 
+          <Button pause onClick={(e: any) => handleTimerState("PAUSE")} />}
+        {activeEntry.start_time && 
+          <Button save onClick={(e: any) => handleTimerState("SAVE")} />}
+      </div>
     </div>
   )
 }
