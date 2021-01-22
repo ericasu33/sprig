@@ -89,15 +89,18 @@ const PomodoroForm = (props: any) => {
 
   return (
     <div className="pomodoro-form">
-      <Button
-            disabled={props.disabled}
-            onClick={props.onSave}
-          >SAVE</Button>
-      <div>
+      
+      <div className='pm-group'>
+        <Button stop disabled={props.disabled} onClick={props.onSave}>
+          <i className="far fa-save"></i>
+        </Button>
+      </div>
+
+      <div className='pm-group pm-name'>
         <label>Name</label>
         <CreatableSelect
           isDisabled={props.disabled}
-          className='step-input'
+          className='pm-name-input'
           isClearable
           onChange={handleTimerChange}
           onCreateOption={handleCreate}
@@ -106,7 +109,8 @@ const PomodoroForm = (props: any) => {
           formatCreateLabel={(input) => `Create timer: "${input}"`}
         />
       </div>
-      <div>
+
+      <div className='pm-group'>
         <label>Work</label>
         <StepInputTimer
           disabled={props.disabled}
@@ -115,7 +119,8 @@ const PomodoroForm = (props: any) => {
           setValue={updateState}
         />
       </div>
-      <div>
+
+      <div className='pm-group'>
         <label>Short Break</label>
         <StepInputTimer
           disabled={props.disabled}
@@ -123,6 +128,7 @@ const PomodoroForm = (props: any) => {
           value={props.pomo_timer.short_break}
           setValue={updateState}
         />
+
         <div>
           <select 
             disabled={props.disabled}
@@ -144,7 +150,8 @@ const PomodoroForm = (props: any) => {
           </select>
         </div>
       </div>
-      <div>
+
+      <div className='pm-group'>
         <label>Repeats</label>
         <StepInputInt 
           disabled={props.disabled}
@@ -154,7 +161,8 @@ const PomodoroForm = (props: any) => {
           min={0}
         />
       </div>
-      <div>
+
+      <div className='pm-group'>
         <label>Long Break</label>
         <StepInputTimer 
           disabled={props.disabled}
@@ -183,24 +191,28 @@ const PomodoroForm = (props: any) => {
           </select>
         </div>
       </div>
-      <div>
-        <label>Total Duration</label>
-        <StepInputTimer disabled 
-          value={stats.duration}
-        />
+
+      <div className='pm-group pm-calc-times'>
+        <div>
+          <label>Total Duration</label>
+          <StepInputTimer disabled 
+            value={stats.duration}
+          />
+        </div>
+        <div>
+          <label>Total Work</label>
+          <StepInputTimer disabled 
+            value={stats.work}
+          />
+        </div>
+        <div>
+          <label>% Work</label>
+          <StepInputInt disabled 
+            value={stats.p_work}
+          />
+        </div>
       </div>
-      <div>
-        <label>Total Work</label>
-        <StepInputTimer disabled 
-          value={stats.work}
-        />
-      </div>
-      <div>
-        <label>% Work</label>
-        <StepInputInt disabled 
-          value={stats.p_work}
-        />
-      </div>
+
     </div>
   );
 };

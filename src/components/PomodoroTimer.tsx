@@ -164,52 +164,60 @@ const PomodoroTimer = (props: any) => {
             <label>Name</label>
             <input className='pm-name' type="text" disabled={true} value={timer.name} />
           </div>
+
           <div className='pm-group'>
             <label>Work</label>
             <StepInputTimer disabled
               value={clock.current === "work" ? clock.partition : timer.work}
             />
           </div>
+          
           <div className='pm-group'>
             <label>Short break</label>
             <StepInputTimer disabled
               value={clock.current === "short_break" ? clock.partition : timer.short_break}
             />
           </div>
+          
           <div className='pm-group'>
             <label>Cycles remaining</label>
             <StepInputInt disabled
               value={calcCycle({...timer, time: clock.time})}
             />
           </div>
+          
           <div className='pm-group'>
             <label>Long break</label>
             <StepInputTimer disabled
               value={clock.current === "long_break" ? clock.partition : timer.long_break}
             />
           </div>
+          
           <div className='pm-group'>
             <label>Time remaining</label>
             <StepInputTimer disabled
               value={clock.time}
             />
           </div>
-          <Button
-            play={clock.playing}
-            pause={!clock.playing}
-            onClick={() => togglePlay()}
-          >
-            { (clock.playing && 
-              <i className="far fa-pause-circle fa-lg"></i>) ||
-              <i className="far fa-play-circle fa-lg"></i>
-            }
-          </Button>
-          <Button
-            stop
-            onClick={() => handleStop()}
-          >
-            <i className="far fa-stop-circle fa-lg"></i>
-          </Button>
+
+          <div className='pm-right-buttons'>
+            <Button
+              play={clock.playing}
+              pause={!clock.playing}
+              onClick={() => togglePlay()}
+            >
+              { (clock.playing && 
+                <i className="far fa-pause-circle fa-lg"></i>) ||
+                <i className="far fa-play-circle fa-lg"></i>
+              }
+            </Button>
+            <Button
+              stop
+              onClick={() => handleStop()}
+            >
+              <i className="far fa-stop-circle fa-lg"></i>
+            </Button>
+          </div>
         </>
       )}
     </div>
