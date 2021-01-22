@@ -3,7 +3,8 @@ import { useAxiosGet } from '../Hooks/HTTPRequest';
 import "./ProgressBar.scss";
 import Loader from './Loader';
 import ProgressBar from './ProgressBar';
-
+import { totalTimeUsed } from '../helpers/timeDisplay'
+import { filterStopwatchData } from '../helpers/displayStopwatchByCatData'
 
 
 const Bar = ( props : any ) => {
@@ -11,14 +12,6 @@ const Bar = ( props : any ) => {
   const stopwatches : any = useAxiosGet(url)
   let content = null;
   let sumOfValue: number = 0;
-
-  const totalTimeUsed = (seconds: number) => {
-    const hour = Math.floor(seconds % (3600 * 24) / 3600);
-    const minute = Math.floor(seconds % 3600 / 60);
-    const second = Math.floor(seconds % 60);
-
-    return `${hour} : ${minute} : ${second}`
-  }
 
   if (stopwatches.error) {
     content =
@@ -32,30 +25,6 @@ const Bar = ( props : any ) => {
   }
 
   if (stopwatches.data) {
-
-    const filterStopwatchData = (entries: any) => {
-      const result: any = [];
-
-      for (let entry of entries.data) {
-        const entryObj: any = {};
-
-        for (const [key] of Object.entries(entry)) {
-          if (key === "category_name") {
-            entryObj.name = entry.category_name
-          }
-
-          if (key === "total_duration_ms") {
-            entryObj.value = entry.total_duration_ms
-          }
-
-          if (key === "category_color") {
-            entryObj.color = `#${entry.category_color}`
-          }
-        }
-        result.push(entryObj);
-      }
-      return result
-    }
 
     const aggregateTotalDurationByCategory = (filteredEntries: any) => {
       const entryObj: any = {};
