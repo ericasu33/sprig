@@ -1,5 +1,5 @@
 import './App.css';
-import Bar from './components/Bar'
+import Bar from './components/ProgressBarByCategory'
 
 function App() {
   return (
