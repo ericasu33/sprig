@@ -46,7 +46,7 @@ const StopwatchTime = (props: any) => {
 
   return (
     <>
-    <div>
+    <div className='stopwatch-counter'>
       {convertDateObjToArr(new Date(timerVal))}
     </div>
     </>
