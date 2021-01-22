@@ -1,23 +1,14 @@
 import { PieChart } from 'react-minimal-pie-chart';
 import { useAxiosGet } from '../Hooks/HTTPRequestStopwatch';
 import Loader from './Loader';
-
-//calculate by category
-//based on total time
+import { totalTimeUsed } from '../helpers/timeDisplay'
+import { filterStopwatchData } from '../helpers/displayStopwatchByCatData'
 
 const PieEntry = ( props : any ) => {
   const url = "http://localhost:8080/api/stopwatches"
   const stopwatches : any = useAxiosGet(url)
   let content = null;
   let sumOfValue: number = 0;
-
-  const totalTimeUsed = (seconds: number) => {
-    const hour = Math.floor(seconds % (3600 * 24) / 3600);
-    const minute = Math.floor(seconds % 3600 / 60);
-    const second = Math.floor(seconds % 60);
-
-    return `${hour} : ${minute} : ${second}`
-  }
 
   if (stopwatches.error) {
     content = 
@@ -27,40 +18,15 @@ const PieEntry = ( props : any ) => {
   }
 
   if (stopwatches.loading) {
-    console.log("LOADDDDING")
     content = <Loader />
   }
 
   if (stopwatches.data) {
-    const filterStopwatchData = ( entries : any ) => {
-      const result : any = [];
-
-      for (let entry of entries.data) {
-        const entryObj: any = {};
-
-        for (const [key] of Object.entries(entry)) {
-            if (key === "category_name") {
-              entryObj.name = entry.category_name
-            }
-
-            if (key === "total_duration_ms") {
-              entryObj.value = entry.total_duration_ms
-            }
-
-            if (key === "category_color") {
-              entryObj.color = `#${entry.category_color}`
-            }
-        }
-        result.push(entryObj);
-      }
-      return result
-    } 
 
     const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
       const entryObj : any = {};
       const result : any = [];
       
-
       for (const entry of filteredEntries) {
         const nameColor = entry.name + ',' + entry.color
          if (entryObj[nameColor]) {
@@ -91,8 +57,8 @@ const PieEntry = ( props : any ) => {
 
     const chartData = aggregateTotalDurationByCategory(filterStopwatchData(stopwatches));
     
-  const shiftSize = 7;
-  const lineWidth = 60;
+    const shiftSize = 7;
+    const lineWidth = 60;
   
     content = 
         <PieChart
