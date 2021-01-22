@@ -1,8 +1,19 @@
 .pomodoro-display {
   display: flex;
   flex-direction: row;
-  > {
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid lightgrey;
+  .pm-group {
+    font-size: small;
+    // border: 1px solid peru;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .pm-name {
+      padding: 5px;
+      text-align: center;
+    }
   }
 }

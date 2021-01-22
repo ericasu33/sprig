@@ -139,11 +139,13 @@ const PomodoroTimer = (props: any) => {
 
   return (
     <div className="pomodoro-display">
-      <Button
-        onClick={() => setExpand((prev: boolean) => (!prev))}
-      >
-        { (expand && "shrink") || "expand" }
-      </Button>
+
+      <div className='pm-group'>
+        <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
+          { (expand && "shrink") || "expand" }
+        </Button>
+      </div>
+
       { (expand && (
         <>
           <PomodoroForm 
@@ -158,35 +160,35 @@ const PomodoroTimer = (props: any) => {
         </>
       )) || ( 
         <>
-          <div>
+          <div className='pm-group'>
             <label>Name</label>
-            <input type="text" disabled={true} value={timer.name} />
+            <input className='pm-name' type="text" disabled={true} value={timer.name} />
           </div>
-          <div>
+          <div className='pm-group'>
             <label>Work</label>
             <StepInputTimer disabled
               value={clock.current === "work" ? clock.partition : timer.work}
             />
           </div>
-          <div>
+          <div className='pm-group'>
             <label>Short break</label>
             <StepInputTimer disabled
               value={clock.current === "short_break" ? clock.partition : timer.short_break}
             />
           </div>
-          <div>
+          <div className='pm-group'>
             <label>Cycles remaining</label>
             <StepInputInt disabled
               value={calcCycle({...timer, time: clock.time})}
             />
           </div>
-          <div>
+          <div className='pm-group'>
             <label>Long break</label>
             <StepInputTimer disabled
               value={clock.current === "long_break" ? clock.partition : timer.long_break}
             />
           </div>
-          <div>
+          <div className='pm-group'>
             <label>Time remaining</label>
             <StepInputTimer disabled
               value={clock.time}

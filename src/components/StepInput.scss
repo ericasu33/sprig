@@ -1,3 +1,27 @@
 .step-input {
-  width: 200px;
+  font-size: small;
+  height: auto;
+  // border: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  &.step-input-int {
+    & input {
+      text-align: center;
+      width: 50px;
+    }
+  }
+  &.step-input-clock {
+    & input {
+      text-align: center;
+      width: auto;
+    }
+  }
+  &.step-input-timer {
+    & input {
+      text-align: center;
+      width: 80px;
+    }
+  }
 }
