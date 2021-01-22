@@ -147,12 +147,12 @@ const StopwatchActive = (props: any) => {
             <div className='show-colour-picker'>
               <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowColourPicker(false)} />
               <CirclePicker
-              color={activeEntry.category ? activeEntry.category.color : '#fff'}
-              onChangeComplete={(picked: any) => {
-                if (!activeEntry.category) return
-                updateActiveEntry('category', ({...activeEntry.category, color: picked.hex}))
-              }}
-            />
+                color={activeEntry.category ? activeEntry.category.color : '#fff'}
+                onChangeComplete={(picked: any) => {
+                  if (!activeEntry.category) return
+                  updateActiveEntry('category', ({...activeEntry.category, color: picked.hex}))
+                }}
+              />
             </div>
           }
       </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-import { CirclePicker } from 'react-color';
+import ColourPicker from './ColourPicker'
 import Button from './Button';
 import Categories from './Categories';
 import Tags from './Tags';
@@ -18,7 +18,6 @@ const setDateToLocalMidnight = (date: Date) => new Date(new Date(date).setHours(
 const StopwatchListItem = (props: any) => {
   const [calendarDate, setCalendarDate] = useState(setDateToLocalMidnight(props.start_time));
   const [showCalendar, setShowCalendar] = useState(false)
-  const [showColourPicker, setShowColourPicker] = useState(false)
   const [totalTime, setTotalTime] = useState(0)
   const [entry, setEntry] = useState(props);  
 
@@ -79,18 +78,12 @@ const StopwatchListItem = (props: any) => {
       </div>
 
       <div>
-        <Button palette onClick={() => setShowColourPicker(!showColourPicker)} />
-        {showColourPicker && 
-          <div className='show-colour-picker'>
-            <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowColourPicker(false)} />
-            <CirclePicker
-              color={props.category.color}
-              onChangeComplete={(picked: any) => {
-                updateEntry('category', ({...props.category, color: picked.hex}))
-              }}
-            />
-          </div>
-        }
+        <ColourPicker
+          allCategories={props.allCategories}
+          updateAllCategories={props.updateAllCategories}
+          category={props.category}
+          onChange={updateEntry}          
+        />
       </div>
 
       <div className='stopwatch-group sw-tags'>
