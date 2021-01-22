@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import ButtonStepInput from './ButtonStepInput'
 import Button from './Button'
 
 import './StepInput.scss'

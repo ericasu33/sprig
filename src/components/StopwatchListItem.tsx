@@ -79,9 +79,9 @@ const StopwatchListItem = (props: any) => {
       </div>
 
       <div>
-        <Button colourPicker onClick={() => setShowColourPicker(!showColourPicker)} />
+        <Button palette onClick={() => setShowColourPicker(!showColourPicker)} />
         {showColourPicker && 
-          <div className='colour-picker'>
+          <div className='show-colour-picker'>
             <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowColourPicker(false)} />
             <CirclePicker
               color={props.category.color}
@@ -140,7 +140,7 @@ const StopwatchListItem = (props: any) => {
         <div>
           <Button calendar onClick={() => setShowCalendar(!showCalendar)} />
           {showCalendar && 
-            <div className='calendar'>
+            <div className='show-calendar'>
               <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowCalendar(false)} />
                 <Calendar
                   value={calendarDate}

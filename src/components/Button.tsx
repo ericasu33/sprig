@@ -10,7 +10,7 @@ const Button = (props: any) => {
     'button--delete':         props.delete,
     'button--pause':          props.pause,
     'button--expand':         props.expand,
-    'button--colour_picker':  props.colourPicker,
+    'button--palette':        props.palette,
     'button--calendar':       props.calendar,
     'button--increment':      props.increment,
     'button--decrement':      props.decrement,
@@ -22,11 +22,11 @@ const Button = (props: any) => {
     'far fa-clone':           props.clone,
     'far fa-trash-alt':       props.delete,
     'far fa-pause-circle':    props.pause,
-    'close':                  props.expand,
-    'fas fa-palette':         props.colourPicker,
+    'pending':                props.expand,
+    'fas fa-palette':         props.palette,
     'far fa-calendar-alt':    props.calendar,
     'fas fa-angle-up':        props.increment,
-    'fas fa-angle-down':       props.decrement,
+    'fas fa-angle-down':      props.decrement,
   });  
 
   return (
