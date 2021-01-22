@@ -30,9 +30,9 @@ interface Entries {
 }
 
 const dummyCategories: Category[] = [
-  {id: 0, label: 'Waffles', value: 'waffles', color: '#efefef'},
-  {id: 1, label: 'pancakes', value: 'pancakes', color: '#efefef'},
-  {id: 2, label: 'sneezing', value: 'sneezing', color: '#efefef'},
+  {id: 0, label: 'waffles', value: 'waffles', color: '#3eabb7'},
+  {id: 1, label: 'pancakes', value: 'pancakes', color: '#d13c3c'},
+  {id: 2, label: 'sneezing', value: 'sneezing', color: '#6d31b7'},
 ]
 
 const dummyTags: Tag[] = [
