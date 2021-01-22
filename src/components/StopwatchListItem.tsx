@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
+import { CirclePicker } from 'react-color';
 import Button from './Button';
 import Categories from './Categories';
 import Tags from './Tags';
@@ -17,6 +18,7 @@ const setDateToLocalMidnight = (date: Date) => new Date(new Date(date).setHours(
 const StopwatchListItem = (props: any) => {
   const [calendarDate, setCalendarDate] = useState(setDateToLocalMidnight(props.start_time));
   const [showCalendar, setShowCalendar] = useState(false)
+  const [showColourPicker, setShowColourPicker] = useState(false)
   const [totalTime, setTotalTime] = useState(0)
   const [entry, setEntry] = useState(props);  
 
@@ -76,6 +78,23 @@ const StopwatchListItem = (props: any) => {
         />
       </div>
 
+      <div>
+        <Button colourPicker onClick={() => setShowColourPicker(!showColourPicker)}>
+        <i className="fas fa-palette"></i>
+        </Button>
+        {showColourPicker && 
+          <div className='colour-picker'>
+            <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowColourPicker(false)} />
+            <CirclePicker
+              color={props.category.color}
+              onChangeComplete={(picked: any) => {
+                updateEntry('category', ({...props.category, color: picked.hex}))
+              }}
+            />
+          </div>
+        }
+      </div>
+
       <div className='stopwatch-group sw-tags'>
         <Tags
           allTags={props.allTags}
@@ -96,7 +115,7 @@ const StopwatchListItem = (props: any) => {
             allowFuture='true'
           />
         </div>
-
+        -
         <div className='sw-input-clock'>
           <StepInputClock
             label='End time'
@@ -120,15 +139,18 @@ const StopwatchListItem = (props: any) => {
           />
         </div>
 
-        <div className='sw-calendar'>
-          <Button onClick={() => setShowCalendar(!showCalendar)}>
+        <div>
+          <Button calendar onClick={() => setShowCalendar(!showCalendar)}>
             <i className='fa fa-calendar-alt'></i>
           </Button>
           {showCalendar && 
-            <Calendar
-              value={calendarDate}
-              onClickDay={(value: Date) => calendarState(value)}
-            />
+            <div className='calendar'>
+              <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowCalendar(false)} />
+                <Calendar
+                  value={calendarDate}
+                  onClickDay={(value: Date) => calendarState(value)}
+                />
+            </div>
           }
         </div>
         

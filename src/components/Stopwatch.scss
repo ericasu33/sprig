@@ -8,6 +8,7 @@
     margin: 0px;
     flex-direction: column;
     padding: 0px;
+    border-top: 1px solid lightgrey;
   }
 }
 
@@ -16,7 +17,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+  padding: 5px;
   .stopwatch-group {
     display: flex;
     justify-content: center;
@@ -30,14 +32,20 @@
   }
 }
 
-.sw-calendar {
-  display: flex;
-  justify-content: center;
-  .button {
-    align-items: center;
-  }
-  .react-calendar {
-    position: absolute;
-    margin-top: 60px;
-  }
+.popover {
+  position: absolute;
+  z-index: 2;
+  background-color: #aeaeaecc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 8px;
+}
+
+.calendar {
+  position: absolute;
+  z-index: 2;
+  background-color: #aeaeaecc;
+  padding: 4px;
+  border-radius: 4px;
+  margin-top: 8px;
 }
