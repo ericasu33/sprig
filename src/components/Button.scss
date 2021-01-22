@@ -4,50 +4,29 @@
   align-items: center;
   width: 50px;
   height: 50px;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   border-radius: 0.2em;
   text-decoration: none;
   background: none;
   font-size: 1.8em;
+  margin: 5px;
+  &.button--expand {
+    font-size: 0.7em;
+    border: 1px solid peru;
+  }
   
   cursor: pointer;
   &:hover {
     filter: opacity(60%);
   }
-  // &.button--play {
-  //   width: 50px;
-  //   height: 50px;
-  //   font-size: 2em;
-  // }
-  // &.button--clone {
-  //   width: 50px;
-  //   height: 50px;
-  //   font-size: 2em;
-  // }
-  // &.button--stop {
-  //   width: 50px;
-  //   height: 50px;
-  //   font-size: 2em;
-  // }
-  // &.button--pause {
-  //   width: 50px;
-  //   height: 50px;
-  //   font-size: 2em;
-  // }
-  // &.button--delete {
-  //   width: 50px;
-  //   height: 50px;
-  //   font-size: 2em;
-  // }
-  // &button--close {
-  //   width: 10px;
-  //   height: 10px;
-  // }
-  &.button--category_create {
-    font-size: small;
+  &.button--colour_picker {
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
   }
-  &.button--category_colour {
-    font-size: small;
-    border: 1px solid peru;
+  &.button--calendar {
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
   }
 }
