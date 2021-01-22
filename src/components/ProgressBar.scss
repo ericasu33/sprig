@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:100vw
+}
+
+.name {
+  width: 125px;
+  overflow: hidden;
+  text-align: right;
+  margin-right: 1rem;
+}
+
+.total-duration {
+  width: 100px;
+  margin-right: 1rem;
+  position: relative;
+}
+
+.progress {
+  height: 30px;
+  margin: 0.5rem 0 0.5rem 0;
+
+  width: 300px;
+  border-radius: 0;
+  background-color: "#e0e0de";
+}
+
+.bar-fill {
+    height: '100%';
+
+    border-radius: 'inherit';
+  }
+
+.completed {
+  margin-left: 1rem;
+  width: 100px;
+}
+
+
+  // {name: "Lighthouse", value: 70.74, color: "#ebcc34"}
