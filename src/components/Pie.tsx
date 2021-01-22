@@ -1,5 +1,5 @@
 import { PieChart } from 'react-minimal-pie-chart';
-import { useAxiosGet } from '../Hooks/HTTPRequest';
+import { useAxiosGet } from '../Hooks/HTTPRequestStopwatch';
 import Loader from './Loader';
 
 //calculate by category
