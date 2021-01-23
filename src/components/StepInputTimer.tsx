@@ -37,9 +37,10 @@ const StepInputTimer = function(props: any) {
     if (Number.isNaN(Number(props.value))) return;
     setTime(secToTimeStr(props.value));
   }, [props.value]);
+
   // Adjust time with butttons
-  const handleClick = (direction: number): void => {
-    const newSec = props.value + direction;
+  const handleClick = (change: number): void => {
+    const newSec = props.value + change;
     if (newSec < 0) return;
     setTime(secToTimeStr(newSec));
     props.setValue(props.name, newSec);
@@ -55,7 +56,7 @@ const StepInputTimer = function(props: any) {
 
   return (
     <div className='step-input step-input-timer'>
-      {props.disabled || <Button increment onClick={(e: any) => handleClick(1)} />}
+      {props.disabled || <Button increment onClick={(e: any) => handleClick(props.stepValue || 1)} />}
       <input
         value={time}
         onFocus={e => e.target.select()}
@@ -66,7 +67,7 @@ const StepInputTimer = function(props: any) {
         step={props.format === 'clock' ? 60 : 1}
         disabled={props.disabled}
       />
-      {props.disabled || <Button decrement onClick={(e: any) => handleClick(-1)} />}
+      {props.disabled || <Button decrement onClick={(e: any) => handleClick(-(props.stepValue || 1))} />}
     </div>
   )
 }
