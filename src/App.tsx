@@ -88,19 +88,32 @@ function App() {
   };
 
   return (
-    <div>
-      <PomodoroTimer 
-        timers={timerPresets}
-        saveTimer={handleAddTimer}
-        sounds={soundFiles}
-      />
+    <main>
+      <nav className='nav-container'>
+        <div className='nav-logo-container'>
+          <div className='nav-logo-inner'>
+            <div className='nav-title'>TRACK<br />SUITE</div>
+          </div>
+          <div className='nav-logo-inner'>
+            <img src="./assets/suit.png" alt="suit"/>
+          </div>
+        </div>
+      </nav>
+
       <div>
-        <StopwatchActive />
+        <PomodoroTimer 
+          timers={timerPresets}
+          saveTimer={handleAddTimer}
+          sounds={soundFiles}
+        />
+        <div>
+          <StopwatchActive />
+        </div>
+        <div>
+          <StopwatchList />
+        </div>
       </div>
-      <div>
-        <StopwatchList />
-      </div>
-    </div>
+    </main>
   );
 }
 
