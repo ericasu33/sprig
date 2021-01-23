@@ -1,47 +1,48 @@
 import React, { useState } from 'react'
 import StopwatchListItem from './StopwatchListItem'
 
-interface Tag {
+interface ITag {
   id: number | null,
   label: string | null,
   value?: string,
   color: string | null
 }
 
-interface Category {
+interface ICategory {
   id: number | null,
   label: string | null,
   value?: string,
   color: string | null
 }
 
-interface Data {
+interface IData {
   id: number,
-  category: Category | null,
-  tags: Tag[] | null,
+  category: ICategory | null,
+  tags: ITag[] | null,
   start_time: Date | null,
   end_time: Date | null,
   intensity: number | null
+  pause_start_time?: Date | null,
   cumulative_pause_duration: number | null
 }
 
-interface Entries {
-  [key: string]: Data
+interface IEntries {
+  [key: string]: IData
 }
 
-const dummyCategories: Category[] = [
-  {id: 0, label: 'waffles', value: 'waffles', color: '#3eabb7'},
-  {id: 1, label: 'pancakes', value: 'pancakes', color: '#d13c3c'},
-  {id: 2, label: 'sneezing', value: 'sneezing', color: '#6d31b7'},
+const dummyCategories: ICategory[] = [
+  {id: 0, label: 'one', value: 'one', color: '#3eabb7'},
+  {id: 1, label: 'two', value: 'two', color: '#d13c3c'},
+  {id: 2, label: 'three', value: 'three', color: '#6d31b7'},
 ]
 
-const dummyTags: Tag[] = [
+const dummyTags: ITag[] = [
   {id: 0, label: 'food', value: 'food', color: '#ee0'},
   {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
   {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
 ]
 
-const dummyTime: Data = {
+const dummyTime: IData = {
   id: 1,
   category: dummyCategories[1],
   tags: [dummyTags[0], dummyTags[1]],
@@ -51,7 +52,7 @@ const dummyTime: Data = {
   cumulative_pause_duration: 0,
 };
 
-const dummyTimes: Entries = {
+const dummyTimes: IEntries = {
   '0': {...dummyTime, id: 0, start_time: new Date(1611020000000), end_time: new Date(1611021000000)},
   '1': {...dummyTime, id: 1, start_time: new Date(1611022000000), end_time: new Date(1611023000000)},
   '2': {...dummyTime, id: 2, start_time: new Date(1611024000000), end_time: new Date(1611025000000)},
@@ -85,7 +86,7 @@ const StopwatchList = () => {
     }))
   }
 
-  const entriesList = Object.values(entries).map((entry: Data) => 
+  const entriesList = Object.values(entries).map((entry: IData) => 
     <StopwatchListItem
       key={entry.id}
       id={entry.id}

@@ -5,7 +5,7 @@ import { CirclePicker } from 'react-color';
 import Button from './Button';
 import './Categories.scss'
 
-interface Category {
+interface ICategory {
   id: number | null,
   value: string,
   color: string | null,
@@ -51,9 +51,9 @@ const Category = (props: any) => {
   };
 
   const colourUpdate = ((picked: any) => {
-    const updatedCategory: Category = {...value, color: picked.hex}
+    const updatedCategory: ICategory = {...value, color: picked.hex}
     handleChange(updatedCategory)
-    const updatedCategories = allCategories.map((cat: Category) => {
+    const updatedCategories = allCategories.map((cat: ICategory) => {
       return cat.id === updatedCategory.id ? updatedCategory : cat
     })
     props.updateAllCategories(updatedCategories)

@@ -8,44 +8,44 @@ import StopwatchTime from './StopwatchTime';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
-interface Tag {
+interface ITag {
   id: number | null,
   label: string | null,
   value?: string,
   color: string | null
 }
 
-interface Category {
+interface ICategory {
   id: number | null,
   label: string | null,
   value?: string,
   color: string | null
 }
 
-interface Data {
+interface IData {
   id: number,
-  category: Category | null,
-  tags: Tag[] | null,
+  category: ICategory | null,
+  tags: ITag[] | null,
   start_time: Date | null,
   end_time: Date | null,
   intensity: number | null
-  pause_start_time: Date | null,
+  pause_start_time?: Date | null,
   cumulative_pause_duration: number | null
 }
 
-const dummyCategories: Category[] = [
-  {id: 0, label: 'waffles', value: 'waffles', color: '#3eabb7'},
-  {id: 1, label: 'pancakes', value: 'pancakes', color: '#d13c3c'},
-  {id: 2, label: 'sneezing', value: 'sneezing', color: '#6d31b7'},
+const dummyCategories: ICategory[] = [
+  {id: 0, label: 'one', value: 'one', color: '#3eabb7'},
+  {id: 1, label: 'two', value: 'two', color: '#d13c3c'},
+  {id: 2, label: 'three', value: 'three', color: '#6d31b7'},
 ]
 
-const dummyTags: Tag[] = [
+const dummyTags: ITag[] = [
   {id: 0, label: 'food', value: 'food', color: '#ee0'},
   {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
   {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
 ]
 
-const dummyNewTime: Data = {
+const dummyNewTime: IData = {
   id: 0,
   category: null,
   tags: null,
@@ -56,7 +56,7 @@ const dummyNewTime: Data = {
   cumulative_pause_duration: 0,
 };
 
-const dummyContinueEntry: Data = {
+const dummyContinueEntry: IData = {
   id: 1,
   category: dummyCategories[1],
   tags: [dummyTags[0], dummyTags[1]],
@@ -67,7 +67,7 @@ const dummyContinueEntry: Data = {
   cumulative_pause_duration: 60000,
 };
 
-const incomingData: Data = dummyNewTime
+const incomingData: IData = dummyNewTime
 
 const StopwatchActive = (props: any) => {
   const [allCategories, setAllCategories] = useState(dummyCategories);
@@ -91,7 +91,7 @@ const StopwatchActive = (props: any) => {
   }, [activeEntry])
 
   // Update start_time if InputClock is manually adjusted
-  const updateActiveEntry = (key: string, value: Date | number | null | Category | Tag) => {
+  const updateActiveEntry = (key: string, value: Date | number | null | ICategory | ITag) => {
     setActiveEntry({
       ...activeEntry,
       [key]: value
@@ -172,7 +172,7 @@ const StopwatchActive = (props: any) => {
           min='0'
           max='100'
           percent
-      />
+        />
       </div>
 
       <StopwatchTime activeEntry={activeEntry} isTimerRunning={isTimerRunning} />
