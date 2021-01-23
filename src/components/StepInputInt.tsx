@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import ButtonStepInput from './ButtonStepInput'
+import React, { useState, useEffect } from 'react'
+import Button from './Button'
 
 import './StepInput.scss'
 
@@ -13,14 +13,13 @@ const StepInputInt = function(props: any) {
 
   useEffect(() => {
     if (Number.isNaN(Number(props.value))) return;
-    setValue(props.value);
+    setValue(concatPercent(props.value));
   }, [props.value]);
 
   const validateVal = (testVal: string | number) => {
-    const defaultMinZero = props.min ? Number(props.min) : 0
-
-    if (Number(testVal) < Number(defaultMinZero)) {
-      return defaultMinZero
+    const defaultMin = props.min ? Number(props.min) : 0
+    if (Number(testVal) < Number(defaultMin)) {
+      return defaultMin
     } else if (Number(testVal) > Number(props.max)) {
       return props.max
     }
@@ -44,7 +43,7 @@ const StepInputInt = function(props: any) {
 
   return (
     <div className='step-input step-input-int'>
-      {props.disabled || <ButtonStepInput plus onClick={handleClick}/>}
+      {props.disabled || <Button increment onClick={(e: any) => handleClick(1)} />}
       <input
         value={value}
         onFocus={e => e.target.select()}
@@ -54,7 +53,7 @@ const StepInputInt = function(props: any) {
         type='text'
         disabled={props.disabled}
       />
-      {props.disabled || <ButtonStepInput minus onClick={handleClick}/>}
+      {props.disabled || <Button decrement onClick={(e: any) => handleClick(-1)} />}
     </div>
   )
 }
