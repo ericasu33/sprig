@@ -129,12 +129,18 @@ const PomodoroTimer = (props: any) => {
     });
   }, [curTimer, props.timers]);
 
-  const handleSave = () => {
+  const handleSave = (timer: any) => {
     if (timer.uid === 0) {
       console.log("can't edit timer :(", timer);
       return;
     }
-    props.saveTimer(timer);
+    const id = props.saveTimer(timer);
+    setCurTimer((prev: any) => {
+      return {
+        id,
+        name: prev.name,
+      }
+    });
   };
 
   return (
@@ -155,7 +161,7 @@ const PomodoroTimer = (props: any) => {
             changeTimer={setCurTimer}
             sounds={props.sounds}
             timers={props.timers}
-            onSave={() => handleSave()}
+            onSave={() => handleSave(timer)}
           />
         </>
       )) || ( 

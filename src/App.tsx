@@ -80,8 +80,9 @@ function App() {
       if (timer.id === null) {
         return [ ...prev, { ...timer, id: timerPresets.length + 1 } ];
       }
-      return prev.map((t) => t.id === timer.id ? timer : t);
+      return prev.map((t) => t.id === timer.id ? {...timer} : t);
     });
+    return timerPresets.length + 1;
   };
 
   return (
