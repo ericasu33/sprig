@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { CirclePicker } from 'react-color';
 import Button from './Button';
 import Categories from './Categories';
 import Tags from './Tags';
@@ -131,30 +130,13 @@ const StopwatchActive = (props: any) => {
   return (
     <div className='stopwatch'>
 
-      <div className='stopwatch-group sw-categories'>
+      <div className='stopwatch-group'>
         <Categories 
           allCategories={allCategories}
           updateAllCategories={setAllCategories}
           category={activeEntry.category}
           onChange={updateActiveEntry}
         />
-      </div>
-
-      <div>
-        {activeEntry.category && 
-          <Button palette onClick={() => setShowColourPicker(!showColourPicker)} />}
-          {showColourPicker && 
-            <div className='show-colour-picker'>
-              <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowColourPicker(false)} />
-              <CirclePicker
-                color={activeEntry.category ? activeEntry.category.color : '#fff'}
-                onChangeComplete={(picked: any) => {
-                  if (!activeEntry.category) return
-                  updateActiveEntry('category', ({...activeEntry.category, color: picked.hex}))
-                }}
-              />
-            </div>
-          }
       </div>
 
       <div className='stopwatch-group sw-tags'>

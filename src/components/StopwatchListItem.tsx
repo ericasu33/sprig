@@ -68,21 +68,12 @@ const StopwatchListItem = (props: any) => {
   return (
     <div className='stopwatch'>
 
-      <div className='stopwatch-group sw-categories'>
+      <div className='stopwatch-group'>
         <Categories 
           allCategories={props.allCategories}
           updateAllCategories={props.updateAllCategories}
           category={props.category}
           onChange={updateEntry}
-        />
-      </div>
-
-      <div>
-        <ColourPicker
-          allCategories={props.allCategories}
-          updateAllCategories={props.updateAllCategories}
-          category={props.category}
-          onChange={updateEntry}          
         />
       </div>
 
