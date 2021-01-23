@@ -144,89 +144,82 @@ const PomodoroTimer = (props: any) => {
   };
 
   return (
-    <div className="pomodoro-display">
+    <>
+      <h4 className="entries__header text--light">POMODORRRO</h4>
+      <div className="pomodoro-display">
 
-      <div className='pm-group'>
-        <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
-          { (expand && "shrink") || "expand" }
-        </Button>
+        <div className='pm-group'>
+          <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
+            { (expand && "shrink") || "expand" }
+          </Button>
+        </div>
+
+        { (expand && (
+          <>
+            <PomodoroForm 
+              disabled={clock.playing}
+              pomo_timer={timer}
+              setPomoTimer={setTimer}
+              changeTimer={setCurTimer}
+              sounds={props.sounds}
+              timers={props.timers}
+              onSave={() => handleSave(timer)}
+            />
+          </>
+        )) || ( 
+          <>
+            <div className='pm-group'>
+              <label>Name</label>
+              <input className='pm-name' type="text" disabled={true} value={timer.name} />
+            </div>
+
+            <div className='pm-group'>
+              <label>Work</label>
+              <StepInputTimer disabled
+                value={clock.current === "work" ? clock.partition : timer.work}
+              />
+            </div>
+            
+            <div className='pm-group'>
+              <label>Short break</label>
+              <StepInputTimer disabled
+                value={clock.current === "short_break" ? clock.partition : timer.short_break}
+              />
+            </div>
+            
+            <div className='pm-group'>
+              <label>Cycles remaining</label>
+              <StepInputInt disabled
+                value={calcCycle({...timer, time: clock.time})}
+              />
+            </div>
+            
+            <div className='pm-group'>
+              <label>Long break</label>
+              <StepInputTimer disabled
+                value={clock.current === "long_break" ? clock.partition : timer.long_break}
+              />
+            </div>
+            
+            <div className='pm-group'>
+              <label>Time remaining</label>
+              <StepInputTimer disabled
+                value={clock.time}
+              />
+            </div>
+
+            <div className='pm-right-buttons'>
+              <Button 
+                play={!clock.playing}
+                pause={clock.playing}
+                onClick={() => togglePlay()}
+              />
+              <Button stop onClick={() => handleStop()} />
+            </div>
+          </>
+        )}
       </div>
-
-      { (expand && (
-        <>
-          <PomodoroForm 
-            disabled={clock.playing}
-            pomo_timer={timer}
-            setPomoTimer={setTimer}
-            changeTimer={setCurTimer}
-            sounds={props.sounds}
-            timers={props.timers}
-            onSave={() => handleSave(timer)}
-          />
-        </>
-      )) || ( 
-        <>
-          <div className='pm-group'>
-            <label>Name</label>
-            <input className='pm-name' type="text" disabled={true} value={timer.name} />
-          </div>
-
-          <div className='pm-group'>
-            <label>Work</label>
-            <StepInputTimer disabled
-              value={clock.current === "work" ? clock.partition : timer.work}
-            />
-          </div>
-          
-          <div className='pm-group'>
-            <label>Short break</label>
-            <StepInputTimer disabled
-              value={clock.current === "short_break" ? clock.partition : timer.short_break}
-            />
-          </div>
-          
-          <div className='pm-group'>
-            <label>Cycles remaining</label>
-            <StepInputInt disabled
-              value={calcCycle({...timer, time: clock.time})}
-            />
-          </div>
-          
-          <div className='pm-group'>
-            <label>Long break</label>
-            <StepInputTimer disabled
-              value={clock.current === "long_break" ? clock.partition : timer.long_break}
-            />
-          </div>
-          
-          <div className='pm-group'>
-            <label>Time remaining</label>
-            <StepInputTimer disabled
-              value={clock.time}
-            />
-          </div>
-
-          <div className='pm-right-buttons'>
-            <Button
-              play={clock.playing}
-              pause={!clock.playing}
-              onClick={() => togglePlay()}
-            >
-              { (clock.playing && 
-                <i className="far fa-pause-circle fa-lg"></i>) ||
-                <i className="far fa-play-circle fa-lg"></i>
-              }
-            </Button>
-            <Button
-              stop
-              onClick={() => handleStop()}
-            >
-              <i className="far fa-stop-circle fa-lg"></i>
-            </Button>
-          </div>
-        </>
-      )}
-    </div>
+    </>
   );
 };
 

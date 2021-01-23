@@ -5,6 +5,7 @@ import './Button.scss';
 const Button = (props: any) => {
   let buttonClass = classNames('button', {
     'button--play':           props.play,
+    'button--stop':           props.stop,
     'button--save':           props.save,
     'button--clone':          props.clone,
     'button--delete':         props.delete,
@@ -18,6 +19,7 @@ const Button = (props: any) => {
 
   let icon = classNames('', {
     'far fa-play-circle':     props.play,
+    'far fa-stop-circle':     props.stop,
     'far fa-save':            props.save,
     'far fa-clone':           props.clone,
     'far fa-trash-alt':       props.delete,
