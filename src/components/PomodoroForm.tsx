@@ -61,7 +61,7 @@ const PomodoroForm = (props: any) => {
   const timerOptions = props.timers.map((timer: any) => {
     return {
         id: timer.id,
-        name: timer.name,
+        value: timer.name,
         label: timer.name,
     };
   });
