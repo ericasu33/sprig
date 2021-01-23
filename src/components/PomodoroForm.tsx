@@ -27,7 +27,7 @@ const PomodoroForm = (props: any) => {
 
   const [name, setName] = useState({
     id: props.pomo_timer.id,
-    name: props.pomo_timer.name,
+    value: props.pomo_timer.name,
     label: props.pomo_timer.name,
   });
 
@@ -83,7 +83,7 @@ const PomodoroForm = (props: any) => {
   };
 
   const handleCreate = (name: any) => {
-    setName({ id: null, name, label: name});
+    setName({ id: null, value: name, label: name});
     props.changeTimer({ id: null, name});
   };
 
@@ -91,9 +91,7 @@ const PomodoroForm = (props: any) => {
     <div className="pomodoro-form">
       
       <div className='pm-group'>
-        <Button stop disabled={props.disabled} onClick={props.onSave}>
-          <i className="far fa-save"></i>
-        </Button>
+        <Button save disabled={props.disabled} onClick={props.onSave} />
       </div>
 
       <div className='pm-group pm-name'>
@@ -120,7 +118,7 @@ const PomodoroForm = (props: any) => {
           stepValue={60}
         />
       </div>
-
+      +
       <div className='pm-group'>
         <label>Short Break</label>
         <StepInputTimer
@@ -137,7 +135,7 @@ const PomodoroForm = (props: any) => {
             value={props.pomo_timer.short_b_start_sound}
             onChange={(e) => updateState("short_b_start_sound", Number(e.target.value))}
           >
-            <option disabled value="0">Start Break Sound</option>
+            <option disabled value="0">START shortbreak</option>
             <option value="0">none</option>
             {soundOptions}
           </select>
@@ -146,13 +144,13 @@ const PomodoroForm = (props: any) => {
             value={props.pomo_timer.short_b_end_sound}
             onChange={(e) => updateState("short_b_end_sound", Number(e.target.value))}
           >
-            <option disabled value="0">End Break Sound</option>
+            <option disabled value="0">END shortbreak</option>
             <option value="0">none</option>
             {soundOptions}
           </select>
         </div>
       </div>
-
+      x
       <div className='pm-group'>
         <label>Repeats</label>
         <StepInputInt 
@@ -163,7 +161,7 @@ const PomodoroForm = (props: any) => {
           min={0}
         />
       </div>
-
+      then
       <div className='pm-group'>
         <label>Long Break</label>
         <StepInputTimer 
@@ -179,7 +177,7 @@ const PomodoroForm = (props: any) => {
             value={props.pomo_timer.long_b_start_sound}
             onChange={(e) => updateState("long_b_start_sound", Number(e.target.value))}
           >
-            <option disabled value="0">Start Long Break Sound</option>
+            <option disabled value="0">START longbreak</option>
             <option value="0">none</option>
             {soundOptions}
           </select>
@@ -188,13 +186,13 @@ const PomodoroForm = (props: any) => {
             value={props.pomo_timer.long_b_end_sound}
             onChange={(e) => updateState("long_b_end_sound", Number(e.target.value))}
           >
-            <option disabled value="0">End Long Break Sound</option>
+            <option disabled value="0">END longbreak</option>
             <option value="0">none</option>
             {soundOptions}
           </select>
         </div>
       </div>
-
+      =
       <div className='pm-group pm-calc-times'>
         <div>
           <label>Total Duration</label>
