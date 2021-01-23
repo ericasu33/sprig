@@ -117,6 +117,7 @@ const PomodoroForm = (props: any) => {
           name='work'
           value={props.pomo_timer.work}
           setValue={updateState}
+          stepValue={60}
         />
       </div>
 
@@ -127,6 +128,7 @@ const PomodoroForm = (props: any) => {
           name='short_break'
           value={props.pomo_timer.short_break}
           setValue={updateState}
+          stepValue={60}
         />
 
         <div>
@@ -169,6 +171,7 @@ const PomodoroForm = (props: any) => {
           name='long_break'
           value={props.pomo_timer.long_break}
           setValue={updateState}
+          stepValue={60}
         />
         <div>
           <select 
