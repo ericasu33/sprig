@@ -27,7 +27,7 @@ const PomodoroForm = (props: any) => {
 
   const [name, setName] = useState({
     id: props.pomo_timer.id,
-    name: props.pomo_timer.name,
+    value: props.pomo_timer.name,
     label: props.pomo_timer.name,
   });
 
@@ -61,7 +61,7 @@ const PomodoroForm = (props: any) => {
   const timerOptions = props.timers.map((timer: any) => {
     return {
         id: timer.id,
-        name: timer.name,
+        value: timer.name,
         label: timer.name,
     };
   });
@@ -83,7 +83,7 @@ const PomodoroForm = (props: any) => {
   };
 
   const handleCreate = (name: any) => {
-    setName({ id: null, name, label: name});
+    setName({ id: null, value: name, label: name});
     props.changeTimer({ id: null, name});
   };
 
@@ -115,6 +115,7 @@ const PomodoroForm = (props: any) => {
           name='work'
           value={props.pomo_timer.work}
           setValue={updateState}
+          stepValue={60}
         />
       </div>
       +
@@ -125,6 +126,7 @@ const PomodoroForm = (props: any) => {
           name='short_break'
           value={props.pomo_timer.short_break}
           setValue={updateState}
+          stepValue={60}
         />
 
         <div>
@@ -167,6 +169,7 @@ const PomodoroForm = (props: any) => {
           name='long_break'
           value={props.pomo_timer.long_break}
           setValue={updateState}
+          stepValue={60}
         />
         <div>
           <select 
