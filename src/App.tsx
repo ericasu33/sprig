@@ -5,12 +5,12 @@ import StopwatchList from './components/StopwatchList';
 function App() {
   return (
     <div>
-      <StopwatchActive />
-      <br />
-      <br />
-      STOPWATCH ENTRIES
-      <br />
-      <StopwatchList />
+      <div>
+        <StopwatchActive />
+      </div>
+      <div>
+        <StopwatchList />
+      </div>
     </div>
   );
 }

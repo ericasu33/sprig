@@ -110,7 +110,7 @@ const StopwatchList = () => {
 
   return (
     <section className="entries">
-      <h4 className="entries__header text--light">Entry</h4>
+      <h4 className="entries__header text--light">SAVED ENTRIES</h4>
       <ul className="entries__list">{ entriesList }</ul>
     </section>
   )

@@ -43,12 +43,17 @@
     justify-content: space-evenly;
   }
   .sw-start-time {
-    width: 120px;
+    background-color: #d3d3d347;
+    height: 55px;
+    width: 130px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
   .sw-calc-times {
     width: 200px;
     .sw-counter {
-      text-align: right;
+      text-align: center;
       font-size: 1.3em;
       width: 100px;
       padding: 10px;

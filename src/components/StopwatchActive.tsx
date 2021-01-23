@@ -128,68 +128,71 @@ const StopwatchActive = (props: any) => {
   }
 
   return (
-    <div className='stopwatch stopwatch-active'>
+    <>
+      <h4 className="entries__header text--light">TASK TIMER</h4>
+      <div className='stopwatch stopwatch-active'>
 
-      <div className='stopwatch-group'>
-        <Categories 
-          allCategories={allCategories}
-          updateAllCategories={setAllCategories}
-          category={activeEntry.category}
-          onChange={updateActiveEntry}
-        />
-      </div>
-
-      <div className='stopwatch-group sw-tags'>
-        <Tags
-          allTags={allTags}
-          updateAllTags={setAllTags}
-          tags={activeEntry.tags}
-          onChange={updateActiveEntry}
-        />
-      </div>
-
-      <div className='stopwatch-group sw-inputs'>
-        <div className='sw-start-time'>
-          {activeEntry.start_time &&
-            <StepInputClock
-              label='Start Time'
-              name='start_time'
-              time={activeEntry.start_time}
-              onChange={updateActiveEntry}
-              allowFuture='false'
-            />}
-          </div>
-
-        <div className='sw-intensity'>
-          <StepInputInt
-            label='Intensity'
-            name='intensity'
-            value={activeEntry.intensity}
-            setValue={updateActiveEntry}
-            stepSize='5'
-            min='0'
-            max='100'
-            percent
+        <div className='stopwatch-group'>
+          <Categories 
+            allCategories={allCategories}
+            updateAllCategories={setAllCategories}
+            category={activeEntry.category}
+            onChange={updateActiveEntry}
           />
         </div>
-      </div>
 
-      <div className='stopwatch-group sw-calc-times'>
-        <StopwatchTime 
-          activeEntry={activeEntry}
-          isTimerRunning={isTimerRunning}
-        />
-      </div>
+        <div className='stopwatch-group sw-tags'>
+          <Tags
+            allTags={allTags}
+            updateAllTags={setAllTags}
+            tags={activeEntry.tags}
+            onChange={updateActiveEntry}
+          />
+        </div>
 
-      <div className='stopwatch-group sw-buttons-right'>
-        {!isTimerRunning && 
-          <Button play onClick={(e: any) => handleTimerState("PLAY")} />}
-        {isTimerRunning && 
-          <Button pause onClick={(e: any) => handleTimerState("PAUSE")} />}
-        {activeEntry.start_time && 
-          <Button save onClick={(e: any) => handleTimerState("SAVE")} />}
+        <div className='stopwatch-group sw-inputs'>
+          <div className='sw-start-time'>
+            {activeEntry.start_time &&
+              <StepInputClock
+                label='Start Time'
+                name='start_time'
+                time={activeEntry.start_time}
+                onChange={updateActiveEntry}
+                allowFuture='false'
+              />}
+            </div>
+
+          <div className='sw-intensity'>
+            <StepInputInt
+              label='Intensity'
+              name='intensity'
+              value={activeEntry.intensity}
+              setValue={updateActiveEntry}
+              stepSize='5'
+              min='0'
+              max='100'
+              percent
+            />
+          </div>
+        </div>
+
+        <div className='stopwatch-group sw-calc-times'>
+          <StopwatchTime 
+            activeEntry={activeEntry}
+            isTimerRunning={isTimerRunning}
+          />
+        </div>
+
+        <div className='stopwatch-group sw-buttons-right'>
+          {!isTimerRunning && 
+            <Button play onClick={(e: any) => handleTimerState("PLAY")} />}
+          {isTimerRunning && 
+            <Button pause onClick={(e: any) => handleTimerState("PAUSE")} />}
+          {activeEntry.start_time && 
+            <Button save onClick={(e: any) => handleTimerState("SAVE")} />}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
