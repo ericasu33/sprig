@@ -4,7 +4,7 @@ import StepInputInt from './StepInputInt';
 import StepInputTimer from './StepInputTimer';
 import Button from './Button';
 
-import './PomodoroForm.scss';
+import './PomodoroTimer.scss';
 
 interface Sound {
   id: number;
@@ -90,109 +90,126 @@ const PomodoroForm = (props: any) => {
   return (
     <div className="pomodoro-form">
       
+      <div className='pm-input-container'>
+        <div className='pm-inputs-times'>
+          <div className='pm-name-selector'>
+            <label className='pm-name-label'>Timer name</label>
+            <CreatableSelect
+              isDisabled={props.disabled}
+              className='pm-name-input'
+              isClearable
+              onChange={handleTimerChange}
+              onCreateOption={handleCreate}
+              options={timerOptions}
+              value={name}
+              formatCreateLabel={(input) => `Create timer: "${input}"`}
+            />
+          </div>
+
+          <div className='pm-inputs-group'>
+            <label>Work</label>
+            <StepInputTimer
+              disabled={props.disabled}
+              name='work'
+              value={props.pomo_timer.work}
+              setValue={updateState}
+              stepValue={60}
+            />
+          </div>
+          
+          <div className='pm-inputs-group pm-input-break'>
+            <label>Shortbreak</label>
+            <StepInputTimer
+              disabled={props.disabled}
+              name='short_break'
+              value={props.pomo_timer.short_break}
+              setValue={updateState}
+              stepValue={60}
+            />
+          </div>
+          
+          <div className='pm-inputs-group'>
+            <label>Repeats</label>
+            <StepInputInt 
+              disabled={props.disabled}
+              name='cycles'
+              value={props.pomo_timer.cycles}
+              setValue={updateState}
+              min={0}
+            />
+          </div>
+          
+          <div className='pm-inputs-group pm-input-break'>
+            <label>Longbreak</label>
+            <StepInputTimer 
+              disabled={props.disabled}
+              name='long_break'
+              value={props.pomo_timer.long_break}
+              setValue={updateState}
+              stepValue={60}
+            />
+          </div>
+        </div>
+
+        <div className='pm-inputs-alerts'>
+          <div className='pm-alerts-title'>
+            Set alert sounds:
+          </div>
+          <div className='pm-alerts-group'>
+            <label>Shortbreak START</label>
+            <select 
+              disabled={props.disabled}
+              value={props.pomo_timer.short_b_start_sound}
+              onChange={(e) => updateState("short_b_start_sound", Number(e.target.value))}
+            >
+              <option disabled value="0">(no alert)</option>
+              <option value="0">none</option>
+              {soundOptions}
+            </select>
+          </div>
+          <div className='pm-alerts-group'>
+            <label>Shortbreak END</label>
+            <select 
+              disabled={props.disabled}
+              value={props.pomo_timer.short_b_end_sound}
+              onChange={(e) => updateState("short_b_end_sound", Number(e.target.value))}
+            >
+              <option disabled value="0">(no alert)</option>
+              <option value="0">none</option>
+              {soundOptions}
+            </select>
+          </div>
+          <div className='pm-alerts-group'>
+            <label>Longbreak START</label>
+            <select 
+              disabled={props.disabled}
+              value={props.pomo_timer.long_b_start_sound}
+              onChange={(e) => updateState("long_b_start_sound", Number(e.target.value))}
+            >
+              <option disabled value="0">(no alert)</option>
+              <option value="0">none</option>
+              {soundOptions}
+            </select>
+          </div>
+          <div className='pm-alerts-group'>
+            <label>Longbreak END</label>
+            <select 
+              disabled={props.disabled}
+              value={props.pomo_timer.long_b_end_sound}
+              onChange={(e) => updateState("long_b_end_sound", Number(e.target.value))}
+            >
+              <option disabled value="0">(no alert)</option>
+              <option value="0">none</option>
+              {soundOptions}
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div className='pm-group'>
         <Button save disabled={props.disabled} onClick={props.onSave} />
       </div>
 
-      <div className='pm-group pm-name'>
-        <label>Name</label>
-        <CreatableSelect
-          isDisabled={props.disabled}
-          className='pm-name-input'
-          isClearable
-          onChange={handleTimerChange}
-          onCreateOption={handleCreate}
-          options={timerOptions}
-          value={name}
-          formatCreateLabel={(input) => `Create timer: "${input}"`}
-        />
-      </div>
-
-      <div className='pm-group'>
-        <label>Work</label>
-        <StepInputTimer
-          disabled={props.disabled}
-          name='work'
-          value={props.pomo_timer.work}
-          setValue={updateState}
-          stepValue={60}
-        />
-      </div>
-      +
-      <div className='pm-group'>
-        <label>Short Break</label>
-        <StepInputTimer
-          disabled={props.disabled}
-          name='short_break'
-          value={props.pomo_timer.short_break}
-          setValue={updateState}
-          stepValue={60}
-        />
-
-        <div>
-          <select 
-            disabled={props.disabled}
-            value={props.pomo_timer.short_b_start_sound}
-            onChange={(e) => updateState("short_b_start_sound", Number(e.target.value))}
-          >
-            <option disabled value="0">START shortbreak</option>
-            <option value="0">none</option>
-            {soundOptions}
-          </select>
-          <select 
-            disabled={props.disabled}
-            value={props.pomo_timer.short_b_end_sound}
-            onChange={(e) => updateState("short_b_end_sound", Number(e.target.value))}
-          >
-            <option disabled value="0">END shortbreak</option>
-            <option value="0">none</option>
-            {soundOptions}
-          </select>
-        </div>
-      </div>
-      x
-      <div className='pm-group'>
-        <label>Repeats</label>
-        <StepInputInt 
-          disabled={props.disabled}
-          name='cycles'
-          value={props.pomo_timer.cycles}
-          setValue={updateState}
-          min={0}
-        />
-      </div>
-      then
-      <div className='pm-group'>
-        <label>Long Break</label>
-        <StepInputTimer 
-          disabled={props.disabled}
-          name='long_break'
-          value={props.pomo_timer.long_break}
-          setValue={updateState}
-          stepValue={60}
-        />
-        <div>
-          <select 
-            disabled={props.disabled}
-            value={props.pomo_timer.long_b_start_sound}
-            onChange={(e) => updateState("long_b_start_sound", Number(e.target.value))}
-          >
-            <option disabled value="0">START longbreak</option>
-            <option value="0">none</option>
-            {soundOptions}
-          </select>
-          <select 
-            disabled={props.disabled}
-            value={props.pomo_timer.long_b_end_sound}
-            onChange={(e) => updateState("long_b_end_sound", Number(e.target.value))}
-          >
-            <option disabled value="0">END longbreak</option>
-            <option value="0">none</option>
-            {soundOptions}
-          </select>
-        </div>
-      </div>
-      =
       <div className='pm-group pm-calc-times'>
         <div>
           <label>Total Duration</label>

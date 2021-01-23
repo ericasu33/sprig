@@ -9,15 +9,8 @@
     // border: 1px solid peru;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    .pm-name {
-      padding: 5px;
-      text-align: center;
-    }
-    .pm-name-input {
-      width: 250px;
-    }
   }
   .pm-calc-times {
     text-align: center;
@@ -28,4 +21,66 @@
     justify-content: space-between;
     width: 120px;
   }
+
+  .pomodoro-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    height: 150px;
+    .pm-input-container {
+      // border: 1px solid;
+      width: 80%;
+      font-size: small;
+      display: flex;
+      flex-direction: column;
+      .pm-inputs-group {
+        font-size: small;
+        // background-color: peachpuff;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 75px;
+      }
+      .pm-name-label {
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .pm-name-input {
+          width: 250px;
+      }
+      .pm-inputs-times {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        // border: 1px solid greenyellow;
+        .pm-input-break {
+          // width: 200px;
+        }
+      }
+      .pm-inputs-alerts {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-top: 20px;
+        // border: 1px solid orange;
+        .pm-alerts-title {
+          width: 250px;
+          text-align: right;
+        }
+        .pm-alerts-group {
+          width: 150px;
+          text-align: center;
+          // background-color: pink;
+          & select {
+            width: 150px;
+          }
+        }
+      }
+    }
+  }
 }
+
