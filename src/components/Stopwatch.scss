@@ -42,6 +42,8 @@
     width: 330px;
     justify-content: space-evenly;
     background-color: #eaeaea40;
+    padding-left: 8px;
+    padding-right: 8px;
   }
   .sw-start-time {
     // background-color: #eaeaea40;
@@ -53,14 +55,16 @@
   }
   .sw-calc-times {
     width: 200px;
+    background-color: #eaeaea40;
     .sw-counter {
       text-align: center;
-      font-size: 1.3em;
+      font-size: 1.4em;
+      font-weight: 300;
       width: 100px;
       padding: 10px;
       border: 1px solid lightgrey;
       border-radius: 3px;
-      background-color: #f0f0f0;
+      background-color: white;
     }
   }
   .sw-buttons-right {
