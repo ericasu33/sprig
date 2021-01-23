@@ -145,7 +145,7 @@ const PomodoroTimer = (props: any) => {
 
   return (
     <>
-      <h4 className="entries__header text--light">POMODORRRO</h4>
+      <h4 className="section-header pm-header">POMODORO TIMER</h4>
       <div className="pomodoro-display">
 
         <div className='pm-group'>

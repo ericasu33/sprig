@@ -109,10 +109,12 @@ const StopwatchList = () => {
   )
 
   return (
-    <section className="entries">
-      <h4 className="entries__header text--light">SAVED ENTRIES</h4>
-      <ul className="entries__list">{ entriesList }</ul>
-    </section>
+    <>
+      <h4 className="section-header sw-entries-header">TASK HISTORY</h4>
+      <section className="sw-entries">
+        <ul className="sw-entries-list">{ entriesList }</ul>
+      </section>
+    </>
   )
 }
 

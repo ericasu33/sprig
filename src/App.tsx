@@ -100,19 +100,21 @@ function App() {
         </div>
       </nav>
 
-      <div>
-        <PomodoroTimer 
-          timers={timerPresets}
-          saveTimer={handleAddTimer}
-          sounds={soundFiles}
-        />
-        <div>
+      <section className='main-app'>
+        <section className='section-pm'>
+          <PomodoroTimer 
+            timers={timerPresets}
+            saveTimer={handleAddTimer}
+            sounds={soundFiles}
+          />
+        </section>
+        <section className='section-sw-active'>
           <StopwatchActive />
-        </div>
-        <div>
+        </section>
+        <section className='section-sw-entries'>
           <StopwatchList />
-        </div>
-      </div>
+        </section>
+      </section>
     </main>
   );
 }

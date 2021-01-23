@@ -1,14 +1,15 @@
-.entries {
+.sw-entries {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  .entries__list {
+  .sw-entries-list {
+    border: 1px solid #d81665;
     width: 100%;
     display: flex;
     margin: 0px;
     flex-direction: column;
     padding: 0px;
-    border-top: 1px solid lightgrey;
+    // border-top: 1px solid lightgrey;
   }
 }
 
@@ -21,7 +22,8 @@
   padding: 5px;
   min-height: 60px;
   &-active {
-    border-top: 1px solid lightgrey;
+    // border-top: 1px solid lightgrey;
+    border: 1px solid #d81665;
   }
   .stopwatch-group {
     display: flex;
