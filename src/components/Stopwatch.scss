@@ -1,9 +1,11 @@
+@import "../styles/variables.scss";
+
 .sw-entries {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  border: 1px solid $border-highlight;
   .sw-entries-list {
-    border: 1px solid #d81665;
     width: 100%;
     display: flex;
     margin: 0px;
@@ -18,12 +20,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid $border-light;
   padding: 5px;
   min-height: 60px;
   &-active {
     // border-top: 1px solid lightgrey;
-    border: 1px solid #d81665;
+    border: 1px solid $border-highlight;
   }
   .stopwatch-group {
     display: flex;
@@ -43,12 +45,12 @@
   .sw-inputs {
     width: 330px;
     justify-content: space-evenly;
-    background-color: #eaeaea40;
+    background-color: $background-transparent-light;
     padding-left: 8px;
     padding-right: 8px;
   }
   .sw-start-time {
-    // background-color: #eaeaea40;
+    // background-color: $background-transparent-light;
     height: 55px;
     width: 130px;
     align-items: center;
@@ -57,14 +59,14 @@
   }
   .sw-calc-times {
     width: 200px;
-    background-color: #eaeaea40;
+    background-color: $background-transparent-light;
     .sw-counter {
       text-align: center;
       font-size: 1.4em;
       font-weight: 300;
       width: 100px;
       padding: 10px;
-      border: 1px solid lightgrey;
+      border: 1px solid $border-light;
       border-radius: 3px;
       background-color: white;
     }
@@ -72,7 +74,7 @@
   .sw-buttons-right {
     min-width: 140px;
     justify-content: space-between;
-    background-color: #eaeaea40;
+    background-color: $background-transparent-light;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -81,7 +83,7 @@
 .show-colour-picker {
   position: absolute;
   z-index: 2;
-  background-color: #aeaeaecc;
+  background-color: $background-transparent-dark;
   padding: 10px;
   border-radius: 5px;
   margin-top: 8px;
@@ -90,7 +92,7 @@
 .show-calendar {
   position: absolute;
   z-index: 2;
-  background-color: #aeaeaecc;
+  background-color: $background-transparent-dark;
   padding: 4px;
   border-radius: 4px;
   margin-top: 8px;

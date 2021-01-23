@@ -1,11 +1,13 @@
+@import '../styles/variables.scss';
+
 .pomodoro-display {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #d81665;
+  border: 1px solid $border-highlight;
   padding: 5px;
-  background-color: #f6f6f6;
+  background-color: $background-light;
   .pm-group {
     font-size: small;
     // border: 1px solid peru;
