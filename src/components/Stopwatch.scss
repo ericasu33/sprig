@@ -41,9 +41,10 @@
   .sw-inputs {
     width: 330px;
     justify-content: space-evenly;
+    background-color: #eaeaea40;
   }
   .sw-start-time {
-    background-color: #d3d3d347;
+    // background-color: #eaeaea40;
     height: 55px;
     width: 130px;
     align-items: center;
@@ -65,6 +66,9 @@
   .sw-buttons-right {
     min-width: 140px;
     justify-content: space-between;
+    background-color: #eaeaea40;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 
