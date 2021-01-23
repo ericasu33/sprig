@@ -128,7 +128,7 @@ const StopwatchActive = (props: any) => {
   }
 
   return (
-    <div className='stopwatch'>
+    <div className='stopwatch stopwatch-active'>
 
       <div className='stopwatch-group'>
         <Categories 
@@ -148,34 +148,38 @@ const StopwatchActive = (props: any) => {
         />
       </div>
 
+      <div className='stopwatch-group sw-inputs'>
+        <div className='sw-start-time'>
+          {activeEntry.start_time &&
+            <StepInputClock
+              label='Start Time'
+              name='start_time'
+              time={activeEntry.start_time}
+              onChange={updateActiveEntry}
+              allowFuture='false'
+            />}
+          </div>
 
-      {/* <StartEndTime />  */}
-      <div className='clock-start-time'>
-        {activeEntry.start_time &&
-          <StepInputClock
-            label='Start Time'
-            name='start_time'
-            time={activeEntry.start_time}
-            onChange={updateActiveEntry}
-            allowFuture='false'
-          />}
+        <div className='sw-intensity'>
+          <StepInputInt
+            label='Intensity'
+            name='intensity'
+            value={activeEntry.intensity}
+            setValue={updateActiveEntry}
+            stepSize='5'
+            min='0'
+            max='100'
+            percent
+          />
         </div>
-
-      {/* <Intensity /> */}
-      <div className='stopwatch-input-int'>
-        <StepInputInt
-          label='Intensity'
-          name='intensity'
-          value={activeEntry.intensity}
-          setValue={updateActiveEntry}
-          stepSize='5'
-          min='0'
-          max='100'
-          percent
-        />
       </div>
 
-      <StopwatchTime activeEntry={activeEntry} isTimerRunning={isTimerRunning} />
+      <div className='stopwatch-group sw-calc-times'>
+        <StopwatchTime 
+          activeEntry={activeEntry}
+          isTimerRunning={isTimerRunning}
+        />
+      </div>
 
       <div className='stopwatch-group sw-buttons-right'>
         {!isTimerRunning && 

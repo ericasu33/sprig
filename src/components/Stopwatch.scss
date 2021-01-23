@@ -19,27 +19,47 @@
   align-items: center;
   border-bottom: 1px solid lightgrey;
   padding: 5px;
+  min-height: 60px;
+  &-active {
+    border-top: 1px solid lightgrey;
+  }
   .stopwatch-group {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 60px;
   }
   .sw-categories {
     width: 180px;
   }
+  .sw-picker {
+    width: 25px;
+  }
   .sw-tags {
     width: 300px;
   }
-  .stopwatch-counter {
-    font-size: 1.3em;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid lightgrey;
-    border-radius: 3px;
-    background-color: #f0f0f0;
+  .sw-inputs {
+    width: 330px;
+    justify-content: space-evenly;
+  }
+  .sw-start-time {
+    width: 120px;
+  }
+  .sw-calc-times {
+    width: 200px;
+    .sw-counter {
+      text-align: right;
+      font-size: 1.3em;
+      width: 100px;
+      padding: 10px;
+      border: 1px solid lightgrey;
+      border-radius: 3px;
+      background-color: #f0f0f0;
+    }
+  }
+  .sw-buttons-right {
+    min-width: 140px;
+    justify-content: space-between;
   }
 }
 
