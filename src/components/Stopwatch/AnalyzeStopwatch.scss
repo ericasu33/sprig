@@ -1,0 +1,13 @@
+@import "styles/variables.scss";
+
+.section-analytics {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 20px;
+  .analytics-filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}

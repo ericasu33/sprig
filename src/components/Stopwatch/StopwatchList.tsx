@@ -3,63 +3,34 @@ import StopwatchListItem from './StopwatchListItem'
 
 import { ITag, ICategory, IEntry, IEntries } from 'ts-interfaces/interfaces';
 
-const dummyCategories: ICategory[] = [
-  {id: 0, label: 'one', value: 'one', color: '#3eabb7'},
-  {id: 1, label: 'two', value: 'two', color: '#d13c3c'},
-  {id: 2, label: 'three', value: 'three', color: '#6d31b7'},
-]
+const StopwatchList = (props: any) => {
 
-const dummyTags: ITag[] = [
-  {id: 0, label: 'food', value: 'food', color: '#ee0'},
-  {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
-  {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
-]
-
-const dummyTime: IEntry = {
-  id: 1,
-  category: dummyCategories[1],
-  tags: [dummyTags[0], dummyTags[1]],
-  start_time: new Date(1611021345965),
-  end_time: new Date(1611029345965),
-  intensity: 90,
-  cumulative_pause_duration: 0,
-};
-
-const dummyTimes: IEntries = {
-  '0': {...dummyTime, id: 0, start_time: new Date(1611020000000), end_time: new Date(1611021000000)},
-  '1': {...dummyTime, id: 1, start_time: new Date(1611022000000), end_time: new Date(1611023000000)},
-  '2': {...dummyTime, id: 2, start_time: new Date(1611024000000), end_time: new Date(1611025000000)},
-  '3': {...dummyTime, id: 3, start_time: new Date(1411024000000), end_time: new Date(1411027000000)},
-}
-
-const StopwatchList = () => {
-
-  const [entries, setEntries] = useState(dummyTimes);
-  const [allCategories, setAllCategories] = useState(dummyCategories);
-  const [allTags, setAllTags] = useState(dummyTags);
+  const [entries, setEntries] = useState(props.filteredEntries);
+  const [allCategories, setAllCategories] = useState(props.allCategories);
+  const [allTags, setAllTags] = useState(props.allTags);  
   
   const updateEntry = (newObj: any) => {
-    setEntries(prev => ({
+    setEntries((prev: IEntries) => ({
         ...prev,
         [newObj.id]: newObj
     }))
   }
 
   const deleteEntry = (id: number) => {
-    setEntries(prev => {
+    setEntries((prev: IEntries) => {
       delete prev[id];
       return {...prev}
     })
   }
 
   const cloneEntry = (id: number) => {
-    setEntries(prev => ({
+    setEntries((prev: IEntries) => ({
       ...prev, 
       null: prev[id]
     }))
   }
 
-  const entriesList = Object.values(entries).map((entry: IEntry) => 
+  const entriesList = Object.values(entries).map((entry: any) => 
     <StopwatchListItem
       key={entry.id}
       id={entry.id}

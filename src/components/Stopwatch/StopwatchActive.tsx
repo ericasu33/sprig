@@ -10,48 +10,12 @@ import './Stopwatch.scss'
 
 import {ITag, ICategory, IEntry} from 'ts-interfaces/interfaces';
 
-const dummyCategories: ICategory[] = [
-  {id: 0, label: 'one', value: 'one', color: '#3eabb7'},
-  {id: 1, label: 'two', value: 'two', color: '#d13c3c'},
-  {id: 2, label: 'three', value: 'three', color: '#6d31b7'},
-]
-
-const dummyTags: ITag[] = [
-  {id: 0, label: 'food', value: 'food', color: '#ee0'},
-  {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
-  {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
-]
-
-const dummyNewTime: IEntry = {
-  id: 0,
-  category: null,
-  tags: null,
-  start_time: null,
-  end_time: null,
-  intensity: 100,
-  pause_start_time: null,
-  cumulative_pause_duration: 0,
-};
-
-const dummyContinueEntry: IEntry = {
-  id: 1,
-  category: dummyCategories[1],
-  tags: [dummyTags[0], dummyTags[1]],
-  start_time: new Date(),
-  end_time: null,
-  intensity: 90,
-  pause_start_time: null,
-  cumulative_pause_duration: 60000,
-};
-
-const incomingData: IEntry = dummyNewTime
 
 const StopwatchActive = (props: any) => {
-  const [allCategories, setAllCategories] = useState(dummyCategories);
-  const [allTags, setAllTags] = useState(dummyTags);
+  const [allCategories, setAllCategories] = useState(props.allCategories);
+  const [allTags, setAllTags] = useState(props.allTags);  
   const [isTimerRunning, setIsTimerRunning] = useState(false)
-  const [activeEntry, setActiveEntry] = useState(incomingData);
-  const [showColourPicker, setShowColourPicker] = useState(false)
+  const [activeEntry, setActiveEntry] = useState(props.blankActiveEntry);
   
   useEffect(() => {
     if (activeEntry.id) {
@@ -63,7 +27,7 @@ const StopwatchActive = (props: any) => {
     // updateDatabase(activeEntry)
     if (activeEntry.end_time) {
       console.log('SAVED ENTRY:', activeEntry);
-      setActiveEntry(incomingData)
+      setActiveEntry(props.blankActiveEntry)
     }
   }, [activeEntry])
 
@@ -91,7 +55,7 @@ const StopwatchActive = (props: any) => {
         if (activeEntry.pause_start_time) {
           const old_pause_dur = activeEntry.cumulative_pause_duration
           const new_pause_dur = Number(new Date()) - Number(activeEntry.pause_start_time) + Number(old_pause_dur)
-          setActiveEntry(prev => {
+          setActiveEntry((prev: IEntry) => {
             return {
               ...prev, 
               cumulative_pause_duration: new_pause_dur,
