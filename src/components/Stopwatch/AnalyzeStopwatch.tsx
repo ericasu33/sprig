@@ -24,24 +24,31 @@ const AnalyzeStopwatch = (props: any) => {
   return (
     <>
       <div className='analytics-filters stopwatch'>
-        <div className='stopwatch-group'>
-          <Categories 
-            allCategories={props.allCategories}
-            updateAllCategories={props.updateAllCategories}
-            category={props.category}
-            onChange={updateEntry}
-          />
+        <div className='analytics-filters-title'>
+          <div className='stopwatch-group'>
+            <div>APPLY FILTERS</div>
+          </div>
         </div>
-        <div className='stopwatch-group sw-tags'>
-          <Tags
-            allTags={props.allTags}
-            updateAllTags={props.updateAllTags}
-            tags={props.tags}
-            onChange={updateEntry}
-          />
-        </div>
-        <div>
-          date range filter
+        <div className='analytics-filters-selectors'>
+          <div className='stopwatch-group'>
+            <Categories 
+              allCategories={props.allCategories}
+              updateAllCategories={props.updateAllCategories}
+              category={props.category}
+              onChange={updateEntry}
+            />
+          </div>
+          <div className='stopwatch-group sw-tags'>
+            <Tags
+              allTags={props.allTags}
+              updateAllTags={props.updateAllTags}
+              tags={props.tags}
+              onChange={updateEntry}
+            />
+          </div>
+          <div>
+            date range filter
+          </div>
         </div>
       </div>
 

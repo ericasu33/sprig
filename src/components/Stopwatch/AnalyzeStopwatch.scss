@@ -3,14 +3,24 @@
 .section-analytics {
   display: flex;
   flex-direction: column;
-  // justify-content: flex-start;
   margin-top: 20px;
-  border-top: 1px solid $border-highlight;
   .analytics-filters {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
     border: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: $colour-background-1;
+    .analytics-filters-title {
+      font-family: $font-family-fancy;
+      width: 10%;
+      text-align: center;
+    }
+    .analytics-filters-selectors {
+      width: 90%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+    }
   }
   .analytics-tabs-container {
     display: flex;
@@ -21,16 +31,16 @@
     font-family: $font-family-fancy;
     font-weight: bold;
     border-bottom: 2px solid $border-highlight;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: $colour-compliment-fade;
+    background-color: $colour-background-1;
     .analytics-tab {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 40px;
-      // border: 1px solid $border-light;
+      background-color: $colour-compliment-fade;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
       &-selected {
         background-color: $colour-compliment;
         border-top-left-radius: 10px;
@@ -39,5 +49,10 @@
         border-bottom: none;
       }
     }
+  }
+  .section-sw-entries {
+    border: 2px solid $border-highlight;
+    border-top: none;
+    border-bottom: none;
   }
 }
