@@ -1,5 +1,6 @@
 /* @import "~normalize.css/normalize.css"; */
 @import-normalize;
+@import "styles/variables.scss";
 /* https://create-react-app.dev/docs/adding-css-reset/#:~:text=To%20start%20using%20it%2C%20add,css%20or%20App. */
 
 html {
@@ -7,6 +8,44 @@ html {
 }
 
 body {
-  padding: 20px;
-  font-family: Roboto,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,sans-serif;
+  .nav-container {
+    font-family: $font-family-fancy;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    .nav-logo-container {
+      padding: 5px;
+      background-color: $colour-compliment;
+      .nav-logo-inner {
+        padding-bottom: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .nav-title {
+          text-align: center;
+          align-items: center;
+        }
+        img {
+          height: 40px;
+        }
+      }
+    }
+  }
+
+  .main-app {
+    padding: 10px;
+    font-family: $font-family;
+    font-size: 14px;
+    .section-header {
+      font-family: $font-family-fancy;
+      margin: 0;
+      color: $colour-highlight;
+      background-color: $colour-compliment-fade;
+      margin-top: 20px;
+      padding: 4px;
+      padding-left: 5px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 20px;
+    }
+  }
 }

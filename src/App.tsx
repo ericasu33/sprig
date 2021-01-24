@@ -71,19 +71,34 @@ function App() {
   };
 
   return (
-    <div>
-      <PomodoroTimer 
-        timers={timerPresets}
-        saveTimer={handleAddTimer}
-        sounds={soundFiles}
-      />
-      <div>
-        <StopwatchActive />
-      </div>
-      <div>
-        <StopwatchList />
-      </div>
-    </div>
+    <main>
+      <nav className='nav-container'>
+        <div className='nav-logo-container'>
+          <div className='nav-logo-inner'>
+            <div className='nav-title'>TRACK<br />SUITE</div>
+          </div>
+          <div className='nav-logo-inner'>
+            <img src="./assets/suit.png" alt="suit"/>
+          </div>
+        </div>
+      </nav>
+
+      <section className='main-app'>
+        <section className='section-pm'>
+          <PomodoroTimer 
+            timers={timerPresets}
+            saveTimer={handleAddTimer}
+            sounds={soundFiles}
+          />
+        </section>
+        <section className='section-sw-active'>
+          <StopwatchActive />
+        </section>
+        <section className='section-sw-entries'>
+          <StopwatchList />
+        </section>
+      </section>
+    </main>
   );
 }
 

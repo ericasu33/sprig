@@ -106,7 +106,7 @@ const StopwatchActive = (props: any) => {
 
   return (
     <>
-      <h4 className="entries__header text--light">TASK TIMER</h4>
+      <h4 className="section-header sw-active-header">TASK TRACKER</h4>
       <div className='stopwatch stopwatch-active'>
 
         <div className='stopwatch-group'>
