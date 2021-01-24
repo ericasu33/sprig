@@ -66,6 +66,7 @@ const Category = (props: any) => {
           styles={reactSelectColours(props.allCategories)}
           className='category'
           isClearable
+          placeholder='Task category...'
           onChange={handleChange}
           onCreateOption={handleCreate}
           options={allCategories}

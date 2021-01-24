@@ -90,6 +90,10 @@ const PomodoroForm = (props: any) => {
   return (
     <div className="pomodoro-form">
       
+      <div className='pm-group'>
+        <Button save disabled={props.disabled} onClick={props.onSave} />
+      </div>
+
       <div className='pm-input-container'>
         <div className='pm-inputs-times'>
           <div className='pm-name-selector'>
@@ -206,28 +210,26 @@ const PomodoroForm = (props: any) => {
         </div>
       </div>
 
-      <div className='pm-group'>
-        <Button save disabled={props.disabled} onClick={props.onSave} />
-      </div>
-
-      <div className='pm-group pm-calc-times'>
-        <div>
-          <label>Total Duration</label>
-          <StepInputTimer disabled 
-            value={stats.duration}
-          />
-        </div>
-        <div>
-          <label>Total Work</label>
-          <StepInputTimer disabled 
-            value={stats.work}
-          />
-        </div>
-        <div>
-          <label>% Work</label>
-          <StepInputInt disabled 
-            value={stats.p_work}
-          />
+      <div className='pm-right-buttons'>
+        <div className='pm-group pm-calc-times'>
+          <div>
+            <label>Total Duration</label>
+            <StepInputTimer disabled 
+              value={stats.duration}
+            />
+          </div>
+          <div>
+            <label>Total Work</label>
+            <StepInputTimer disabled 
+              value={stats.work}
+            />
+          </div>
+          <div>
+            <label>% Work</label>
+            <StepInputInt disabled 
+              value={stats.p_work}
+            />
+          </div>
         </div>
       </div>
 
