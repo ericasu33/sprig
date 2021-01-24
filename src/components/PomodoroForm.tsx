@@ -6,20 +6,11 @@ import Button from './Button';
 
 import './PomodoroForm.scss';
 
-interface Sound {
-  id: number;
-  file: string;
-};
-
-interface Stats {
-  duration: number;
-  work: number;
-  p_work: number;
-};
+import { IStats, ISound } from '../ts-interfaces/interfaces';
 
 const PomodoroForm = (props: any) => {
 
-  const [stats, setStats]: [Stats, Function] = useState({
+  const [stats, setStats]: [IStats, Function] = useState({
     duration: 0,
     work: 0,
     p_work: 0,
@@ -47,7 +38,7 @@ const PomodoroForm = (props: any) => {
     });
   }, [props.pomo_timer]);
 
-  const soundOptions = props.sounds.map((sound: Sound) => {
+  const soundOptions = props.sounds.map((sound: ISound) => {
     return (
       <option
         key={sound.id}

@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import { handleInputChange } from 'react-select/src/utils';
 import './Tags.scss'
 
-interface Tag {
-  id: number | null,
-  value: string,
-  color: string | null,
-  label?: string,
-}
+import { ITag } from '../ts-interfaces/interfaces';
 
 const createTag = (label: string) => ({
   id: null,
@@ -19,8 +13,8 @@ const createTag = (label: string) => ({
 
 const Tags = (props: any) => {
 
-  const [allTags, setAllTags] = useState(props.allTags)
-  const [value, setValue] = useState(props.tags || [])
+  const [allTags, setAllTags]: [ITag[], Function] = useState(props.allTags)
+  const [value, setValue]: [ITag[], Function] = useState(props.tags || [])
   const [inputValue, setInputValue] = useState('')
     
   useEffect(() => {

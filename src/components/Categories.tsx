@@ -5,14 +5,7 @@ import { CirclePicker } from 'react-color';
 import Button from './Button';
 import './Categories.scss'
 
-interface ICategory {
-  id: number | null,
-  value: string,
-  color: string | null,
-  label?: string,
-}
-
-
+import { ICategory } from '../ts-interfaces/interfaces';
 
 const Category = (props: any) => {
 

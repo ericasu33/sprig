@@ -8,30 +8,7 @@ import StopwatchTime from './StopwatchTime';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
-interface ITag {
-  id: number | null,
-  label: string | null,
-  value?: string,
-  color: string | null
-}
-
-interface ICategory {
-  id: number | null,
-  label: string | null,
-  value?: string,
-  color: string | null
-}
-
-interface IData {
-  id: number,
-  category: ICategory | null,
-  tags: ITag[] | null,
-  start_time: Date | null,
-  end_time: Date | null,
-  intensity: number | null
-  pause_start_time?: Date | null,
-  cumulative_pause_duration: number | null
-}
+import {ITag, ICategory, IEntry} from '../ts-interfaces/interfaces';
 
 const dummyCategories: ICategory[] = [
   {id: 0, label: 'one', value: 'one', color: '#3eabb7'},
@@ -45,7 +22,7 @@ const dummyTags: ITag[] = [
   {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
 ]
 
-const dummyNewTime: IData = {
+const dummyNewTime: IEntry = {
   id: 0,
   category: null,
   tags: null,
@@ -56,7 +33,7 @@ const dummyNewTime: IData = {
   cumulative_pause_duration: 0,
 };
 
-const dummyContinueEntry: IData = {
+const dummyContinueEntry: IEntry = {
   id: 1,
   category: dummyCategories[1],
   tags: [dummyTags[0], dummyTags[1]],
@@ -67,7 +44,7 @@ const dummyContinueEntry: IData = {
   cumulative_pause_duration: 60000,
 };
 
-const incomingData: IData = dummyNewTime
+const incomingData: IEntry = dummyNewTime
 
 const StopwatchActive = (props: any) => {
   const [allCategories, setAllCategories] = useState(dummyCategories);

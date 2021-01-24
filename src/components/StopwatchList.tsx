@@ -1,34 +1,7 @@
 import React, { useState } from 'react'
 import StopwatchListItem from './StopwatchListItem'
 
-interface ITag {
-  id: number | null,
-  label: string | null,
-  value?: string,
-  color: string | null
-}
-
-interface ICategory {
-  id: number | null,
-  label: string | null,
-  value?: string,
-  color: string | null
-}
-
-interface IData {
-  id: number,
-  category: ICategory | null,
-  tags: ITag[] | null,
-  start_time: Date | null,
-  end_time: Date | null,
-  intensity: number | null
-  pause_start_time?: Date | null,
-  cumulative_pause_duration: number | null
-}
-
-interface IEntries {
-  [key: string]: IData
-}
+import { ITag, ICategory, IEntry, IEntries } from '../ts-interfaces/interfaces';
 
 const dummyCategories: ICategory[] = [
   {id: 0, label: 'one', value: 'one', color: '#3eabb7'},
@@ -42,7 +15,7 @@ const dummyTags: ITag[] = [
   {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
 ]
 
-const dummyTime: IData = {
+const dummyTime: IEntry = {
   id: 1,
   category: dummyCategories[1],
   tags: [dummyTags[0], dummyTags[1]],
@@ -86,7 +59,7 @@ const StopwatchList = () => {
     }))
   }
 
-  const entriesList = Object.values(entries).map((entry: IData) => 
+  const entriesList = Object.values(entries).map((entry: IEntry) => 
     <StopwatchListItem
       key={entry.id}
       id={entry.id}
