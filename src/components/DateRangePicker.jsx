@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Button from './Button'
 import './DateRangePicker.scss'
 
-export default function MyApp() {
+export default function DateRange(props) {
   const now = new Date();
   const yesterdayBegin = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
   const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
   const [value, onChange] = useState([yesterdayBegin, todayEnd]);
+
+  const result = []
+
+  for (const entry of props.data) {
+    const startDate = new Date(entry.start_time);
+    const endDate = new Date (entry.end_time);
+
+    if (startDate >= value[0] && endDate <= value[1]) {
+      result.push(entry)
+    }
+  }
+
+  console.log(result);
+      
+
 
   const dateIntervalChange = (value, onChange, operator) => {
     if (value) {

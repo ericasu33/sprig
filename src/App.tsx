@@ -1,15 +1,11 @@
 import './App.css';
-import DateRangePicker from './components/DateRangePicker'
-import Bar from './components/ProgressBarByCategory'
-import PieEntry from './components/Pie';
+import DisplayVisualChart from "./components/DisplayVisualChart"
 
 
 function App() {
   return (
     <div>
-      <Bar />
-      <PieEntry />
-      <DateRangePicker />
+      <DisplayVisualChart />
     </div>
   );
 }
