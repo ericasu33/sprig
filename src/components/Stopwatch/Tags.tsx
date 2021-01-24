@@ -45,7 +45,7 @@ const Tags = (props: any) => {
       className='tags'
       isMulti
       isClearable
-      placeholder='Task description tags...'
+      placeholder='Description tags...'
       options={allTags}
       onCreateOption={handleCreate}
       value={value}
