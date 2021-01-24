@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import './Tags.scss'
 
-import { ITag } from '../ts-interfaces/interfaces';
+import { ITag } from 'ts-interfaces/interfaces';
 
 const createTag = (label: string) => ({
   id: null,

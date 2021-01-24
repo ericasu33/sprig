@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Button from './Button';
+import Button from '../Button';
 import Categories from './Categories';
 import Tags from './Tags';
-import StepInputClock from './StepInputClock'
-import StepInputInt from './StepInputInt'
+import StepInputClock from '../StepInputClock'
+import StepInputInt from '../StepInputInt'
 import StopwatchTime from './StopwatchTime';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
-import {ITag, ICategory, IEntry} from '../ts-interfaces/interfaces';
+import {ITag, ICategory, IEntry} from 'ts-interfaces/interfaces';
 
 const dummyCategories: ICategory[] = [
   {id: 0, label: 'one', value: 'one', color: '#3eabb7'},

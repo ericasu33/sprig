@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Button from './Button'
+import Button from 'components/Button'
 import PomodoroForm from './PomodoroForm';
-import StepInputTimer from './StepInputTimer';
-import StepInputInt from './StepInputInt';
+import StepInputTimer from 'components/StepInputTimer';
+import StepInputInt from 'components/StepInputInt';
 
 import './PomodoroTimer.scss';
 

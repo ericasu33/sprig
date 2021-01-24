@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import StopwatchListItem from './StopwatchListItem'
 
-import { ITag, ICategory, IEntry, IEntries } from '../ts-interfaces/interfaces';
+import { ITag, ICategory, IEntry, IEntries } from 'ts-interfaces/interfaces';
 
 const dummyCategories: ICategory[] = [
   {id: 0, label: 'one', value: 'one', color: '#3eabb7'},

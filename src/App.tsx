@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import './App.scss';
-import StopwatchActive from './components/StopwatchActive';
-import StopwatchList from './components/StopwatchList';
-import './components/PomodoroTimer'
-import PomodoroTimer from './components/PomodoroTimer';
+import StopwatchActive from 'components/Stopwatch/StopwatchActive';
+import AnalyzeStopwatch from 'components/Stopwatch/AnalyzeStopwatch';
+import PomodoroTimer from 'components/Pomodoro/PomodoroTimer';
+import 'components/Pomodoro/PomodoroTimer'
+import presetPomodoros from 'db/preset-timers'
 
 import { ISound, ITimer } from './ts-interfaces/interfaces';
 
@@ -49,6 +50,7 @@ const timerData = [
   },
   
 ];
+import { ISound, ITimer } from 'ts-interfaces/interfaces';
 
 const sounds: ISound[] = [
   {id: 1, file: "test1.mp3"},

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import StepInputInt from './StepInputInt';
-import StepInputTimer from './StepInputTimer';
-import Button from './Button';
+import StepInputInt from 'components/StepInputInt';
+import StepInputTimer from 'components/StepInputTimer';
+import Button from 'components/Button';
 
 import './PomodoroTimer.scss';
 
-import { IStats, ISound } from '../ts-interfaces/interfaces';
+import { IStats, ISound } from 'ts-interfaces/interfaces';
 
 const PomodoroForm = (props: any) => {
 

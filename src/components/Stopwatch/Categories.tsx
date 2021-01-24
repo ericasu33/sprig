@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import reactSelectColours from '../styles/reactSelectColours'
+import reactSelectColours from 'styles/reactSelectColours'
 import { CirclePicker } from 'react-color';
-import Button from './Button';
+import Button from '../Button';
 import './Categories.scss'
 
-import { ICategory } from '../ts-interfaces/interfaces';
+import { ICategory } from 'ts-interfaces/interfaces';
 
 const Category = (props: any) => {
 
