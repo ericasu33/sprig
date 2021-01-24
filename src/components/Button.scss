@@ -41,4 +41,14 @@
     font-size: small;
     border: 1px solid peru;
   }
+  &.button--date_range {
+    font-size: small;
+  }
+
+  &.button--date_range_reset {
+    font-size: 0.75rem;
+    text-align: center;
+    margin: 0 0 0 0;
+  }
+
 }

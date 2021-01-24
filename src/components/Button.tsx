@@ -11,8 +11,10 @@ const Button = (props: any) => {
     'button--pause': props.pause,
     'button--close': props.close,
     'button--category_create': props.category_create,
-    'button--category_colour': props.category_colour
- });
+    'button--category_colour': props.category_colour,
+    'button--date_range': props.date_range,
+    'button--date_range_reset': props.date_range_reset
+  });
   return (
     <button type="button" disabled={props.disabled} className={buttonClass} onClick={props.onClick}>
       {props.children}
