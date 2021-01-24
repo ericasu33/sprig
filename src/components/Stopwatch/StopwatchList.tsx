@@ -54,7 +54,6 @@ const StopwatchList = (props: any) => {
 
   return (
     <>
-      <h4 className="section-header sw-entries-header">TASK HISTORY</h4>
       <section className="sw-entries">
         <ul className="sw-entries-list">{ entriesList }</ul>
       </section>

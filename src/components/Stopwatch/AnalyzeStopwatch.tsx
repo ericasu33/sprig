@@ -45,7 +45,11 @@ const AnalyzeStopwatch = (props: any) => {
         </div>
       </div>
 
-
+      <div className='analytics-tabs-container'>
+        {}
+        <div className='analytics-tab analytics-tab-selected'>DATA</div>
+        <div className='analytics-tab '>CHARTS</div>
+      </div>
       <section className='section-sw-entries'>
         <StopwatchList
           allCategories={props.allCategories}

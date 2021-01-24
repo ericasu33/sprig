@@ -3,11 +3,41 @@
 .section-analytics {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  // justify-content: flex-start;
   margin-top: 20px;
+  border-top: 1px solid $border-highlight;
   .analytics-filters {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    border: none;
+  }
+  .analytics-tabs-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+    height: 40px;
+    font-family: $font-family-fancy;
+    font-weight: bold;
+    border-bottom: 2px solid $border-highlight;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: $colour-compliment-fade;
+    .analytics-tab {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      // border: 1px solid $border-light;
+      &-selected {
+        background-color: $colour-compliment;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border: 2px solid $border-highlight;
+        border-bottom: none;
+      }
+    }
   }
 }
