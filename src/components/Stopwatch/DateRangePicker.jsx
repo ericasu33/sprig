@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
-import Button from './Button'
+import Button from '../Button'
 import './DateRangePicker.scss'
 
 export default function MyApp() {

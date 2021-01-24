@@ -1,10 +1,10 @@
 import React from 'react';
-import { useAxiosGet } from '../Hooks/HTTPRequestStopwatch';
+import { useAxiosGet } from 'hooks/HTTPRequestStopwatch';
 import "./ProgressBar.scss";
-import Loader from './Loader';
+import Loader from '../Loader';
 import ProgressBar from './ProgressBar';
-import { totalTimeUsed } from '../helpers/timeDisplay'
-import { filterStopwatchData } from '../helpers/displayStopwatchByCatData'
+import { totalTimeUsed } from '../../helpers/timeDisplay'
+import { filterStopwatchData } from '../../helpers/displayStopwatchByCatData'
 
 
 const Bar = ( props : any ) => {

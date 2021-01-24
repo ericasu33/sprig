@@ -1,8 +1,8 @@
 import { PieChart } from 'react-minimal-pie-chart';
-import { useAxiosGet } from '../Hooks/HTTPRequestStopwatch';
-import Loader from './Loader';
-import { totalTimeUsed } from '../helpers/timeDisplay'
-import { filterStopwatchData } from '../helpers/displayStopwatchByCatData'
+import { useAxiosGet } from 'hooks/HTTPRequestStopwatch';
+import Loader from '../Loader';
+import { totalTimeUsed } from 'helpers/timeDisplay'
+import { filterStopwatchData } from 'helpers/displayStopwatchByCatData'
 
 const PieEntry = ( props : any ) => {
   const url = "http://localhost:8080/api/stopwatches"
