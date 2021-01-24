@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+import Button from './Button'
 import './DateRangePicker.scss'
 
 export default function MyApp() {
@@ -9,49 +10,43 @@ export default function MyApp() {
 
   const [value, onChange] = useState([yesterdayBegin, todayEnd]);
 
-  console.log(value)
-  const diffInMs = value[1] - value[0]
-
-  console.log(diffInMs)
-
-  const oneDay = 1000 * 60 * 60 * 24;
-
-  const diffInDays = Math.round(diffInMs/oneDay)
-
-  console.log(diffInDays)
-
-  const test = new Date(value[0])
-  console.log("HERE", test)
-
-  const dateIntervalChange = (value, diffInDays, operator) => {
-    console.log("IT FIRED")
+  const dateIntervalChange = (value, onChange, operator) => {
+    if (value) {
+      const diffInMs = value[1] - value[0]
+      const oneDay = 1000 * 60 * 60 * 24;
+      const diffInDays = Math.round(diffInMs / oneDay)
     
-    if (operator === "add") {
-      const start = new Date(value[0]);
-      const end = new Date(value[1]);
+      if (operator === "add") {
+        const start = new Date(value[0]);
+        const end = new Date(value[1]);
 
-      start.setDate(start.getDate() + diffInDays);
-      end.setDate(end.getDate() + diffInDays)
+        start.setDate(start.getDate() + diffInDays);
+        end.setDate(end.getDate() + diffInDays)
 
-      onChange([start, end])
+        onChange([start, end])
+      }
+
+      if (operator === "subtract") {
+        console.log("Subtracted")
+        const start = new Date(value[0]);
+        const end = new Date(value[1]);
+
+        start.setDate(start.getDate() - diffInDays);
+        end.setDate(end.getDate() - diffInDays)
+        
+        onChange([start, end])
+      }
     }
-
-    if (operator === "subtract") {
-      const result = new Date(value);
-      result.setDate(result.getDate() - diffInDays);
-      return result
-    }
-    
   }
   
   return (
     <div className="calendar-container">
-      <button 
-        onClick={e => console.log("Clicked")}
-        className="arrow"
+      <Button 
+        onClick={() => dateIntervalChange(value, onChange,"subtract")}
+        date_range
       >
-        <i onClick={e => console.log("Clicked")} className="fas fa-chevron-left"></i>
-      </button>
+        <i className="fas fa-chevron-left"></i>
+      </Button>
       
       <DateRangePicker
         onChange={onChange}
@@ -59,12 +54,18 @@ export default function MyApp() {
         clearIcon={null}
       />
 
-      <button 
-        onClick={e => console.log("Clicked")}
-        className="arrow"
+      <Button
+        onClick={() => onChange([yesterdayBegin, todayEnd])}
+        date_range_reset
+      >
+        <i class="fas fa-undo"></i>
+      </Button>
+      <Button 
+        onClick={e => dateIntervalChange(value, onChange, "add")}
+        date_range
       >
         <i className="fas fa-chevron-right"></i>
-      </button>
+      </Button>
 
     </div>
   );
