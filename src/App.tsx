@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.scss';
 import StopwatchActive from 'components/Stopwatch/StopwatchActive';
-import AnalyzeStopwatch from 'components/Stopwatch/AnalyzeStopwatch';
+import Reports from 'components/Stopwatch/Reports';
 import PomodoroTimer from 'components/Pomodoro/PomodoroTimer';
 import 'components/Pomodoro/PomodoroTimer';
 import presetPomodoros from 'db/preset-timers';
@@ -70,7 +70,7 @@ function App() {
           />
         </section>
         <section className='section-analytics'>
-          <AnalyzeStopwatch
+          <Reports
             allCategories={allCategories}
             updateAllCategories={console.log('app.tsx runs update all categories')}
             allTags={allTags}

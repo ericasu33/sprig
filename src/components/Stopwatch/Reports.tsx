@@ -6,10 +6,10 @@ import Tags from './Tags'
 import DateRange from './DateRangePicker'
 
 
-import './AnalyzeStopwatch.scss'
+import './Reports.scss'
 
 
-const AnalyzeStopwatch = (props: any) => {
+const Reports = (props: any) => {
 
   // Update start_time if InputClock is manually adjusted
   const updateEntry = (key: string, value: Date | string | number) => {
@@ -73,4 +73,4 @@ const AnalyzeStopwatch = (props: any) => {
   )
 }
 
-export default AnalyzeStopwatch;
+export default Reports;
