@@ -5,24 +5,7 @@ import StopwatchList from './components/StopwatchList';
 import './components/PomodoroTimer'
 import PomodoroTimer from './components/PomodoroTimer';
 
-interface Sound {
-  id: number;
-  file: string;
-};
-
-interface ITimer {
-    id: number,
-    uid: number | never,
-    name: string,
-    cycles: number,
-    work: number,
-    short_break: number,
-    long_break: number,
-    short_b_start_sound: number,
-    short_b_end_sound: number,
-    long_b_start_sound: number,
-    long_b_end_sound: number,
-}
+import { ISound, ITimer } from './ts-interfaces/interfaces';
 
 const timerData = [
   {
@@ -67,7 +50,7 @@ const timerData = [
   
 ];
 
-const sounds: Sound[] = [
+const sounds: ISound[] = [
   {id: 1, file: "test1.mp3"},
   {id: 2, file: "test2.mp3"},
   {id: 3, file: "test3.mp3"},
