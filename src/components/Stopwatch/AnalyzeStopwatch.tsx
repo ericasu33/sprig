@@ -3,7 +3,7 @@ import StopwatchList from './StopwatchList'
 // import Charts from './Charts'
 import Categories from './Categories'
 import Tags from './Tags'
-// import DateRange from './DateRangePicker'
+import DateRange from './DateRangePicker'
 
 
 import './AnalyzeStopwatch.scss'
@@ -47,7 +47,7 @@ const AnalyzeStopwatch = (props: any) => {
             />
           </div>
           <div>
-            date range filter
+            <DateRange />
           </div>
         </div>
       </div>

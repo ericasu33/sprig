@@ -27,6 +27,13 @@
       font-size: 15px;
       margin: 2px;
     }
+    &date_range_ {
+      &left, &right, &reset {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75em;
+      }
+    }
     &palette, &calendar {
       width: 30px;
       height: 30px;
@@ -35,17 +42,11 @@
   }
   
   cursor: pointer;
-  &:hover {
+  :hover {
     filter: opacity(60%);
   }
-  &.button--date_range {
-    font-size: small;
-  }
-
-  &.button--date_range_reset {
-    font-size: 0.75rem;
-    text-align: center;
-    margin: 0 0 0 0;
+  :focus {
+    outline: none;
   }
 
 }

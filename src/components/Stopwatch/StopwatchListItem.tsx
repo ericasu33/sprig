@@ -129,6 +129,7 @@ const StopwatchListItem = (props: any) => {
                 <Calendar
                   value={calendarDate}
                   onClickDay={(value: Date) => calendarState(value)}
+                  locale='en-CA'
                 />
             </div>
           }

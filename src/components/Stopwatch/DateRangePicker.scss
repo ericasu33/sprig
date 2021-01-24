@@ -1,5 +1,24 @@
+@import 'styles/variables.scss';
+
 .calendar-container {
   display: flex;
   align-items: center;
+  .react-daterange-picker {
+    font-family: monospace;
+    height: 35px;
+    width: 240px;
+    .react-daterange-picker__wrapper {
+      background-color: $white;
+      border: 1px solid $border-light;
+      border-radius: 3px;
+      .react-daterange-picker__inputGroup {
+        font-size: 0.9em;
+      }
+      .react-daterange-picker__button {
+        width: 25px;
+        height: 30px;
+      }
+    }
+  }
 }
 
