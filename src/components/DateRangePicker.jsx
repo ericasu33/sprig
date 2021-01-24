@@ -27,7 +27,6 @@ export default function MyApp() {
       }
 
       if (operator === "subtract") {
-        console.log("Subtracted")
         const start = new Date(value[0]);
         const end = new Date(value[1]);
 
