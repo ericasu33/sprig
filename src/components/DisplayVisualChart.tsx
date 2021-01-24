@@ -17,7 +17,7 @@ const DisplayVisualChart = () => {
     .catch(err => console.log(err))
   }, [url])
 
-    console.log(dataByDateRange)
+    console.log("CHART", dataByDateRange)
     
   return (
     <div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Button from './Button'
 import './DateRangePicker.scss'
@@ -23,6 +22,8 @@ export default function DateRange(props) {
   }
 
   console.log(result);
+  
+
       
 
 
