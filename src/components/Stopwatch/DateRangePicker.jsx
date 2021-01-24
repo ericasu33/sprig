@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Button from '../Button'
 import './DateRangePicker.scss'
 
-export default function MyApp() {
+export default function MyApp(props) {
   const now = new Date();
   const weekAgoBegin = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 13);
   const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
-  const [value, onChange] = useState([weekAgoBegin, todayEnd]);
+  const [value, setValue] = useState([weekAgoBegin, todayEnd]);
 
-  const dateIntervalChange = (value, onChange, operator) => {
+  // useEffect(() => {
+  //   props.updateDateRange(value)
+  // }, [value])
+
+  const dateIntervalChange = (operator) => {
     if (value) {
       const diffInMs = value[1] - value[0]
       const oneDay = 1000 * 60 * 60 * 24;
@@ -23,7 +27,7 @@ export default function MyApp() {
         start.setDate(start.getDate() + diffInDays);
         end.setDate(end.getDate() + diffInDays)
 
-        onChange([start, end])
+        setValue([start, end])
       }
 
       if (operator === "subtract") {
@@ -33,35 +37,25 @@ export default function MyApp() {
         start.setDate(start.getDate() - diffInDays);
         end.setDate(end.getDate() - diffInDays)
         
-        onChange([start, end])
+        setValue([start, end])
       }
     }
   }
   
   return (
     <div className="calendar-container">
-      <Button 
-        onClick={() => dateIntervalChange(value, onChange, "subtract")}
-        date_range_left
-      />
+      <Button date_range_left onClick={() => dateIntervalChange('subtract')} />
       
       <DateRangePicker
         className='date-range-picker'
-        onChange={onChange}
+        onChange={setValue}
         value={value}
         locale='en-AU'
         calendarIcon={<i className='far fa-calendar-alt'></i>}
       />
 
-      <Button
-        onClick={() => onChange([weekAgoBegin, todayEnd])}
-        date_range_reset
-      />
-
-      <Button 
-        onClick={e => dateIntervalChange(value, onChange, "add")}
-        date_range_right
-      />
+      <Button date_range_right onClick={e => dateIntervalChange('add')} />
+      <Button date_range_reset onClick={() => setValue([weekAgoBegin, todayEnd])} />
 
     </div>
   );

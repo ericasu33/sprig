@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import StopwatchList from './StopwatchList'
-// import Charts from './Charts'
+import Pie from './Pie'
+import ProgressBar from './ProgressBar'
 import Categories from './Categories'
 import Tags from './Tags'
 import DateRange from './DateRangePicker'
@@ -8,18 +9,26 @@ import DateRange from './DateRangePicker'
 
 import './Reports.scss'
 
+const blankFilter = {
+  category: '',
+  tags: [],
+  date_range: []
+}
 
 const Reports = (props: any) => {
+  const [filterOptions, setFilterOptions] = useState(blankFilter)
+  const [tab, setTab] = useState('data');
 
   // Update start_time if InputClock is manually adjusted
-  const updateEntry = (key: string, value: Date | string | number) => {
-    props.updateEntry({
+  const updateFilterOptions = (key: string, value: Date | string | number) => {
+    setFilterOptions({
       ...props,
       [key]: value
     })
   };
 
-  
+  // allEntries.filter(() => filterFunction())
+
 
   return (
     <>
@@ -35,7 +44,7 @@ const Reports = (props: any) => {
               allCategories={props.allCategories}
               updateAllCategories={props.updateAllCategories}
               category={props.category}
-              onChange={updateEntry}
+              updateFilterOptions={updateFilterOptions}
             />
           </div>
           <div className='stopwatch-group sw-tags'>
@@ -43,31 +52,47 @@ const Reports = (props: any) => {
               allTags={props.allTags}
               updateAllTags={props.updateAllTags}
               tags={props.tags}
-              onChange={updateEntry}
+              updateFilterOptions={updateFilterOptions}
             />
           </div>
           <div>
-            <DateRange />
+            <DateRange
+              updateFilterOptions={updateFilterOptions}
+            />
           </div>
         </div>
       </div>
 
       <div className='analytics-tabs-container'>
-        {}
-        <div className='analytics-tab analytics-tab-selected'>DATA</div>
-        <div className='analytics-tab '>CHARTS</div>
+        <div 
+          onClick={() => setTab('data')}
+          className={`analytics-tab ${tab === 'data' && 'analytics-tab-selected'}`}
+        >
+          DATA
+        </div>
+        <div 
+          onClick={() => setTab('charts')}
+          className={`analytics-tab ${tab === 'charts' && 'analytics-tab-selected'}`}
+        >
+          CHARTS
+        </div>
       </div>
-      <section className='section-sw-entries'>
-        <StopwatchList
-          allCategories={props.allCategories}
-          allTags={props.allTags}
-          filteredEntries={props.filteredEntries}
-        />
-      </section>
+      {tab === 'data' &&
+        <section className='section-sw-entries'>
+          <StopwatchList
+            allCategories={props.allCategories}
+            allTags={props.allTags}
+            filteredEntries={props.allEntries}
+          />
+        </section>
+      }
 
-      <section className='section-sw-charts'>
-        hi i'm a chart
-      </section>
+      {tab === 'charts' &&
+        <section className='section-sw-charts'>
+          <ProgressBar />
+          <Pie />
+        </section>
+      }
 
     </>
   )

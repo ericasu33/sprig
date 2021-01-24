@@ -10,7 +10,7 @@ import {
   allTagsData,
   blankActiveEntry,
   activeEntryData,
-  filteredEntriesData 
+  allEntriesData 
 } from './hooks/stopwatchData';
 
 import { ISound, ITimer } from 'ts-interfaces/interfaces';
@@ -27,6 +27,7 @@ function App() {
   const [soundFiles, setSoundFiles] = useState(sounds);
   const [allCategories, setAllCategories] = useState(allCategoriesData);
   const [allTags, setAllTags] = useState(allTagsData);
+  const [allEntries, setAllEntries] = useState(allEntriesData);
 
   const handleAddTimer = (timer: ITimer) => {
     setTimerPresets((prev) => {
@@ -75,7 +76,7 @@ function App() {
             updateAllCategories={console.log('app.tsx runs update all categories')}
             allTags={allTags}
             updateAllTags={console.log('app.tsx runs update all tags')}
-            filteredEntries={filteredEntriesData}
+            allEntries={allEntriesData}
           />
         </section>
       </section>

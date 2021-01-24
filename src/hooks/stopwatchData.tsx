@@ -46,7 +46,7 @@ const mockEntryData: IEntry = {
   cumulative_pause_duration: 60000,
 };
 
-const filteredEntriesData: IEntries = {
+const allEntriesData: IEntries = {
   '0': {...mockEntryData, id: 0, start_time: new Date(1611020000000), end_time: new Date(1611021000000)},
   '1': {...mockEntryData, id: 1, start_time: new Date(1611022000000), end_time: new Date(1611023000000)},
   '2': {...mockEntryData, id: 2, start_time: new Date(1611024000000), end_time: new Date(1611025000000)},
@@ -58,5 +58,5 @@ export {
   allTagsData,
   blankActiveEntry,
   activeEntryData,
-  filteredEntriesData,
+  allEntriesData,
 };

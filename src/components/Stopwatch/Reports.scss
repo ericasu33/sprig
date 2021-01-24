@@ -41,6 +41,10 @@
       background-color: $colour-compliment-fade;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+      cursor: pointer;
+      :hover {
+        filter: opacity(60%);
+      }
       &-selected {
         background-color: $colour-compliment;
         border-top-left-radius: 10px;

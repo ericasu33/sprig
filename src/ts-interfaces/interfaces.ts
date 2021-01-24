@@ -53,6 +53,12 @@ interface IEntries {
   [key: string]: IEntry;
 }
 
+interface IFilterOptions {
+  category: number,
+  tags: number[],
+  date_range: Date[],
+}
+
 export type {
   ISound,
   ITimer,
@@ -61,4 +67,5 @@ export type {
   ITag,
   IEntry,
   IEntries,
+  IFilterOptions,
 };
