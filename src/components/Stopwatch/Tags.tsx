@@ -19,7 +19,7 @@ const Tags = (props: any) => {
     
   useEffect(() => {
     if (!props.allTags) return
-    setAllTags(props.allTags)
+    setAllTags(props.allTags);
   }, [props.allTags])
 
   useEffect(() => {
@@ -28,16 +28,19 @@ const Tags = (props: any) => {
 
   const handleInputChange = (inputValue: string) => setInputValue(inputValue)
   
-  const handleChange = (newValue: any) => {
-    props.onChange('tags', newValue)
-    setValue(newValue)
+  const handleChange = (newValue: any, action: any) => {
+    props.onChange('tags', newValue, action);
+    setValue(newValue);
   };
 
   const handleCreate = (inputValue: any) => {
     const newTag = createTag(inputValue);
-    props.updateAllTags([...allTags, newTag])
-    props.onChange('tags', [...value, newTag])
-    setValue([...value, newTag])
+    const promise = props.updateAllTags(newTag);
+    promise.then((id: number | undefined) => {
+      if (!id) return;
+      props.onChange('tags', [...value, newTag]);
+      setValue([...value, newTag]);
+    });
   };
 
   return (

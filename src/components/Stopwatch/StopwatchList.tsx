@@ -30,15 +30,34 @@ const StopwatchList = (props: any) => {
     }))
   }
 
+  const addCategory = (category: ICategory) => {
+    return props.updateAllCategories(category).then((id: number | undefined) => {
+      if (!id) return;
+      setAllCategories((prev: ICategory[]) => {
+        return [...prev, { ...category, id}]
+      });
+    });
+  };
+
+  const addTag = (tag: ITag) => {
+    return props.updateAllTags(tag).then((id: number | undefined) => {
+      if (!id) return;
+      setAllTags((prev: ITag[]) => {
+        return [...prev, { ...tag, id}]
+      });
+    });
+  };
+
   const entriesList = Object.values(entries).map((entry: any) => 
     <StopwatchListItem
       key={entry.id}
       id={entry.id}
 
       allCategories={allCategories}
-      updateAllCategories={setAllCategories}
+      updateAllCategories={addCategory}
       allTags={allTags}
-      updateAllTags={setAllTags}
+      updateAllTags={addTag}
+      handleChangeEntryTags={props.handleChangeEntryTags}
 
       category={entry.category}
       tags={entry.tags}

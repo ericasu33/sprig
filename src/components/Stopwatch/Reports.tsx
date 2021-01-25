@@ -83,6 +83,9 @@ const Reports = (props: any) => {
             allCategories={props.allCategories}
             allTags={props.allTags}
             filteredEntries={props.allEntries}
+            addCategory={props.handleAddCategory}
+            addTag={props.handleAddTag}
+            updateTags={props.handleChangeEntryTags}
           />
         </section>
       }

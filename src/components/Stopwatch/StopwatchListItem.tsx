@@ -10,6 +10,8 @@ import StepInputTimer from '../StepInputTimer';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
+import { ITag } from '../../ts-interfaces/interfaces';
+
 /*  setDateToLocalMidnight sets hours, minutes, seconds, milliseconds to zero
     so that calendarDate is always midnight, consistent with return value
     from 'react-calendar' */
@@ -43,7 +45,29 @@ const StopwatchListItem = (props: any) => {
   };
 
   // Update start_time if InputClock is manually adjusted
-  const updateEntry = (key: string, value: Date | string | number) => {
+  const updateEntry = (key: string, value: Date | string | number, action = null) => {
+    const actionType: any = action;
+    if (key === "tags") {
+      let tag: ITag = { id: null, label: ""};
+      let remove: boolean = true;
+      if (actionType === null) return;
+      else if (actionType.action === "remove-value") {
+        tag = {...actionType.removedValue};
+      } else if (actionType.action === "select-option") { 
+        tag = {...actionType.option};
+        remove = false;
+      } else if (actionType.action === "clear") {
+        tag = { id: null, label: "" };
+      }
+      const promise = props.handleChangeEntryTags(entry.id, tag, remove);
+      promise.then(() => {
+        props.updateEntry({
+          ...props,
+          tags: value
+        })
+      });
+      return;
+    }
     props.updateEntry({
       ...props,
       [key]: value

@@ -32,12 +32,52 @@ const StopwatchActive = (props: any) => {
   }, [activeEntry])
 
   // Update start_time if InputClock is manually adjusted
-  const updateActiveEntry = (key: string, value: Date | number | null | ICategory | ITag) => {
+  const updateActiveEntry = (key: string, value: Date | number | null | ICategory | ITag[], action = null) => {
+    const actionType: any = action;
+    if (key === "tags") {
+      let tag: ITag = { id: null, label: ""};
+      let remove: boolean = true;
+      if (actionType === null) return;
+      else if (actionType.action === "remove-value") {
+        tag = {...actionType.removedValue};
+      } else if (actionType.action === "select-option") { 
+        tag = {...actionType.option};
+        remove = false;
+      } else if (actionType.action === "clear") {
+        tag = { id: null, label: "" };
+      }
+      const promise = props.handleChangeEntryTags(activeEntry.id, tag, remove);
+      promise.then(() => {
+        setActiveEntry({
+          ...activeEntry,
+          tags: value,
+        });
+      });
+      return;
+    }
     setActiveEntry({
       ...activeEntry,
       [key]: value
-    })
+    });
   }
+
+  const addCategory = (category: ICategory) => {
+    return props.updateAllCategories(category).then((id: number | undefined) => {
+      if (!id) return;
+      setAllCategories((prev: ICategory[]) => {
+        return [...prev, { ...category, id}]
+      });
+    });
+  };
+
+  const addTag = (tag: ITag) => {
+    return props.updateAllTags(tag).then((id: number | undefined) => {
+      if (!id) return;
+      setAllTags((prev: ITag[]) => {
+        return [...prev, { ...tag, id}]
+      });
+    });
+  };
 
   // Manage activeEntry data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
   const handleTimerState = (timerState: string) => {
@@ -76,7 +116,7 @@ const StopwatchActive = (props: any) => {
         <div className='stopwatch-group'>
           <Categories 
             allCategories={allCategories}
-            updateAllCategories={setAllCategories}
+            updateAllCategories={addCategory}
             category={activeEntry.category}
             onChange={updateActiveEntry}
           />
@@ -85,7 +125,7 @@ const StopwatchActive = (props: any) => {
         <div className='stopwatch-group sw-tags'>
           <Tags
             allTags={allTags}
-            updateAllTags={setAllTags}
+            updateAllTags={addTag}
             tags={activeEntry.tags}
             onChange={updateActiveEntry}
           />

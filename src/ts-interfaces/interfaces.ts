@@ -32,6 +32,7 @@ interface ICategory {
   value: string,
   color: string | null,
   label?: string,
+  name?: string,
 }
 
 interface IStats {
@@ -44,7 +45,8 @@ interface ITag {
   id: number | null,
   label: string | null,
   value?: string,
-  color: string | null
+  color?: string | null,
+  tag?: string,
 }
 
 interface IEntry {

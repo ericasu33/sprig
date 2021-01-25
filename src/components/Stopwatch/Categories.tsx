@@ -38,9 +38,12 @@ const Category = (props: any) => {
 
   const handleCreate = (inputValue: any) => {
     const newCategory = createCategory(inputValue);
-    props.updateAllCategories([...allCategories, newCategory])
-    props.onChange('category', newCategory)
-    setValue(newCategory);
+    const promise = props.updateAllCategories(newCategory);
+    promise.then((id: number | undefined) => {
+      if (!id) return;
+      props.onChange('category', newCategory)
+      setValue(newCategory);
+    });
   };
 
   const colourUpdate = ((picked: any) => {
