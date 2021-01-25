@@ -4,20 +4,18 @@ import PomodoroForm from './PomodoroForm';
 import StepInputTimer from 'components/StepInputTimer';
 import StepInputInt from 'components/StepInputInt';
 
-import './PomodoroTimer.scss';
+import { ITimer, IClock } from 'ts-interfaces/interfaces';
 
-interface IObject {
-  [key: string]: any;
-}
+import './PomodoroTimer.scss';
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
-  const [curTimer, setCurTimer] = useState(props.timers && {
-    id: props.timers[0].id,
-    name: props.timers[0].name,
+  const [curTimer, setCurTimer] = useState({
+    id: 1,
+    name: "",
   });
-  const [timer, setTimer]: [any, any] = useState(props.timers && props.timers[0]);
-  const [clock, setClock] = useState({
+  const [timer, setTimer]: [ITimer, Function] = useState(props.timers.length > 0 && props.timers[0]);
+  const [clock, setClock]: [IClock, Function] = useState({
     playing: false,
     stopped: true,
     current: "work",
@@ -26,7 +24,7 @@ const PomodoroTimer = (props: any) => {
   });
 
   const togglePlay = () => {
-    setClock((prev) => {
+    setClock((prev: IClock) => {
       return { 
         ...prev, 
         playing: !prev.playing,
@@ -36,7 +34,7 @@ const PomodoroTimer = (props: any) => {
   };
 
   const handleStop = () => {
-    setClock((prev) => {
+    setClock((prev: IClock) => {
       return { 
         ...prev, 
         playing: false,
@@ -45,36 +43,37 @@ const PomodoroTimer = (props: any) => {
     });
   };
 
-  const calcCycle = ({time, work, short_break, long_break}: IObject) => {
+  const calcCycle = (time: number, { work, short_break, long_break}: ITimer) => {
     if (!work && ! short_break) return 0;
     const result = Math.ceil((time - long_break - work) / (work + short_break));
     return result < 0 ? 0 : result;
   };
 
-  const calcTotalTime = ({cycles, work, short_break, long_break}: IObject) => {
+  const calcTotalTime = ({cycles, work, short_break, long_break}: ITimer) => {
     return ((work + short_break) * cycles + long_break + work);
   };
 
   useEffect(() => {
     if (clock.playing) {
-      const {cycles, work, short_break, long_break} = timer;
       const interval: NodeJS.Timeout = setInterval(() => {
-        setClock((prev: any) => {
+        setClock((prev: IClock) => {
           let { partition, current, time } = prev;
           if (partition === 0) {
-            if(calcCycle({time, work, short_break, long_break}) === 0) {
+            if(calcCycle(time, timer) === 0) {
               current = current === "work" ? "long_break" : "work";
             } else {
               current = current === "work" ? "short_break" : "work";
             }
-            partition = timer[current];
+            if (current === "work") partition = timer.work;
+            else if (current === "short_break") partition = timer.short_break;
+            else if (current === "long_break") partition = timer.long_break;
           }
           if (time === 0) {
             return {
               ...prev,
               playing: false,
               current: "",
-              time: calcTotalTime({cycles, work, short_break, long_break}),
+              time: calcTotalTime(timer),
             };
           }
           return {
@@ -88,7 +87,7 @@ const PomodoroTimer = (props: any) => {
       return () => (clearInterval(interval));
     }
     if (clock.stopped) {
-      setClock(prev => ({
+      setClock((prev: IClock) => ({
         ...prev,
         time: calcTotalTime(timer),
         partition: timer.work,
@@ -98,7 +97,7 @@ const PomodoroTimer = (props: any) => {
   }, [clock.stopped, clock.playing, timer]);
 
   useEffect(() => {
-    setClock(prev => ({
+    setClock((prev: IClock) => ({
       ...prev,
       time: calcTotalTime(timer),
       partition: timer.work,
@@ -109,7 +108,7 @@ const PomodoroTimer = (props: any) => {
   useEffect(() => {
     let new_timer = props.timers.find((data: any) => curTimer.id === data.id);
     if (!new_timer) {
-      setTimer((prev: any) => {
+      setTimer((prev: ITimer) => {
         return {
           ...prev,
           uid: null,
@@ -120,7 +119,7 @@ const PomodoroTimer = (props: any) => {
     } else {
       setTimer(new_timer);
     }
-    setClock((prev) => {
+    setClock((prev: IClock) => {
       return {
         ...prev,
         playing: false,
@@ -131,7 +130,6 @@ const PomodoroTimer = (props: any) => {
 
   const handleSave = (timer: any) => {
     if (timer.uid === 0) {
-      console.log("can't edit timer :(", timer);
       return;
     }
     const id = props.saveTimer(timer);
@@ -190,7 +188,7 @@ const PomodoroTimer = (props: any) => {
             <div className='pm-group'>
               <label>Cycles remaining</label>
               <StepInputInt disabled
-                value={calcCycle({...timer, time: clock.time})}
+                value={calcCycle(clock.time, timer)}
               />
             </div>
             

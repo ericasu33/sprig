@@ -44,7 +44,7 @@ const PomodoroForm = (props: any) => {
         key={sound.id}
         value={sound.id}
       >
-        {sound.file}
+        {sound.name}
       </option>
     );
   });
@@ -52,7 +52,7 @@ const PomodoroForm = (props: any) => {
   const timerOptions = props.timers.map((timer: any) => {
     return {
         id: timer.id,
-        value: timer.name,
+        value: timer.id,
         label: timer.name,
     };
   });

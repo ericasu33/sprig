@@ -1,7 +1,8 @@
 
 interface ISound {
   id: number;
-  file: string;
+  name: string;
+  file_name: string;
 };
 
 interface ITimer {
@@ -16,6 +17,14 @@ interface ITimer {
     short_b_end_sound: number,
     long_b_start_sound: number,
     long_b_end_sound: number,
+}
+
+interface IClock {
+  playing: boolean,
+  stopped: boolean,
+  current: "work" | "short_break" | "long_break" | "",
+  time: number,
+  partition: number,
 }
 
 interface ICategory {
@@ -62,6 +71,7 @@ interface IFilterOptions {
 export type {
   ISound,
   ITimer,
+  IClock,
   ICategory,
   IStats,
   ITag,
