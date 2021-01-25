@@ -1,11 +1,11 @@
 import './App.css';
-import DisplayVisualChart from "./components/DisplayVisualChart"
+import DateRange from "./components/DateRangePicker"
 
 
 function App() {
   return (
     <div>
-      <DisplayVisualChart />
+      <DateRange />
     </div>
   );
 }

@@ -1,27 +1,18 @@
 import { PieChart } from 'react-minimal-pie-chart';
-import { useAxiosGet } from '../Hooks/HTTPRequestStopwatch';
 import Loader from './Loader';
 import { totalTimeUsed } from '../helpers/timeDisplay'
 import { filterStopwatchData } from '../helpers/displayStopwatchByCatData'
 
 const PieEntry = ( props : any ) => {
-  const url = "http://localhost:8080/api/stopwatches"
-  const stopwatches : any = useAxiosGet(url)
+  const stopwatches : any = props.dataState;
   let content = null;
   let sumOfValue: number = 0;
 
-  if (stopwatches.error) {
-    content = 
-    <p>
-      There was an error, please refresh or try again later
-    </p>
-  }
-
-  if (stopwatches.loading) {
+  if (!stopwatches) {
     content = <Loader />
   }
 
-  if (stopwatches.data) {
+  if (stopwatches) {
 
     const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
       const entryObj : any = {};

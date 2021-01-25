@@ -1,7 +1,7 @@
 export function filterStopwatchData (entries: any) {
   const result: any = [];
 
-  for (let entry of entries.data) {
+  for (let entry of entries) {
     const entryObj: any = {};
 
     for (const [key] of Object.entries(entry)) {
