@@ -9,7 +9,7 @@ import {
   blankActiveEntry,
   activeEntryData,
   allEntriesData 
-} from './hooks/stopwatchData';
+} from 'hooks/stopwatchData';
 
 import { ISound, ITimer, ICategory, ITag, IEntry } from 'ts-interfaces/interfaces';
 
@@ -29,6 +29,50 @@ function App() {
     });
     return timerPresets.length + 1;
   };
+
+  const updateEntry = (entryObj: IEntry, instruction: string) => {
+    switch (instruction) {
+      case 'UPDATE':
+        setAllEntries((prev: IEntry[]) => [...prev, entryObj])
+        break;
+      case 'CLONE':
+        setAllEntries((prev: IEntry[]) => [...prev, entryObj])
+        break;
+      case 'DELETE':
+        setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
+        break;
+      case 'PLAY':
+        const setActiveEntry = (entryObj: IEntry) => {
+          
+          const activeEntryData: IEntry = {
+            ...entryObj,
+            start_time: null,
+            end_time: null,
+            pause_start_time: null,
+            cumulative_pause_duration: 0,
+          };
+        }
+        break;
+    }
+  }  
+  
+  const saveEntry = (entryObj: IEntry) => {
+    const inDbFormat = {
+      category_id: entryObj.category && entryObj.category.id,
+      start_time: entryObj.start_time,
+      end_time: entryObj.end_time,
+      pause_start_time: entryObj.pause_start_time,
+      cumulative_pause_duration: entryObj.cumulative_pause_duration,
+      intensity: entryObj.intensity,
+    }
+    axios.post<IEntry>(`/api/stopwatches/${entryObj.id}`, inDbFormat)
+      .then(res => {
+        axios.get<IEntry[]>(`/api/stopwatches`)
+      })
+      .then((res: any) => {
+        setAllEntries(res.data);
+      })
+  }
 
   useEffect(() => {
     Promise.all([
