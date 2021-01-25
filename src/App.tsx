@@ -21,13 +21,31 @@ function App() {
   const [allEntries, setAllEntries]: [IEntry[], Function] = useState([]);
 
   const handleAddTimer = (timer: ITimer) => {
-    setTimerPresets((prev: ITimer[]) => {
-      if (timer.id === null) {
-        return [ ...prev, { ...timer, id: timerPresets.length + 1 } ];
-      }
-      return prev.map((t: ITimer) => t.id === timer.id ? {...timer} : t);
-    });
-    return timerPresets.length + 1;
+    if (timer.id === null) {
+      return axios.post(`/api/pomodoro`, timer)
+        .then((res: any) => {
+          const { data } = res;
+          console.log(data);
+          setTimerPresets((prev: ITimer[]) => {
+            return [ ...prev, { ...timer, id: data.id } ];
+          });
+          return data.id;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    return axios.put(`/api/pomodoro/${timer.id}`, timer)
+      .then((res: any) => {
+        const { data } = res;
+        setTimerPresets((prev: ITimer[]) => {
+          return prev.map((t: ITimer) => Number(t.id) === Number(data.id) ? {...timer} : t);
+        });
+        return data.id;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   useEffect(() => {
@@ -40,12 +58,12 @@ function App() {
     ])
       .then((all) => {
         const [pomodoros, sounds, categories, tags, entries] = all;
+        console.log(pomodoros.data);
         setTimerPresets(pomodoros.data);
         setSoundFiles(sounds.data);
         setAllCategories(categories.data);
         setAllTags(tags.data);
         setAllEntries(entries.data);
-        console.log(all);
       })
       .catch((err) => {
         console.error(err);

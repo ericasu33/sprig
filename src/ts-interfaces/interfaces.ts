@@ -6,17 +6,17 @@ interface ISound {
 };
 
 interface ITimer {
-    id: number,
-    uid: number | never,
+    id: number | null,
+    uid: number | never | null,
     name: string,
     cycles: number,
     work: number,
     short_break: number,
     long_break: number,
-    short_b_start_sound: number,
-    short_b_end_sound: number,
-    long_b_start_sound: number,
-    long_b_end_sound: number,
+    short_b_start_sound: number | null,
+    short_b_end_sound: number | null,
+    long_b_start_sound: number | null,
+    long_b_end_sound: number | null,
 }
 
 interface IClock {

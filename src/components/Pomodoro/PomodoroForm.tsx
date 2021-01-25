@@ -57,7 +57,7 @@ const PomodoroForm = (props: any) => {
     };
   });
 
-  const updateState = (key: string, value: number) => {
+  const updateState = (key: string, value: number | null) => {
     props.setPomoTimer((prev: any) => {
       return {
         ...prev,
@@ -69,7 +69,7 @@ const PomodoroForm = (props: any) => {
   const handleTimerChange = (obj: any) => {
     setName(obj);
     if (obj !== null) {
-      props.changeTimer({ id: obj.id, name: obj.name});
+      props.changeTimer({ id: obj.id, name: obj.label});
     }
   };
 
@@ -96,7 +96,7 @@ const PomodoroForm = (props: any) => {
               onChange={handleTimerChange}
               onCreateOption={handleCreate}
               options={timerOptions}
-              value={name}
+              value={name || ""}
               formatCreateLabel={(input) => `Create timer: "${input}"`}
             />
           </div>
@@ -154,11 +154,11 @@ const PomodoroForm = (props: any) => {
             <label>Shortbreak START</label>
             <select 
               disabled={props.disabled}
-              value={props.pomo_timer.short_b_start_sound}
-              onChange={(e) => updateState("short_b_start_sound", Number(e.target.value))}
+              value={props.pomo_timer.short_b_start_sound || ""}
+              onChange={(e) => updateState("short_b_start_sound", Number(e.target.value) || null)}
             >
-              <option disabled value="0">(no alert)</option>
-              <option value="0">none</option>
+              <option disabled value="">(no alert)</option>
+              <option value="">none</option>
               {soundOptions}
             </select>
           </div>
@@ -166,11 +166,11 @@ const PomodoroForm = (props: any) => {
             <label>Shortbreak END</label>
             <select 
               disabled={props.disabled}
-              value={props.pomo_timer.short_b_end_sound}
-              onChange={(e) => updateState("short_b_end_sound", Number(e.target.value))}
+              value={props.pomo_timer.short_b_end_sound || ""}
+              onChange={(e) => updateState("short_b_end_sound", Number(e.target.value) || null)}
             >
-              <option disabled value="0">(no alert)</option>
-              <option value="0">none</option>
+              <option disabled value="">(no alert)</option>
+              <option value="">none</option>
               {soundOptions}
             </select>
           </div>
@@ -178,11 +178,11 @@ const PomodoroForm = (props: any) => {
             <label>Longbreak START</label>
             <select 
               disabled={props.disabled}
-              value={props.pomo_timer.long_b_start_sound}
-              onChange={(e) => updateState("long_b_start_sound", Number(e.target.value))}
+              value={props.pomo_timer.long_b_start_sound || ""}
+              onChange={(e) => updateState("long_b_start_sound", Number(e.target.value) || null)}
             >
-              <option disabled value="0">(no alert)</option>
-              <option value="0">none</option>
+              <option disabled value="">(no alert)</option>
+              <option value="">none</option>
               {soundOptions}
             </select>
           </div>
@@ -190,11 +190,11 @@ const PomodoroForm = (props: any) => {
             <label>Longbreak END</label>
             <select 
               disabled={props.disabled}
-              value={props.pomo_timer.long_b_end_sound}
-              onChange={(e) => updateState("long_b_end_sound", Number(e.target.value))}
+              value={props.pomo_timer.long_b_end_sound || ""}
+              onChange={(e) => updateState("long_b_end_sound", Number(e.target.value) || null)}
             >
-              <option disabled value="0">(no alert)</option>
-              <option value="0">none</option>
+              <option disabled value="">(no alert)</option>
+              <option value="">none</option>
               {soundOptions}
             </select>
           </div>
