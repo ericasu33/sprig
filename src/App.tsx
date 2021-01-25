@@ -11,7 +11,7 @@ import {
   allEntriesData 
 } from 'hooks/stopwatchData';
 
-import { ISound, ITimer, ICategory, ITag, IEntry } from 'ts-interfaces/interfaces';
+import { ISound, ITimer, ICategory, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
 
 function App() {
   const [timerPresets, setTimerPresets]: [ITimer[], Function] = useState([]);
@@ -50,43 +50,67 @@ function App() {
         console.error(err);
       });
   };
+  
+  // const getCategoryObjFromId = (id: number) => {
+  //   return allCategories.filter((cat: ICategory) => cat.id === id)
+  // }
 
-  const getCategoryObjFromId = (id: number) => {
-    return allCategories.filter((cat: ICategory) => cat.id === id)
-  }
+  // const getTagObjsFromIdArr = (tagIdArr: number[]) => {
+  //   return allTags.filter((tag: ITag) => tag.id && tagIdArr.includes(tag.id))
+  // }
 
-  const getTagObjsFromIdArr = (tagIdArr: number[]) => {
-    return allTags.filter((tag: ITag) => tag.id && tagIdArr.includes(tag.id))
-  }
-
-  const convertFromDBFormat = (dbEntries: IEntry[], allCategories: ICategory[], allTags: ITag[]) => {
-    return dbEntries.map((dbEntry: IEntry) => {
+  const constructAllEntries = (
+    entriesDB: IEntryDB[],
+    entries_tags: IEntriesTags[],
+    allCategories: ICategory[],
+    allTags: ITag[]
+  ) => {
+    const constructTagsObj = (entryId: number) => {
+      const tagsObjArr: ITag[] = [];
+      entries_tags.map((et: IEntriesTags) => {
+        if (et.entry_id = entryId) {
+          tagsObjArr.push(allTags[et.tag_id])
+        }
+      })
+    }
+    const allEntries = entriesDB.map((entryDB: IEntryDB) => {
       return {
-        ...dbEntry,
-        category: dbEntry.category_id ? getCategoryObjFromId(dbEntry.category_id) : ,
-        tags: dbEntry.tags ? getTagObjsFromIdArr(dbEntry.tags)
+        ...entryDB,
+        category: entryDB.category && allCategories.filter((cat: ICategory) => cat.id === entryDB.category),
+        tags: entryDB.id && constructTagsObj(entryDB.id)
       }
     })
+    setAllEntries(allEntries);
   }
+
+  // const convertFromDBFormat = (dbEntries: IEntry[], allCategories: ICategory[], allTags: ITag[]) => {
+  //   return dbEntries.map((dbEntry: IEntry) => {
+  //     return {
+  //       ...dbEntry,
+  //       category: dbEntry.category_id ? getCategoryObjFromId(dbEntry.category_id) : ,
+  //       tags: dbEntry.tags ? getTagObjsFromIdArr(dbEntry.tags)
+  //     }
+  //   })
+  // }
 
   const convertToDBFormat = (entryObj: IEntry) => {
     return {
       ...entryObj,
       category_id: entryObj.category && entryObj.category.id,
-      tags
+      // delete entryObj.tags
     }
   }
 
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
-    const inDbFormat = {
-      category_id: entryObj.category && entryObj.category.id,
-      start_time: entryObj.start_time,
-      end_time: entryObj.end_time,
-      pause_start_time: entryObj.pause_start_time,
-      cumulative_pause_duration: entryObj.cumulative_pause_duration,
-      intensity: entryObj.intensity,
-    }
+    // const inDbFormat = {
+    //   category_id: entryObj.category && entryObj.category.id,
+    //   start_time: entryObj.start_time,
+    //   end_time: entryObj.end_time,
+    //   pause_start_time: entryObj.pause_start_time,
+    //   cumulative_pause_duration: entryObj.cumulative_pause_duration,
+    //   intensity: entryObj.intensity,
+    // }
     switch (instruction) {
       case 'UPDATE':
         // post to updateEntries route /:id with entryObj
@@ -149,16 +173,18 @@ function App() {
       axios.get<ISound[]>(`/api/sound`),
       axios.get<ICategory[]>(`/api/category`),
       axios.get<ITag[]>(`/api/tag`),
-      axios.get<IEntry[]>(`/api/stopwatches`),
+      axios.get<IEntryDB[]>(`/api/stopwatches`),
+      axios.get<IEntriesTags[]>(`/api/stopwatches/entries_tags`),
     ])
       .then((all) => {
-        const [pomodoros, sounds, categories, tags, entries] = all;
+        const [pomodoros, sounds, categories, tags, entries, entries_tags] = all;
         console.log(pomodoros.data);
         setTimerPresets(pomodoros.data);
         setSoundFiles(sounds.data);
         setAllCategories(categories.data);
         setAllTags(tags.data);
-        setAllEntries(entries.data);
+        // setAllEntries(entries.data);
+        constructAllEntries(entries.data, entries_tags.data, categories.data, tags.data);
       })
       .catch((err) => {
         console.error(err);

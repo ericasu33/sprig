@@ -44,13 +44,26 @@ interface ITag {
   id: number | null,
   label: string | null,
   value?: string,
-  color: string | null
+}
+
+interface IEntryDB {
+  id?: number,
+  category: number | null,
+  start_time: Date | null,
+  end_time: Date | null,
+  intensity: number | null
+  pause_start_time?: Date | null,
+  cumulative_pause_duration: number | null
+}
+
+interface IEntriesTags {
+  entry_id: number,
+  tag_id: number
 }
 
 interface IEntry {
   id?: number,
-  category?: ICategory | null,
-  category_id?: number,
+  category: ICategory | null,
   tags: ITag[] | number[] | null,
   start_time: Date | null,
   end_time: Date | null,
@@ -76,7 +89,8 @@ export type {
   ICategory,
   IStats,
   ITag,
+  IEntriesTags,
   IEntry,
-  // IEntries,
+  IEntryDB,
   IFilterOptions,
 };
