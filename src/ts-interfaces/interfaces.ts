@@ -48,9 +48,10 @@ interface ITag {
 }
 
 interface IEntry {
-  id: number,
-  category: ICategory | null,
-  tags: ITag[] | null,
+  id?: number,
+  category?: ICategory | null,
+  category_id?: number,
+  tags: ITag[] | number[] | null,
   start_time: Date | null,
   end_time: Date | null,
   intensity: number | null

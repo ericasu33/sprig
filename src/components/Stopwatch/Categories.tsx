@@ -14,13 +14,11 @@ const Category = (props: any) => {
   const [value, setValue] = useState(props.category)
   const [showColourPicker, setShowColourPicker] = useState(false)
 
-  // delete line below once DB connected
-  const fakeId = Object.keys(allCategories).length + 1
   const createCategory = (label: string) => ({
-    id: fakeId,
+    id: null,
     label,
     value: label,
-    color: '#115'
+    color: '#000'
   });
 
   useEffect(() => {
@@ -75,7 +73,6 @@ const Category = (props: any) => {
             isClearable
             placeholder='Category...'
             onChange={handleChange}
-            onCreateOption={handleCreate}
             options={allCategories}
             value={value}
           />
