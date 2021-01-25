@@ -19,8 +19,10 @@ function App() {
   const [allCategories, setAllCategories]: [ICategory[], Function] = useState([]);
   const [allTags, setAllTags]: [ITag[], Function] = useState([]);
   const [allEntries, setAllEntries]: [IEntry[], Function] = useState([]);
+  const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState(null);
 
   const handleAddTimer = (timer: ITimer) => {
+    // CREATE (save) new pomodoro timer
     if (timer.id === null) {
       return axios.post(`/api/pomodoro`, timer)
         .then((res: any) => {
@@ -35,6 +37,7 @@ function App() {
           console.error(err);
         });
     }
+    // UPDATE custom pomodoro timer
     return axios.put(`/api/pomodoro/${timer.id}`, timer)
       .then((res: any) => {
         const { data } = res;
@@ -48,10 +51,11 @@ function App() {
       });
   };
 
+
   const updateEntry = (entryObj: IEntry, instruction: string) => {
     switch (instruction) {
       case 'UPDATE':
-        setAllEntries((prev: IEntry[]) => [...prev, entryObj])
+        
         break;
       case 'CLONE':
         setAllEntries((prev: IEntry[]) => [...prev, entryObj])
@@ -59,22 +63,18 @@ function App() {
       case 'DELETE':
         setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
         break;
-      case 'PLAY':
-        const setActiveEntry = (entryObj: IEntry) => {
-          
-          const activeEntryData: IEntry = {
-            ...entryObj,
-            start_time: null,
-            end_time: null,
-            pause_start_time: null,
-            cumulative_pause_duration: 0,
-          };
-        }
-        break;
+      case 'PLAY': // no axios call, just local
+        setActiveEntry({
+          ...entryObj,
+          start_time: null,
+          end_time: null,
+          pause_start_time: null,
+          cumulative_pause_duration: 0,
+        });
     }
   }  
   
-  const saveEntry = (entryObj: IEntry) => {
+  const saveNewEntry = (entryObj: IEntry) => {
     const inDbFormat = {
       category_id: entryObj.category && entryObj.category.id,
       start_time: entryObj.start_time,
@@ -141,7 +141,8 @@ function App() {
             allTags={allTags}
             updateAllTags={console.log('app.tsx runs update all tags')}
             blankActiveEntry={blankActiveEntry}
-            activeEntry={activeEntryData}
+            activeEntry={activeEntry}
+            saveNewEntry={saveNewEntry}
           />
         </section>
         <section className='section-analytics'>
@@ -151,7 +152,7 @@ function App() {
             allTags={allTags}
             updateAllTags={() => console.log('app.tsx runs update all tags')}
             allEntries={allEntries}
-            updateEntry={() => console.log('app.tsx runs update entry')} // see updateEntry in hooks/stopwatchFuncs
+            updateEntry={updateEntry} 
           />
         </section>
       </section>
