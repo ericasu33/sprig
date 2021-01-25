@@ -51,16 +51,67 @@ function App() {
       });
   };
 
+  const getCategoryObjFromId = (id: number) => {
+    return allCategories.filter((cat: ICategory) => cat.id === id)
+  }
 
+  const getTagObjsFromIdArr = (tagIdArr: number[]) => {
+    return allTags.filter((tag: ITag) => tag.id && tagIdArr.includes(tag.id))
+  }
+
+  const convertFromDBFormat = (dbEntries: IEntry[], allCategories: ICategory[], allTags: ITag[]) => {
+    return dbEntries.map((dbEntry: IEntry) => {
+      return {
+        ...dbEntry,
+        category: dbEntry.category_id ? getCategoryObjFromId(dbEntry.category_id) : ,
+        tags: dbEntry.tags ? getTagObjsFromIdArr(dbEntry.tags)
+      }
+    })
+  }
+
+  const convertToDBFormat = (entryObj: IEntry) => {
+    return {
+      ...entryObj,
+      category_id: entryObj.category && entryObj.category.id,
+      tags
+    }
+  }
+
+  // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
+    const inDbFormat = {
+      category_id: entryObj.category && entryObj.category.id,
+      start_time: entryObj.start_time,
+      end_time: entryObj.end_time,
+      pause_start_time: entryObj.pause_start_time,
+      cumulative_pause_duration: entryObj.cumulative_pause_duration,
+      intensity: entryObj.intensity,
+    }
     switch (instruction) {
       case 'UPDATE':
-        
+        // post to updateEntries route /:id with entryObj
+        // .then update local allEntries state
+        setAllEntries(allEntries.map((entry: IEntry) => {
+          if (entry.id === entryObj.id) return entryObj
+          return entry
+        }))
         break;
       case 'CLONE':
-        setAllEntries((prev: IEntry[]) => [...prev, entryObj])
+        // post to createEntry route, get newEntry.id
+        // .then update local allEntries state CHECK SORT ORDER is by start_time
+        let sortedAllEntries = []
+        for (let i=0; i < allEntries.length; i++) {
+          sortedAllEntries.push(allEntries[i])
+          if (allEntries[i].id === entryObj.id) {
+            sortedAllEntries.push(entryObj)
+          }
+        }
+        setAllEntries(sortedAllEntries)
         break;
       case 'DELETE':
+        // missing delete route?
+        // post to deleteEntry route /:id
+        // update local allEntries state
         setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
         break;
       case 'PLAY': // no axios call, just local
