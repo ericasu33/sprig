@@ -10,11 +10,23 @@ import './PomodoroTimer.scss';
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
-  const [curTimer, setCurTimer] = useState({
+  const [curTimer, setCurTimer]: [{id: number | null, name: string}, Function] = useState({
     id: 1,
-    name: "",
+    name: "Loading",
   });
-  const [timer, setTimer]: [ITimer, Function] = useState(props.timers.length > 0 && props.timers[0]);
+  const [timer, setTimer]: [ITimer, Function] = useState({
+    id: null,
+    uid: null,
+    name: "",
+    cycles: 0,
+    work: 0,
+    short_break: 0,
+    long_break: 0,
+    short_b_start_sound: null,
+    short_b_end_sound: null,
+    long_b_start_sound: null,
+    long_b_end_sound: null,
+  });
   const [clock, setClock]: [IClock, Function] = useState({
     playing: false,
     stopped: true,
@@ -132,13 +144,17 @@ const PomodoroTimer = (props: any) => {
     if (timer.uid === 0) {
       return;
     }
-    const id = props.saveTimer(timer);
-    setCurTimer((prev: any) => {
-      return {
-        id,
-        name: prev.name,
-      }
+    const promise = props.saveTimer(timer);
+    promise.then((id: number | null) => {
+      if (!id) return;
+      setCurTimer((prev: any) => {
+        return {
+          id: id,
+          name: prev.name,
+        };
+      });
     });
+
   };
 
   return (
