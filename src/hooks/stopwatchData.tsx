@@ -8,13 +8,12 @@ const allCategoriesData: ICategory[] = [
 ]
 
 const allTagsData: ITag[] = [
-  {id: 0, label: 'food', value: 'food', color: '#ee0'},
-  {id: 1, label: 'dessert', value: 'dessert', color: '#e0e'},
-  {id: 2, label: 'icecream', value: 'icecream', color: '#e0e'},
+  {id: 0, label: 'food', value: 'food'},
+  {id: 1, label: 'dessert', value: 'dessert'},
+  {id: 2, label: 'icecream', value: 'icecream'},
 ]
 
 const blankActiveEntry: IEntry = {
-  id: 0,
   category: null,
   tags: null,
   start_time: null,

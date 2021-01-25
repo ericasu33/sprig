@@ -9,7 +9,6 @@ const createTag = (label: string) => ({
   id: null,
   label,
   value: label,
-  color: '#115'
 });
 
 const Tags = (props: any) => {
