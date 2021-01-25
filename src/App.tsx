@@ -57,7 +57,7 @@ function App() {
       <nav className='nav-container'>
         <div className='nav-logo-container'>
           <div className='nav-logo-inner'>
-            <div className='nav-title'>TRACK<br />SUITE</div>
+            <div className='nav-title'>TRACK<br/>SUITE</div>
           </div>
           <div className='nav-logo-inner'>
             <img src="./assets/suit.png" alt="suit"/>
@@ -85,10 +85,11 @@ function App() {
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
-            updateAllCategories={console.log('app.tsx runs update all categories')}
+            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             allTags={allTags}
-            updateAllTags={console.log('app.tsx runs update all tags')}
-            allEntries={allEntriesData}
+            updateAllTags={() => console.log('app.tsx runs update all tags')}
+            allEntries={allEntries}
+            updateEntry={() => console.log('app.tsx runs update entry')} // see updateEntry in hooks/stopwatchFuncs
           />
         </section>
       </section>

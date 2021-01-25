@@ -20,6 +20,13 @@
       flex-direction: row;
       justify-content: space-evenly;
       align-items: center;
+      .react-daterange-picker__inputGroup {
+        display: flex;
+        justify-content: center;
+      }
+      .react-daterange-picker__range-divider {
+        align-items: baseline;
+      }
     }
   }
   .analytics-tabs-container {
@@ -30,7 +37,6 @@
     height: 40px;
     font-family: $font-family-fancy;
     font-weight: bold;
-    border-bottom: 2px solid $border-highlight;
     background-color: $colour-background-1;
     .analytics-tab {
       width: 100%;
@@ -38,6 +44,7 @@
       align-items: center;
       justify-content: center;
       height: 40px;
+      border-bottom: 2px solid $border-highlight;
       background-color: $colour-compliment-fade;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
