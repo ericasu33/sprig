@@ -40,7 +40,7 @@ const StopwatchList = (props: any) => {
   };
 
   const addTag = (tag: ITag) => {
-    return props.updateAllTags(tag).then((id: number | undefined) => {
+    return props.addTag(tag).then((id: number | undefined) => {
       if (!id) return;
       setAllTags((prev: ITag[]) => {
         return [...prev, { ...tag, id}]
@@ -57,7 +57,7 @@ const StopwatchList = (props: any) => {
       updateAllCategories={addCategory}
       allTags={allTags}
       updateAllTags={addTag}
-      handleChangeEntryTags={props.handleChangeEntryTags}
+      handleChangeEntryTags={props.updateTags}
 
       category={entry.category}
       tags={entry.tags}

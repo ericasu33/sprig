@@ -47,7 +47,8 @@ const StopwatchActive = (props: any) => {
         tag = { id: null, label: "" };
       }
       const promise = props.handleChangeEntryTags(activeEntry.id, tag, remove);
-      promise.then(() => {
+      promise.then((id: number | undefined) => {
+        if (!id) return id;
         setActiveEntry({
           ...activeEntry,
           tags: value,

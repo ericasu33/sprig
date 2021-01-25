@@ -71,12 +71,12 @@ function App() {
     if (remove) {
       promise = axios.delete(`/api/stopwatches/${entry_id}/tags${(tag.id && `/${tag.id}`) || ""}`)
         .then((res) => {
-          return res.data;
+          return tag.id || -1;
         });
     } else {
       promise = axios.post(`/api/stopwatches/${entry_id}/tags/${tag.id}`, tag)
         .then((res) => {
-          return res.data;
+          return tag.id;
         });
     }
     return promise.catch((err) => {

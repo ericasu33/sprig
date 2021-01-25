@@ -60,13 +60,13 @@ const StopwatchListItem = (props: any) => {
         tag = { id: null, label: "" };
       }
       const promise = props.handleChangeEntryTags(entry.id, tag, remove);
-      promise.then(() => {
+      return promise.then((id: number | undefined) => {
+        if (!id) return id;
         props.updateEntry({
           ...props,
           tags: value
-        })
+        });
       });
-      return;
     }
     props.updateEntry({
       ...props,

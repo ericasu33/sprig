@@ -29,8 +29,15 @@ const Tags = (props: any) => {
   const handleInputChange = (inputValue: string) => setInputValue(inputValue)
   
   const handleChange = (newValue: any, action: any) => {
-    props.onChange('tags', newValue, action);
-    setValue(newValue);
+    const promise = props.onChange('tags', newValue, action);
+    if (promise) {
+      promise.then((id: number | undefined) => {
+        if (!id) return;
+        setValue(newValue);
+      });
+    } else {
+      setValue(newValue);
+    }
   };
 
   const handleCreate = (inputValue: any) => {
