@@ -15,27 +15,29 @@ const filterData = (allEntries: any, filterOptions: any) => {
   const isEntryInFilter = (entry: any) => {
     // Filter is null, return true for entry
     if (isBlankFilter) return true
-    // Category in filter, return true if same as entry category
+
+    // Category in filter, return false if not same as entry category
     if (category) {
-      if (category.id === entry.category.id) {
-        return true;
+      if (category.id !== entry.category.id) {
+        return false;
       }
     }
-    // Tag or tags in filter, return true if any match any in entry tags array
+    // Tag or tags in filter, return false if entry tags array doesn't include all filter tags
     if (tags) {
-      const inclTag = entry.tags.filter((tag: ITag) => tag_ids.includes(tag.id))
-      if (inclTag.length > 0) {
-        return true;
+
+      const matchedTags = entry.tags.filter((tag: ITag) => tag_ids.includes(tag.id))
+      if (matchedTags.length !== tags.length) {
+        return false;
       }
     }
-    // Date range in filter, return true if entry.start_date is in range
+    // Date range in filter, return false if entry.start_date is outside range
     if (date_range) {
-      if (start < new Date(entry.start_time) && new Date(entry.start_time) < end) {
-        return true;
+      if (new Date(entry.start_time) < start || end < new Date(entry.start_time)) {
+        return false;
       }
     }
     // Filter is non-blank but nothing in entry matches, return false
-    return false;
+    return true;
   }
 
   return allEntries.filter((entry: IEntry) => isEntryInFilter(entry))
