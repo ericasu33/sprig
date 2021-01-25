@@ -25,9 +25,6 @@ const Reports = (props: any) => {
   useEffect(() => {
     props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
   }, [filterOptions, props.allEntries]);
-
-  console.log('filterObj:', filterOptions);
-  console.log('EntriesFiltered:', filteredEntries);
   
   // Update filter options when new category, tag or date_range is selected
   const updateFilterOptions = (key: string, value: Date | string | number) => {

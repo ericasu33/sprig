@@ -9,6 +9,7 @@ import StepInputInt from '../StepInputInt'
 import StepInputTimer from '../StepInputTimer';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
+import StopwatchList from './StopwatchList';
 
 /*  setDateToLocalMidnight sets hours, minutes, seconds, milliseconds to zero
     so that calendarDate is always midnight, consistent with return value
@@ -56,7 +57,7 @@ const StopwatchListItem = (props: any) => {
         <Categories 
           allCategories={props.allCategories}
           updateAllCategories={props.updateAllCategories}
-          category={props.category}
+          category={props.entry.category}
           onChange={updateEntry}
         />
       </div>
@@ -65,7 +66,7 @@ const StopwatchListItem = (props: any) => {
         <Tags
           allTags={props.allTags}
           updateAllTags={props.updateAllTags}
-          tags={props.tags}
+          tags={props.entry.tags}
           onChange={updateEntry}
         />
       </div>
@@ -76,7 +77,7 @@ const StopwatchListItem = (props: any) => {
           <StepInputClock
             label='Start time'
             name='start_time'
-            time={props.start_time}
+            time={props.entry.start_time}
             onChange={updateEntry}
             allowFuture='true'
           />
@@ -86,7 +87,7 @@ const StopwatchListItem = (props: any) => {
           <StepInputClock
             label='End time'
             name='end_time'
-            time={props.end_time}
+            time={props.entry.end_time}
             onChange={updateEntry}
             allowFuture='true'
           />
@@ -96,7 +97,7 @@ const StopwatchListItem = (props: any) => {
           <StepInputInt
             label='Intensity'
             name='intensity'
-            value={props.intensity}
+            value={props.entry.intensity}
             setValue={updateEntry}
             stepSize='5'
             min='0'
@@ -130,7 +131,7 @@ const StopwatchListItem = (props: any) => {
       
         <StepInputTimer
           label="Effective time"
-          value={totalTime / 1000 * props.intensity / 100}
+          value={totalTime / 1000 * props.entry.intensity / 100}
           disabled
         />
       </div>

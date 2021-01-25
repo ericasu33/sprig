@@ -10,9 +10,9 @@ export default function MyApp(props) {
 
   const [value, setValue] = useState([weekAgoBegin, todayEnd]);
 
-  // useEffect(() => {
-  //   props.updateDateRange(value)
-  // }, [value])
+  useEffect(() => {
+    props.onChange('date_range', value)
+  }, [value])
 
   const dateIntervalChange = (operator) => {
     if (value) {

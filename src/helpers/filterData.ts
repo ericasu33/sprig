@@ -1,33 +1,36 @@
 import { IEntry, IFilterOptions, ITag } from 'ts-interfaces/interfaces'
 
 const filterData = (allEntries: any, filterOptions: any) => {
-  console.log('filterData function running');
   
-  const {filterCat, filterTags, filterDateRange} = filterOptions;
-  const isBlankFilter = !filterCat && !filterTags && !filterDateRange
+  const {category, tags, date_range} = filterOptions;
+  const isBlankFilter = !category && !tags && !date_range
+  console.log('tags:', tags);
   
+  // Get array of tag_ids, if not null
+  const tag_ids = tags && tags.map((tagObj: ITag) => tagObj.id)
+
   // Define date_range variables once, if not null
-  const start = filterDateRange && new Date(filterDateRange[0]);
-  const end = filterDateRange && new Date(filterDateRange[1]);
+  const start = date_range && new Date(date_range[0]);
+  const end = date_range && new Date(date_range[1]);
 
   const isEntryInFilter = (entry: any) => {
     // Filter is null, return true for entry
     if (isBlankFilter) return true
     // Category in filter, return true if same as entry category
-    if (filterCat) {
-      if (filterCat === entry.category.id) {
+    if (category) {
+      if (category.id === entry.category.id) {
         return true;
       }
     }
     // Tag or tags in filter, return true if any match any in entry tags array
-    if (filterTags) {
-      const inclTag = entry.tags.filter((tag: ITag) => filterTags.includes(tag.id))
+    if (tags) {
+      const inclTag = entry.tags.filter((tag: ITag) => tag_ids.includes(tag.id))
       if (inclTag.length > 0) {
         return true;
       }
     }
     // Date range in filter, return true if entry.start_date is in range
-    if (filterOptions.date_range) {
+    if (date_range) {
       if (start < new Date(entry.start_time) && new Date(entry.start_time) < end) {
         return true;
       }
@@ -40,25 +43,3 @@ const filterData = (allEntries: any, filterOptions: any) => {
 };
 
 export default filterData;
-
-
-// interface IEntries {
-//   [key: string]: IEntry;
-// }
-
-// interface IFilterOptions {
-//   category: number | null,
-//   tags: number[] | null,
-//   date_range: Date[] | null,
-// }
-
-// interface IEntry {
-//   id: number,
-//   category: ICategory | null,
-//   tags: ITag[] | null,
-//   start_time: Date | null,
-//   end_time: Date | null,
-//   intensity: number | null
-//   pause_start_time?: Date | null,
-//   cumulative_pause_duration: number | null
-// }
