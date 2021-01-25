@@ -36,9 +36,6 @@ const filterData = (allEntries: any, filterOptions: any) => {
     return false;
   }
 
-  console.log('filterData filterOptions:', filterOptions);
-  console.log('filterData allEntries:', allEntries);
-
   return allEntries.filter((entry: IEntry) => isEntryInFilter(entry))
 };
 
