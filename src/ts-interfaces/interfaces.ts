@@ -49,14 +49,14 @@ interface IEntry {
   cumulative_pause_duration: number | null
 }
 
-interface IEntries {
-  [key: string]: IEntry;
-}
+// interface IEntries {
+//   [key: string]: IEntry;
+// }
 
 interface IFilterOptions {
-  category: number,
-  tags: number[],
-  date_range: Date[],
+  category: number | null,
+  tags: number[] | null,
+  date_range: Date[] | null,
 }
 
 export type {
@@ -66,6 +66,6 @@ export type {
   IStats,
   ITag,
   IEntry,
-  IEntries,
+  // IEntries,
   IFilterOptions,
 };
