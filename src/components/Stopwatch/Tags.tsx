@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 import './Tags.scss'
 
 import { ITag } from 'ts-interfaces/interfaces';
@@ -41,18 +42,35 @@ const Tags = (props: any) => {
   };
 
   return (
-    <CreatableSelect
-      className='tags'
-      isMulti
-      isClearable
-      placeholder='Description tags...'
-      options={allTags}
-      onCreateOption={handleCreate}
-      value={value}
-      onChange={handleChange}
-      inputValue={inputValue}
-      onInputChange={handleInputChange}
-    />
+    <>
+      {!props.readOnly &&
+        <CreatableSelect
+          className='tags'
+          isMulti
+          isClearable
+          placeholder='Description tags...'
+          options={allTags}
+          onCreateOption={handleCreate}
+          value={value}
+          onChange={handleChange}
+          inputValue={inputValue}
+          onInputChange={handleInputChange}
+        />
+      }
+      {props.readOnly &&
+        <Select
+          className='tags'
+          isMulti
+          isClearable
+          placeholder='Description tags...'
+          options={allTags}
+          value={value}
+          onChange={handleChange}
+          inputValue={inputValue}
+          onInputChange={handleInputChange}
+        />
+      }
+    </>
   );
 }
 

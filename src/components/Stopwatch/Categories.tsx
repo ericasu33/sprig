@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 import reactSelectColours from 'styles/reactSelectColours'
 import { CirclePicker } from 'react-color';
 import Button from '../Button';
@@ -55,16 +56,31 @@ const Category = (props: any) => {
   return (
     <>
       <div className='sw-categories'>
-        <CreatableSelect
-          styles={reactSelectColours(props.allCategories)}
-          className='category'
-          isClearable
-          placeholder='Category...'
-          onChange={handleChange}
-          onCreateOption={handleCreate}
-          options={allCategories}
-          value={value}
-        />
+        {!props.readOnly &&
+          <CreatableSelect
+            styles={reactSelectColours(props.allCategories)}
+            className='category'
+            isClearable
+            placeholder='Category...'
+            onChange={handleChange}
+            onCreateOption={handleCreate}
+            options={allCategories}
+            value={value}
+          />
+        }
+        {props.readOnly &&
+          <Select
+            styles={reactSelectColours(props.allCategories)}
+            className='category'
+            isClearable
+            placeholder='Category...'
+            onChange={handleChange}
+            onCreateOption={handleCreate}
+            options={allCategories}
+            value={value}
+          />
+        }
+
       </div>
 
       <div className='sw-picker'>
