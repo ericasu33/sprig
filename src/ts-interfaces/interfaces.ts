@@ -40,6 +40,12 @@ interface IStats {
   p_work: number;
 };
 
+interface ITagDB {
+  id: number | null,
+  tag: string,
+  user_id: number,
+}
+
 interface ITag {
   id: number | null,
   label: string | null,
@@ -88,6 +94,7 @@ export type {
   IClock,
   ICategory,
   IStats,
+  ITagDB,
   ITag,
   IEntriesTags,
   IEntry,

@@ -11,7 +11,8 @@ import {
   allEntriesData 
 } from 'hooks/stopwatchData';
 
-import { ISound, ITimer, ICategory, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
+import { ISound, ITimer, ICategory, ITagDB, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
+import { ETIME } from 'constants';
 
 function App() {
   const [timerPresets, setTimerPresets]: [ITimer[], Function] = useState([]);
@@ -27,7 +28,6 @@ function App() {
       return axios.post(`/api/pomodoro`, timer)
         .then((res: any) => {
           const { data } = res;
-          console.log(data);
           setTimerPresets((prev: ITimer[]) => {
             return [ ...prev, { ...timer, id: data.id } ];
           });
@@ -51,47 +51,35 @@ function App() {
       });
   };
   
-  // const getCategoryObjFromId = (id: number) => {
-  //   return allCategories.filter((cat: ICategory) => cat.id === id)
-  // }
-
-  // const getTagObjsFromIdArr = (tagIdArr: number[]) => {
-  //   return allTags.filter((tag: ITag) => tag.id && tagIdArr.includes(tag.id))
-  // }
 
   const constructAllEntries = (
     entriesDB: IEntryDB[],
     entries_tags: IEntriesTags[],
     allCategories: ICategory[],
-    allTags: ITag[]
+    allTags: ITagDB[]
   ) => {
-    const constructTagsObj = (entryId: number) => {
+    const constructTagsObj = (entryId: number) => {  
       const tagsObjArr: ITag[] = [];
       entries_tags.map((et: IEntriesTags) => {
-        if (et.entry_id = entryId) {
-          tagsObjArr.push(allTags[et.tag_id])
+        if (et.entry_id === entryId) {
+          tagsObjArr.push({
+            id: allTags[et.tag_id].id,
+            label: allTags[et.tag_id].tag,
+            value: allTags[et.tag_id].tag
+          })
         }
       })
+      return tagsObjArr;
     }
-    const allEntries = entriesDB.map((entryDB: IEntryDB) => {
+    const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
       return {
         ...entryDB,
-        category: entryDB.category && allCategories.filter((cat: ICategory) => cat.id === entryDB.category),
+        category: entryDB.category && allCategories.filter((cat: ICategory) => cat.id === entryDB.category)[0],
         tags: entryDB.id && constructTagsObj(entryDB.id)
       }
     })
-    setAllEntries(allEntries);
+    setAllEntries(allEntriesFormatted);
   }
-
-  // const convertFromDBFormat = (dbEntries: IEntry[], allCategories: ICategory[], allTags: ITag[]) => {
-  //   return dbEntries.map((dbEntry: IEntry) => {
-  //     return {
-  //       ...dbEntry,
-  //       category: dbEntry.category_id ? getCategoryObjFromId(dbEntry.category_id) : ,
-  //       tags: dbEntry.tags ? getTagObjsFromIdArr(dbEntry.tags)
-  //     }
-  //   })
-  // }
 
   const convertToDBFormat = (entryObj: IEntry) => {
     return {
@@ -103,14 +91,6 @@ function App() {
 
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
-    // const inDbFormat = {
-    //   category_id: entryObj.category && entryObj.category.id,
-    //   start_time: entryObj.start_time,
-    //   end_time: entryObj.end_time,
-    //   pause_start_time: entryObj.pause_start_time,
-    //   cumulative_pause_duration: entryObj.cumulative_pause_duration,
-    //   intensity: entryObj.intensity,
-    // }
     switch (instruction) {
       case 'UPDATE':
         // post to updateEntries route /:id with entryObj
@@ -172,7 +152,7 @@ function App() {
       axios.get<ITimer[]>(`/api/pomodoro`),
       axios.get<ISound[]>(`/api/sound`),
       axios.get<ICategory[]>(`/api/category`),
-      axios.get<ITag[]>(`/api/tag`),
+      axios.get<ITagDB[]>(`/api/tag`),
       axios.get<IEntryDB[]>(`/api/stopwatches`),
       axios.get<IEntriesTags[]>(`/api/stopwatches/entries_tags`),
     ])
@@ -214,9 +194,9 @@ function App() {
         <section className='section-sw-active'>
           <StopwatchActive
             allCategories={allCategories}
-            updateAllCategories={console.log('app.tsx runs update all categories')}
+            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             allTags={allTags}
-            updateAllTags={console.log('app.tsx runs update all tags')}
+            updateAllTags={() => console.log('app.tsx runs update all tags')}
             blankActiveEntry={blankActiveEntry}
             activeEntry={activeEntry}
             saveNewEntry={saveNewEntry}
