@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   .react-daterange-picker {
-    font-family: monospace;
+    // font-family: monospace;
     height: 35px;
     width: 240px;
     .react-daterange-picker__wrapper {
@@ -13,12 +13,21 @@
       border-radius: 3px;
       .react-daterange-picker__inputGroup {
         font-size: 0.9em;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
       }
       .react-daterange-picker__button {
         width: 25px;
         height: 30px;
       }
+      .react-daterange-picker__range-divider {
+        align-items: baseline;
+      }
     }
   }
 }
+
+
+
 

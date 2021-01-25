@@ -4,7 +4,6 @@ const filterData = (allEntries: any, filterOptions: any) => {
   
   const {category, tags, date_range} = filterOptions;
   const isBlankFilter = !category && !tags && !date_range
-  console.log('tags:', tags);
   
   // Get array of tag_ids, if not null
   const tag_ids = tags && tags.map((tagObj: ITag) => tagObj.id)

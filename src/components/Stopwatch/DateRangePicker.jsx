@@ -50,7 +50,7 @@ export default function MyApp(props) {
         className='date-range-picker'
         onChange={setValue}
         value={value}
-        locale='en-AU'
+        locale='en-CA'
         calendarIcon={<i className='far fa-calendar-alt'></i>}
       />
 
