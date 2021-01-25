@@ -51,6 +51,7 @@ const Reports = (props: any) => {
               updateAllCategories={props.updateAllCategories}
               category={props.category}
               onChange={updateFilterOptions}
+              readOnly
             />
           </div>
           <div className='stopwatch-group sw-tags'>
@@ -59,6 +60,7 @@ const Reports = (props: any) => {
               updateAllTags={props.updateAllTags}
               tags={props.tags}
               onChange={updateFilterOptions}
+              readOnly
             />
           </div>
           <div>
