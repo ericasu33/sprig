@@ -98,33 +98,51 @@ function App() {
         console.error(err);
       });
     }
-    // if (instruction === 'CLONE') {
-    //     // post to createEntry route, get newEntry.id
-    //     // .then update local allEntries state CHECK SORT ORDER is by start_time
-    //     let sortedAllEntries = []
-    //     for (let i=0; i < allEntries.length; i++) {
-    //       sortedAllEntries.push(allEntries[i])
-    //       if (allEntries[i].id === entryObj.id) {
-    //         sortedAllEntries.push(entryObj)
-    //       }
-    //     }
-    //     setAllEntries(sortedAllEntries)
-    //   }
-    // if (instruction === 'DELETE') {
-    //     // missing delete route?
-    //   // post to deleteEntry route /:id
-    //   // update local allEntries state
-    //   setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
-    // }
-    // if (instruction === 'PLAY') {
-    //     setActiveEntry({
-    //     ...entryObj,
-    //     start_time: null,
-    //     end_time: null,
-    //     pause_start_time: null,
-    //     cumulative_pause_duration: 0,
-    //   });
-    // }
+    if (instruction === 'CLONE') {
+        // NOTE : something is wrong with how tags are stored inside of the objects, causing clones to not work
+        axios.post(`api/stopwatches`, convertEntryToDBFormat(entryObj))
+          .then((res) => {
+            if (!entryObj || !entryObj.tags) return;
+            const {tags}: any = entryObj;
+            console.log(tags);
+            const promises = tags.map((tag: ITag) => {
+              return axios.post(`api/stopwatches/${entryObj.id}/tags/${tag.id}`);
+            });
+            return Promise.all(promises);
+          })
+          .then((res) => {
+            let sortedAllEntries = []
+            for (let i=0; i < allEntries.length; i++) {
+              sortedAllEntries.push(allEntries[i])
+              if (allEntries[i].id === entryObj.id) {
+                sortedAllEntries.push(entryObj)
+              }
+            }
+            setAllEntries(sortedAllEntries);
+          })
+          .catch();
+      }
+    if (instruction === 'DELETE') {
+      axios.delete(`api/stopwatches/${entryObj.id}`)
+        .then((res) => {
+          return axios.delete(`api/stopwatches/${entryObj.id}/tags`);
+        })
+        .then((res) => {
+          setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    if (instruction === 'PLAY') {
+        setActiveEntry({
+        ...entryObj,
+        start_time: null,
+        end_time: null,
+        pause_start_time: null,
+        cumulative_pause_duration: 0,
+      });
+    }
   };
   
   const handleSaveNewEntry = (entryObj: IEntry) => {
