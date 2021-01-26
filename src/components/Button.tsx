@@ -34,7 +34,7 @@ const Button = (props: any) => {
     'fas fa-angle-down':          props.decrement,
     'fas fa-chevron-left':        props.date_range_left,
     'fas fa-chevron-right':       props.date_range_right,
-    'fas fa-undo':                props.date_range_reset,
+    // 'fas fa-undo':                props.date_range_reset,
   });  
 
   return (
