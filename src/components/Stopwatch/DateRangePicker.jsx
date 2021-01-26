@@ -54,10 +54,12 @@ export default function MyApp(props) {
         onChange={setValue}
         value={value}
         locale='en-CA'
-        calendarIcon={<i className='far fa-calendar-alt'></i>}
+        clearIcon={null}
+        calendarIcon={<i className='far fa-calendar-alt' />}
       />
 
       <Button date_range_right onClick={e => dateIntervalChange('add')} />
+      <Button date_range_reset onClick={() => setValue()}>Clear</Button>
       <Button date_range_reset onClick={() => setValue([sevenDaysAgo, todayEnd])}>Past week</Button>
       <Button date_range_reset onClick={() => setValue([oneMonthAgo, todayEnd])}>Past month</Button>
       <Button date_range_reset onClick={() => setValue([oneYearAgo, todayEnd])}>Past year</Button>
