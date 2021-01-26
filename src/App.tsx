@@ -11,7 +11,7 @@ import {
   allEntriesData 
 } from 'hooks/stopwatchData';
 
-import { ISound, ITimer, ICategory, ITagDB, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
+import { ISound, ITimer, ICategoryDB, ICategory, ITagDB, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
 import { ETIME } from 'constants';
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
   const [allEntries, setAllEntries]: [IEntry[], Function] = useState([]);
   const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState(null);
 
+  // Handle pomodoro timer CREATE and UPDATE
   const handleAddTimer = (timer: ITimer) => {
     // CREATE (save) new pomodoro timer
     let promise;
@@ -34,6 +35,7 @@ function App() {
           });
           return data.id;
         });
+
     // UPDATE custom pomodoro timer
     } else {
       promise = axios.put(`/api/pomodoro/${timer.id}`, timer)
@@ -50,19 +52,19 @@ function App() {
     });
   };
 
+  // Handle Category CREATE
   const handleAddCategory = (category: ICategory) => {
-    // convert category to DB format
     return axios.post(`/api/category`, category)
       .then((res) => {
-        return res.data.id;
+      return res.data.id;
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
+  // Handle Tag CREATE
   const handleAddTag = (tag: ITag) => {
-    // convert tag to DB format
     return axios.post(`/api/tag`, tag)
       .then((res) => {
         return res.data.id;
@@ -72,54 +74,41 @@ function App() {
       });
   };
   
-
-  const constructAllEntries = (
-    entriesDB: IEntryDB[],
-    entries_tags: IEntriesTags[],
-    allCategories: ICategory[],
-    allTags: ITagDB[]
-  ) => {
-    const constructTagsObj = (entryId: number) => {  
-      const tagsObjArr: ITag[] = [];
-      entries_tags.map((et: IEntriesTags) => {
-        if (et.entry_id === entryId) {
-          tagsObjArr.push({
-            id: allTags[et.tag_id].id,
-            label: allTags[et.tag_id].tag,
-            value: allTags[et.tag_id].tag
-          })
-        }
-      })
-      return tagsObjArr;
-    }
-    const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
-      return {
-        ...entryDB,
-        category: entryDB.category && allCategories.filter((cat: ICategory) => cat.id === entryDB.category)[0],
-        tags: entryDB.id && constructTagsObj(entryDB.id)
-      }
-    })
-    setAllEntries(allEntriesFormatted);
+    // Change format from local to DB
+  const reformatTagsToDB = (tagObj: ITag[]) => {
+    // setAllTags(tags.map((tag: ITag) => ({ id: tag.id, label: tag.tag, value: tag.tag})))
   }
-
-  const convertToDBFormat = (entryObj: IEntry) => {
-    return {
-      ...entryObj,
-      category_id: entryObj.category && entryObj.category.id,
-      // delete entryObj.tags
-    }
+  const convertEntryToDBFormat = (entryObj: IEntry) => {
+    return ({
+      id: entryObj.id,
+      category: entryObj.category && entryObj.category.id,
+      start_time: entryObj.start_time,
+      end_time: entryObj.end_time,
+      intensity: entryObj.intensity,
+      pause_start_time: entryObj.pause_start_time,
+      cumulative_pause_duration: entryObj.cumulative_pause_duration,
+    })
   }
 
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
     switch (instruction) {
       case 'UPDATE':
-        // post to updateEntries route /:id with entryObj
-        // .then update local allEntries state
-        setAllEntries(allEntries.map((entry: IEntry) => {
-          if (entry.id === entryObj.id) return entryObj
-          return entry
-        }))
+      // If update is to tags:
+      // Update entries_tags with entryObj.tags (processed to DB entries_tags format)
+      // If tag created: handleAddtag  
+      
+      let promise
+        promise = axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
+        .then((res) => {
+          setAllEntries(allEntries.map((e: IEntry) => {
+            return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
+          }))
+          return res.data.id;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
         break;
       case 'CLONE':
         // post to createEntry route, get newEntry.id
@@ -168,11 +157,65 @@ function App() {
       })
   }
 
+  const handleChangeEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
+    let promise;
+    if (remove) {
+      promise = axios.delete(`/api/stopwatches/${entry_id}/tags${(tag.id && `/${tag.id}`) || ""}`)
+        .then((res) => {
+          return tag.id || -1;
+        });
+    } else {
+      promise = axios.post(`/api/stopwatches/${entry_id}/tags/${tag.id}`, tag)
+        .then((res) => {
+          return tag.id;
+        });
+    }
+    return promise.catch((err) => {
+      console.error(err);
+    });
+  };
+
+  // Change format from DB to local state and construct local format if necessary
+  const reformatCategoriesToLocal = (categoriesDB: ICategoryDB[]) => {
+    setAllCategories(categoriesDB.map((cat: ICategoryDB) => ({id: cat.id, label: cat.name, value: cat.name, color: cat.color})))
+  }
+  const reformatTagsToLocal = (tagsDB: ITagDB[]) => {
+    setAllTags(tagsDB.map((tag: ITagDB) => ({ id: tag.id, label: tag.tag, value: tag.tag})))
+  }
+  const constructAllEntriesFromDB = (
+    entriesDB: IEntryDB[],
+    entries_tags: IEntriesTags[],
+    allCategories: ICategoryDB[],
+    allTags: ITagDB[]
+  ) => {
+    const constructTagsObj = (entryId: number) => {  
+      const tagsObjArr: ITag[] = [];
+      entries_tags.map((et: IEntriesTags) => {
+        if (et.entry_id === entryId) {
+          tagsObjArr.push({
+            id: allTags[et.tag_id].id,
+            label: allTags[et.tag_id].tag,
+            value: allTags[et.tag_id].tag
+          })
+        }
+      })
+      return tagsObjArr;
+    }
+    const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
+      return {
+        ...entryDB,
+        category: entryDB.category && allCategories.filter((cat: ICategoryDB) => cat.id === entryDB.category)[0],
+        tags: entryDB.id && constructTagsObj(entryDB.id)
+      }
+    })
+    setAllEntries(allEntriesFormatted);
+  }
+
   useEffect(() => {
     Promise.all([
       axios.get<ITimer[]>(`/api/pomodoro`),
       axios.get<ISound[]>(`/api/sound`),
-      axios.get<ICategory[]>(`/api/category`),
+      axios.get<ICategoryDB[]>(`/api/category`),
       axios.get<ITagDB[]>(`/api/tag`),
       axios.get<IEntryDB[]>(`/api/stopwatches`),
       axios.get<IEntriesTags[]>(`/api/stopwatches/entries_tags`),
@@ -181,8 +224,8 @@ function App() {
         const [pomodoros, sounds, categories, tags, entries, entries_tags] = all;
         setTimerPresets(pomodoros.data);
         setSoundFiles(sounds.data);
-        setAllCategories(categories.data.map((cat: ICategory) => ({id: cat.id, label: cat.name, value: cat.name, color: cat.color})));
-        setAllTags(tags.data.map((tag: ITagDB) => ({ id: tag.id, label: tag.tag, value: tag.tag})));
+        reformatCategoriesToLocal(categories.data);
+        reformatTagsToLocal(tags.data);
         constructAllEntriesFromDB(entries.data, entries_tags.data, categories.data, tags.data);
       })
       .catch((err) => {
