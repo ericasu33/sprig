@@ -162,11 +162,6 @@ const PomodoroTimer = (props: any) => {
       <h4 className="section-header pm-header">POMODORO TIMER</h4>
       <div className="pomodoro-display">
 
-        <div className='pm-group'>
-          <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
-            { (expand && "shrink") || "expand" }
-          </Button>
-        </div>
 
         { (expand && (
           <>
@@ -178,10 +173,16 @@ const PomodoroTimer = (props: any) => {
               sounds={props.sounds}
               timers={props.timers}
               onSave={() => handleSave(timer)}
+              onShrink={() => setExpand((prev: boolean) => (!prev))}
             />
           </>
         )) || ( 
           <>
+            <div className='pm-group'>
+              <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
+                expand
+              </Button>
+            </div>
             <div className='pm-group'>
               <label>Name</label>
               <input className='pm-name' type="text" disabled={true} value={timer.name} />
