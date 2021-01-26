@@ -159,7 +159,7 @@ const PomodoroTimer = (props: any) => {
 
   return (
     <>
-      <h4 className="section-header pm-header">POMODORO TIMER</h4>
+      <div className="section-header pm-header">POMO</div>
       <div className="pomodoro-display">
 
         { expand && (

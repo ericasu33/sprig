@@ -31,10 +31,12 @@
   align-items: center;
   border-bottom: 1px solid $border-light;
   padding: 5px;
+  margin-top: 10px;
   min-height: 60px;
   &-active {
+    width: 100%;
     // border-top: 1px solid lightgrey;
-    border: 1px solid $border-highlight;
+    // border: 1px solid $border-highlight;
   }
   .stopwatch-group {
     display: flex;

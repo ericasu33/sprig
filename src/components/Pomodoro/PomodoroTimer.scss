@@ -5,9 +5,10 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid $border-highlight;
+  // border: 1px solid $border-highlight;
   padding: 5px;
   background-color: $background-light;
+  width: 100%;
   .pm-group {
     // border: 1px solid peru;
     display: flex;

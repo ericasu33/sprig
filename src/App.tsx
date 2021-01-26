@@ -224,34 +224,38 @@ function App() {
 
   return (
     <main>
-      <nav className='nav-container'>
-        <div className='nav-logo-container'>
-          <div className='nav-logo-inner'>
-            <div className='nav-title'>TRACK<br/>SUITE</div>
-          </div>
-          <div className='nav-logo-inner'>
-            <img src="./assets/suit.png" alt="suit"/>
+      <section className='main-app'>
+        <div className='top-panel'>
+          <nav className='nav-container'>
+            <div className='nav-logo-container'>
+              <div className='nav-logo-inner'>
+                <div className='nav-title'>TRACK<br/>SUITE</div>
+              </div>
+              <div className='nav-logo-inner'>
+                <img src="./assets/suit.png" alt="suit"/>
+              </div>
+            </div>
+          </nav>
+          <div className='pm-activesw'>
+            <section className='pm-activesw-pomo'>
+              <PomodoroTimer 
+                timers={timerPresets}
+                saveTimer={handleAddTimer}
+                sounds={soundFiles}
+              />
+            </section>
+            <section className='pm-activesw-sw'>
+              <StopwatchActive
+                allCategories={allCategories}
+                createNewCategory={handleCreateNewCategory}
+                allTags={allTags}
+                createNewTag={handleCreateNewTag}
+                activeEntry={activeEntry}
+                saveNewEntry={handleSaveNewEntry}
+              />
+            </section>
           </div>
         </div>
-      </nav>
-      <section className='main-app'>
-        <section className='section-pm'>
-          <PomodoroTimer 
-            timers={timerPresets}
-            saveTimer={handleAddTimer}
-            sounds={soundFiles}
-          />
-        </section>
-        <section className='section-sw-active'>
-          <StopwatchActive
-            allCategories={allCategories}
-            createNewCategory={handleCreateNewCategory}
-            allTags={allTags}
-            createNewTag={handleCreateNewTag}
-            activeEntry={activeEntry}
-            saveNewEntry={handleSaveNewEntry}
-          />
-        </section>
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}

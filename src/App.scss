@@ -8,45 +8,68 @@ html {
 }
 
 body {
-  .nav-container {
-    font-family: $font-family-fancy;
-    display: flex;
-    flex-direction: row;
-    border-radius: 5px;
-    .nav-logo-container {
-      padding: 5px;
-      background-color: $colour-compliment;
-      .nav-logo-inner {
-        padding-bottom: 2px;
+  
+  .main-app {
+    .top-panel {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      // LOGO
+      .nav-container {
+        font-family: $font-family-fancy;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        .nav-title {
-          text-align: center;
-          align-items: center;
+        flex-direction: row;
+        border-radius: 5px;
+        .nav-logo-container {
+          padding: 5px;
+          background-color: $colour-compliment;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .nav-logo-inner {
+            padding-bottom: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .nav-title {
+              text-align: center;
+              align-items: center;
+            }
+            img {
+              height: 40px;
+            }
+          }
         }
-        img {
-          height: 40px;
+      }
+      // POMO and STOPWATCH ACTIVE
+      .pm-activesw {
+        display: flex;
+        flex-direction: column;
+        .pm-activesw-pomo {
+          display: flex;
+          flex-direction: row;
+          border: 1px solid $border-highlight;
+          margin-bottom: 10px;
+        }
+        .pm-activesw-sw {
+          display: flex;
+          flex-direction: row;
+          border: 1px solid $border-highlight;
+        }
+        .section-header {
+          // border: 1px solid;
+          writing-mode: vertical-lr;
+          transform: rotate(180deg);
+          font-family: $font-family-fancy;
+          text-align: center;
+          color: $colour-highlight;
+          background-color: $colour-compliment-fade;
+          padding: 4px;
         }
       }
     }
-  }
-
-  .main-app {
     padding: 10px;
     font-family: $font-family;
     font-size: 14px;
-    .section-header {
-      font-family: $font-family-fancy;
-      font-size: 1.2em;
-      margin: 0;
-      color: $colour-highlight;
-      background-color: $colour-compliment-fade;
-      margin-top: 20px;
-      padding: 4px;
-      padding-left: 5px;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 20px;
-    }
   }
 }

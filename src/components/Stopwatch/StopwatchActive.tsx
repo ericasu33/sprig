@@ -123,7 +123,7 @@ const StopwatchActive = (props: any) => {
 
   return (
     <>
-      <h4 className="section-header sw-active-header">TASK TRACKER</h4>
+      <div className="section-header sw-active-header">TASK</div>
       <div className='stopwatch stopwatch-active'>
 
         <div className='stopwatch-group'>
