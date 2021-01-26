@@ -41,7 +41,7 @@ const Tags = (props: any) => {
 
   const handleCreate = (inputValue: any) => {
     const newTag = createTag(inputValue);
-    const promise = props.updateAllTags(newTag);
+    const promise = props.createNewTag(newTag);
     promise.then((id: number | undefined) => {
       if (!id) return;
       props.onChange('tags', [...value, newTag]);

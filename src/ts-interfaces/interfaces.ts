@@ -69,6 +69,12 @@ interface IEntryDB {
   pause_start_time?: Date | null,
   cumulative_pause_duration: number | null
 }
+
+interface IEntriesTags {
+  entry_id: number,
+  tag_id: number
+}
+
 interface IEntry {
   id?: number,
   category: ICategory | null,

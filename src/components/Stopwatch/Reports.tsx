@@ -35,7 +35,6 @@ const Reports = (props: any) => {
     props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
   };
 
-
   return (
     <>
       <div className='analytics-filters stopwatch'>
@@ -91,9 +90,11 @@ const Reports = (props: any) => {
             allCategories={props.allCategories}
             createNewCategory={props.createNewCategory}
             allTags={props.allTags}
+            updateAllTags={props.updateAllTags}
+            filteredEntries={filteredEntries}
+            updateEntry={props.updateEntry}
             createNewTag={props.createNewTag}
             updateEntryTags={props.updateEntryTags}
-            filteredEntries={filteredEntries}
           />
         </section>
       }

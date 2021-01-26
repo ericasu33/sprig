@@ -10,67 +10,33 @@ import './Stopwatch.scss'
 
 import {ITag, ICategory, IEntry} from 'ts-interfaces/interfaces';
 
-const blankActiveEntry: IEntry = {
-  category: null,
-  tags: null,
-  start_time: null,
-  end_time: null,
-  intensity: 100,
-  pause_start_time: null,
-  cumulative_pause_duration: 0,
-};
-
 const StopwatchActive = (props: any) => {
   const [allCategories, setAllCategories] = useState(props.allCategories);
   const [allTags, setAllTags] = useState(props.allTags);  
-  const [isTimerRunning, setIsTimerRunning] = useState(false)
-  const [activeEntry, setActiveEntry] = useState(props.activeEntry || blankActiveEntry);
-  
-  useEffect(() => {
-    if (activeEntry.id) {
-      setIsTimerRunning(true)
-      // set start_time? or is that done automatically somewhere else?
-    }
-  }, [])
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const {activeEntry, setActiveEntry, saveNewEntry} = props;
 
   useEffect(() => {
     if (activeEntry.end_time) {
-      props.saveNewEntry(activeEntry)
-      console.log('SAVED ENTRY:', activeEntry);
-      setActiveEntry(blankActiveEntry)
+      saveNewEntry(activeEntry);
+      setActiveEntry({
+        category: null,
+        tags: null,
+        start_time: null,
+        end_time: null,
+        intensity: 100,
+        pause_start_time: null,
+        cumulative_pause_duration: 0,
+      })
     }
-  }, [activeEntry])
+  }, [activeEntry, setActiveEntry, saveNewEntry]);
 
   // Update start_time if InputClock is manually adjusted
   const updateActiveEntry = (key: string, value: Date | number | null | ICategory | ITag[], action = null) => {
-    const actionType: any = action;
-    if (key === "tags") {
-      let tag: ITag = { id: null, label: ""};
-      let remove: boolean = true;
-      if (actionType === null) return;
-      else if (actionType.action === "remove-value") {
-        tag = {...actionType.removedValue};
-      } else if (actionType.action === "select-option") { 
-        tag = {...actionType.option};
-        remove = false;
-      } else if (actionType.action === "clear") {
-        tag = { id: null, label: "" };
-      }
-      
-      const promise = props.handleChangeEntryTags(activeEntry.id, tag, remove);
-      promise.then((id: number | undefined) => {
-        if (!id) return id;
-        setActiveEntry({
-          ...activeEntry,
-          tags: value,
-        });
-      });
-      return promise;
-    }
-    setActiveEntry({
-      ...activeEntry,
+    setActiveEntry((prev: IEntry) => ({
+      ...prev,
       [key]: value
-    });
+    }));
     return Promise.resolve();
   }
 
@@ -114,12 +80,21 @@ const StopwatchActive = (props: any) => {
               cumulative_pause_duration: new_pause_dur,
               pause_start_time: null
             };
-          })
+          });
         } else {
           updateActiveEntry('start_time', activeEntry.start_time || new Date())
         }
+      }
     }
-  }
+
+  useEffect(() => {
+    if (activeEntry.id) {
+      setIsTimerRunning(true);
+      updateActiveEntry('tags', activeEntry.tags);
+      updateActiveEntry('start_time', activeEntry.start_time || new Date());
+      // set start_time? or is that done automatically somewhere else?
+    }
+  }, [activeEntry.id, activeEntry.start_time]);
 
   return (
     <>

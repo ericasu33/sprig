@@ -21,22 +21,20 @@ const Category = (props: any) => {
     color: '#000'
   });
 
-  // useEffect(() => {
-  //   if (!props.allCategories) return
-  //   setAllCategories(props.allCategories)
-  // }, [props.allCategories])
-
   useEffect(() => {
     setValue(props.category || '')
   }, [props.category])
   
   const handleChange = (updatedCategory: ICategory) => {
-    const promise = props.onChange('category', updatedCategory)
-    promise.then((id: number | undefined) => {
-      if (!id) return;
-      props.onChange('category', updatedCategory)
+    const promise = props.onChange('category', updatedCategory);
+    if (promise) {
+      promise.then((id: number | undefined) => {
+        if (!id) return;
+        setValue(updatedCategory);
+      });
+    } else {
       setValue(updatedCategory);
-    });
+    }
   };
 
   const handleCreate = (inputValue: any) => {

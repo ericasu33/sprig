@@ -30,17 +30,17 @@ const StopwatchListItem = (props: any) => {
   }, [props.entry.start_time, props.entry.end_time])
 
   // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
-  const calendarState = (value: Date) => {
+  const updateCalendar = (value: Date) => {
     const dateDiff: number = Number(calendarDate) - Number(value);
     setCalendarDate(value)
     setShowCalendar(!showCalendar)
-      const startTime = new Date(Number(props.entry.start_time) - dateDiff)
-      const endTime = new Date(Number(props.entry.end_time) - dateDiff)
-      props.updateEntry({
-        ...props.entry,
-        start_time: startTime,
-        end_time: endTime
-      }, 'UPDATE')
+    const startTime = new Date(Number(props.entry.start_time) - dateDiff)
+    const endTime = new Date(Number(props.entry.end_time) - dateDiff)
+    return props.updateEntry({
+      ...props.entry,
+      start_time: startTime,
+      end_time: endTime
+    }, 'UPDATE')
   };
 
   // Update start_time if InputClock is manually adjusted
@@ -58,13 +58,14 @@ const StopwatchListItem = (props: any) => {
       } else if (actionType.action === "clear") {
         tag = { id: null, label: "" };
       }
-      const promise = props.handleChangeEntryTags(entry.id, tag, remove);
+      const promise = props.updateEntryTags(entry.id, tag, remove);
       return promise.then((id: number | undefined) => {
         if (!id) return id;
         props.updateEntry({
           ...props.entry,
           tags: value
         });
+        return id;
       });
     }
     return props.updateEntry({
@@ -135,12 +136,11 @@ const StopwatchListItem = (props: any) => {
           <Button calendar onClick={() => setShowCalendar(!showCalendar)} />
           {showCalendar && 
             <div className='show-calendar'>
-              <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowCalendar(false)} />
-                <Calendar
-                  value={calendarDate}
-                  onClickDay={(value: Date) => calendarState(value)}
-                  locale='en-CA'
-                />
+              <Calendar
+                value={calendarDate}
+                onClickDay={(value: Date) => updateCalendar(value)}
+                locale='en-CA'
+              />
             </div>
           }
         </div>

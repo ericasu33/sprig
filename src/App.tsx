@@ -14,7 +14,16 @@ function App() {
   const [allCategories, setAllCategories]: [ICategory[], Function] = useState([]);
   const [allTags, setAllTags]: [ITag[], Function] = useState([]);
   const [allEntries, setAllEntries]: [IEntry[], Function] = useState([]);
-  const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState(null);
+  const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState({
+    id: undefined,
+    category: null,
+    tags: null,
+    start_time: null,
+    end_time: null,
+    intensity: 100,
+    pause_start_time: null,
+    cumulative_pause_duration: 0,
+  });
 
   // Handle pomodoro timer CREATE and UPDATE
   const handleAddTimer = (timer: ITimer) => {
@@ -50,7 +59,10 @@ function App() {
   const handleCreateNewCategory = (category: ICategory) => {
     return axios.post(`/api/category`, category)
       .then((res) => {
-      return res.data.id;
+        setAllCategories((prev: ICategory[]) => {
+          return [ ...prev, { ...category, id: res.data.id } ];
+        });
+    return res.data.id;
       })
       .catch((err) => {
         console.error(err);
@@ -61,6 +73,9 @@ function App() {
   const handleCreateNewTag = (tag: ITag) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
+        setAllTags((prev: ITag[]) => {
+          return [ ...prev, { ...tag, id: res.data.id } ];
+        });
         return res.data.id;
       })
       .catch((err) => {
@@ -78,7 +93,7 @@ function App() {
       category: entryObj.category && entryObj.category.id,
       start_time: entryObj.start_time,
       end_time: entryObj.end_time,
-      intensity: Math.floor(Number(entryObj.intensity) / 100),
+      intensity: entryObj.intensity,
       pause_start_time: entryObj.pause_start_time,
       cumulative_pause_duration: entryObj.cumulative_pause_duration,
     })
@@ -98,40 +113,64 @@ function App() {
         console.error(err);
       });
     }
-    // if (instruction === 'CLONE') {
-    //     // post to createEntry route, get newEntry.id
-    //     // .then update local allEntries state CHECK SORT ORDER is by start_time
-    //     let sortedAllEntries = []
-    //     for (let i=0; i < allEntries.length; i++) {
-    //       sortedAllEntries.push(allEntries[i])
-    //       if (allEntries[i].id === entryObj.id) {
-    //         sortedAllEntries.push(entryObj)
-    //       }
-    //     }
-    //     setAllEntries(sortedAllEntries)
-    //   }
-    // if (instruction === 'DELETE') {
-    //     // missing delete route?
-    //   // post to deleteEntry route /:id
-    //   // update local allEntries state
-    //   setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
-    // }
-    // if (instruction === 'PLAY') {
-    //     setActiveEntry({
-    //     ...entryObj,
-    //     start_time: null,
-    //     end_time: null,
-    //     pause_start_time: null,
-    //     cumulative_pause_duration: 0,
-    //   });
-    // }
+    if (instruction === 'CLONE') {
+        // NOTE : something is wrong with how tags are stored inside of the objects, causing clones to not work
+        axios.post(`api/stopwatches`, convertEntryToDBFormat(entryObj))
+          .then((res) => {
+            if (!entryObj || !entryObj.tags) return;
+            const {tags}: any = entryObj;
+            const promises = tags.map((tag: ITag) => {
+              return axios.post(`api/stopwatches/${entryObj.id}/tags/${tag.id}`);
+            });
+            return Promise.all(promises);
+          })
+          .then((res) => {
+            let sortedAllEntries = []
+            for (let i=0; i < allEntries.length; i++) {
+              sortedAllEntries.push(allEntries[i])
+              if (allEntries[i].id === entryObj.id) {
+                sortedAllEntries.push(entryObj)
+              }
+            }
+            setAllEntries(sortedAllEntries);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    if (instruction === 'DELETE') {
+      axios.delete(`api/stopwatches/${entryObj.id}`)
+        .then((res) => {
+          return axios.delete(`api/stopwatches/${entryObj.id}/tags`);
+        })
+        .then((res) => {
+          setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    if (instruction === 'PLAY') {
+      setActiveEntry({
+        ...entryObj,
+        start_time: null,
+        end_time: null,
+        pause_start_time: null,
+        cumulative_pause_duration: 0,
+      });
+    }
   };
   
   const handleSaveNewEntry = (entryObj: IEntry) => {
     const inDbFormat = convertEntryToDBFormat(entryObj)
-    return axios.post<IEntry>(`/api/stopwatches/${entryObj.id}`, inDbFormat)
+    return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
       .then(res => {
-        setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}])
+        const {tags}: any = entryObj;
+        const promises = tags.map((tag: ITag) => {
+          return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
+        });
+        setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}]);
+        return Promise.all(promises);
       })
       .catch((err) => {
         console.error(err);
@@ -173,15 +212,14 @@ function App() {
 
     const constructTagsObj = (entryId: number) => {  
       const tagsObjArr: ITag[] = [];
-      entries_tags.map((et: IEntriesTags) => {
+      for (const et of entries_tags) {
         if (et.entry_id === entryId) {
-          tagsObjArr.push({
-            id: tagsDB[et.tag_id].id,
-            label: tagsDB[et.tag_id].tag,
-            value: tagsDB[et.tag_id].tag
-          })
+          const tag = tagsDB.find((tag) => tag.id === et.tag_id);
+          if (tag) {
+            tagsObjArr.push({ id: tag.id, label: tag?.tag, value: tag.tag });
+          }
         }
-      })
+      }
       return tagsObjArr;
     }
     const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
@@ -192,7 +230,7 @@ function App() {
         start_time: new Date(String(entryDB.start_time)),
         end_time: new Date(String(entryDB.end_time)),
         pause_start_time: new Date(String(entryDB.pause_start_time)),
-        intensity: Number(entryDB.intensity) * 100,
+        intensity: Number(entryDB.intensity),
       }
     })
     console.log('allEntriesFormatted:', allEntriesFormatted);
@@ -247,10 +285,14 @@ function App() {
             <section className='pm-activesw-sw'>
               <StopwatchActive
                 allCategories={allCategories}
-                createNewCategory={handleCreateNewCategory}
+                updateAllCategories={() => console.log('app.tsx runs update all categories')}
                 allTags={allTags}
+                updateAllTags={() => console.log('app.tsx runs update all tags')}
+                createNewCategory={handleCreateNewCategory}
                 createNewTag={handleCreateNewTag}
+                handleChangeEntryTags={handleUpdateEntryTags}
                 activeEntry={activeEntry}
+                setActiveEntry={setActiveEntry}
                 saveNewEntry={handleSaveNewEntry}
               />
             </section>
@@ -259,12 +301,13 @@ function App() {
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
+            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             createNewCategory={handleCreateNewCategory}
             allTags={allTags}
             createNewTag={handleCreateNewTag}
             updateEntryTags={handleUpdateEntryTags}
             allEntries={allEntries}
-            updateEntry={updateEntry}
+            updateEntry={updateEntry} 
           />
         </section>
       </section>
