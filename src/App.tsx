@@ -24,6 +24,7 @@ function App() {
 
   const handleAddTimer = (timer: ITimer) => {
     // CREATE (save) new pomodoro timer
+    let promise;
     if (timer.id === null) {
       promise = axios.post(`/api/pomodoro`, timer)
         .then((res: any) => {
@@ -35,13 +36,13 @@ function App() {
         });
     }
     // UPDATE custom pomodoro timer
-    return axios.put(`/api/pomodoro/${timer.id}`, timer)
+    promise = axios.put(`/api/pomodoro/${timer.id}`, timer)
       .then((res: any) => {
         const { data } = res;
         setTimerPresets((prev: ITimer[]) => {
           return prev.map((t: ITimer) => Number(t.id) === Number(data.id) ? {...timer} : t);
         });
-    }
+    });
     return promise.catch((err) => {
       console.error(err);
     });

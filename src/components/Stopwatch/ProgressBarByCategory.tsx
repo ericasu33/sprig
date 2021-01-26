@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD:src/components/Stopwatch/ProgressBarByCategory.tsx
 import { useAxiosGet } from 'hooks/HTTPRequestStopwatch';
+=======
+>>>>>>> origin/feature/visualization/all:src/components/ProgressBarByCategory.tsx
 import "./ProgressBar.scss";
 import Loader from '../Loader';
 import ProgressBar from './ProgressBar';
@@ -8,28 +11,19 @@ import { filterStopwatchData } from '../../helpers/displayStopwatchByCatData'
 
 
 const Bar = ( props : any ) => {
-  const url = "http://localhost:8080/api/stopwatches"
-  const stopwatches : any = useAxiosGet(url)
+  const stopwatches : any = props.dataState;
   let content = null;
   let sumOfValue: number = 0;
 
-  if (stopwatches.error) {
-    content =
-      <p>
-        There was an error, please refresh or try again later
-    </p>
-  }
-
-  if (stopwatches.loading) {
+  if (!stopwatches) {
     content = <Loader />
   }
 
-  if (stopwatches.data) {
+  if (stopwatches) {
 
     const aggregateTotalDurationByCategory = (filteredEntries: any) => {
       const entryObj: any = {};
-      const result: any = [];
-
+      let result: any = [];
 
       for (const entry of filteredEntries) {
         const nameColor = entry.name + ',' + entry.color
@@ -51,13 +45,21 @@ const Bar = ( props : any ) => {
           color: nameColorArr[1]
         })
       }
+
+      if (result.length === 0) {
+        result = [{
+          color: "#A8A8A8",
+          name: "No Category",
+          value: 0,
+          valueInSec: 0
+        }]
+      }
+      
+      console.log(result)
       return result;
     }
     
   const dataArray : any = aggregateTotalDurationByCategory(filterStopwatchData(stopwatches));
-
-  console.log(dataArray)
-
 
     content = dataArray.map((entry : any, key : any) => {
       return (
