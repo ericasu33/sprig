@@ -15,12 +15,10 @@ const filterData = (allEntries: any, filterOptions: any) => {
   const isEntryInFilter = (entry: any) => {
     // Filter is null, return true for entry
     if (isBlankFilter) return true
-
     // Category in filter, return false if not same as entry category
-    if (category) {
-      if (category.id !== entry.category.id) {
-        return false;
-      }
+    if (category && !entry.category) return false;
+    if (category && entry.category && category.id !== entry.category.id) {
+      return false;
     }
     // Tag or tags in filter, return false if entry tags array doesn't include all filter tags
     if (tags) {
