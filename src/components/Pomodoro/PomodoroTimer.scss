@@ -28,64 +28,95 @@
   .pomodoro-form {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 150px;
     .pm-form-left-block {
       display: flex;
       justify-content: flex-start;
-      // align-items: center;
+      width: 100%;
       .pm-group {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
       }
       .pm-input-container {
-        width: 80%;
         display: flex;
         flex-direction: column;
-        .pm-inputs-group {
-          // background-color: peachpuff;
+        border-left: 1px solid $border-highlight;
+        border-right: 1px solid $border-highlight;
+        margin-left: 20px;
+        width: 100%;
+        // INPUTS TOP ROW
+        .pm-inputs-container-top {
           display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
           align-items: center;
-          height: 75px;
-        }
-        .pm-name-label {
-          margin-bottom: 10px;
-          text-align: center;
-        }
-        .pm-name-input {
-          width: 250px;
-        }
-        .pm-inputs-times {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-evenly;
-          align-items: center;
-          // border: 1px solid greenyellow;
-          .pm-input-break {
-            // width: 200px;
+          height: 90px;
+          width: 100%;
+          padding: 10px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid $border-highlight;
+          .pm-inputs-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 75px;
+          }
+          .pm-label {
+            height: 30px;
+            margin: 0px;
+            font-size: 0.9em;
+            &.pm-label-createselect {
+              margin-bottom: 2px;
+            }
+          }
+          .pm-inputs-container-top-left {
+            width: 300px;
+            .create-select {
+              width: 250px;
+            }
+          }
+          .pm-inputs-container-top-right {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
           }
         }
-        .pm-inputs-alerts {
+        // INPUTS BOTTOM ROW
+        .pm-inputs-container-bottom {
           display: flex;
-          flex-direction: row;
-          justify-content: space-evenly;
           align-items: center;
-          margin-top: 20px;
-          // border: 1px solid orange;
-          .pm-alerts-title {
-            width: 250px;
-            text-align: right;
-          }
+          width: 100%;
+          padding: 10px;
           .pm-alerts-group {
-            width: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+          }
+          .pm-label {
+            margin: 0px;
+          }
+          .pm-inputs-container-bottom-left {
+            width: 250px;
             text-align: center;
-            // background-color: pink;
-            & select {
+          }
+          .pm-inputs-container-bottom-right {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            .pm-alerts-group {
               width: 150px;
+              text-align: center;
+              & select {
+                width: 150px;
+                border-color: $background-light;
+                color: grey;
+              }
             }
           }
         }
@@ -94,7 +125,7 @@
     .pm-form-right-block {
       display: flex;
       justify-content: flex-end;
-      border: 1px solid;
+      background-color: $background-transparent-light;
       .pm-calc-times {
         min-width: 140px;
         font-size: small;
