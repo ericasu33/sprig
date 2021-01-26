@@ -78,7 +78,7 @@ function App() {
       category: entryObj.category && entryObj.category.id,
       start_time: entryObj.start_time,
       end_time: entryObj.end_time,
-      intensity: entryObj.intensity,
+      intensity: Math.floor(Number(entryObj.intensity) / 100),
       pause_start_time: entryObj.pause_start_time,
       cumulative_pause_duration: entryObj.cumulative_pause_duration,
     })
@@ -192,7 +192,7 @@ function App() {
         start_time: new Date(String(entryDB.start_time)),
         end_time: new Date(String(entryDB.end_time)),
         pause_start_time: new Date(String(entryDB.pause_start_time)),
-        intensity: Number(entryDB.intensity),
+        intensity: Number(entryDB.intensity) * 100,
       }
     })
     console.log('allEntriesFormatted:', allEntriesFormatted);
