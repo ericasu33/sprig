@@ -59,7 +59,10 @@ function App() {
   const handleCreateNewCategory = (category: ICategory) => {
     return axios.post(`/api/category`, category)
       .then((res) => {
-      return res.data.id;
+        setAllCategories((prev: ICategory[]) => {
+          return [ ...prev, { ...category, id: res.data.id } ];
+        });
+    return res.data.id;
       })
       .catch((err) => {
         console.error(err);
@@ -70,6 +73,9 @@ function App() {
   const handleCreateNewTag = (tag: ITag) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
+        setAllTags((prev: ITag[]) => {
+          return [ ...prev, { ...tag, id: res.data.id } ];
+        });
         return res.data.id;
       })
       .catch((err) => {
