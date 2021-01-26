@@ -98,6 +98,7 @@ function App() {
     if (instruction === 'UPDATE') {
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
+        console.log(entryObj);
         setAllEntries(allEntries.map((e: IEntry) => {
           return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
         }))
@@ -107,9 +108,15 @@ function App() {
         console.error(err);
       });
     }
+    if (instruction === 'UPDATE_TAGS') {
+      setAllEntries(allEntries.map((e: IEntry) => {
+        return Number(e.id) === Number(entryObj.id) ? {...entryObj} : e
+      }));
+    }
     if (instruction === 'CLONE') {
         // NOTE : something is wrong with how tags are stored inside of the objects, causing clones to not work
         const newEntry: any = { ...entryObj };
+        console.log(newEntry);
         axios.post(`api/stopwatches`, convertEntryToDBFormat(newEntry))
           .then((res) => {
             newEntry.id = res.data.id;
