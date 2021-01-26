@@ -48,7 +48,7 @@ const Reports = (props: any) => {
           <div className='stopwatch-group'>
             <Categories 
               allCategories={props.allCategories}
-              updateAllCategories={props.updateAllCategories}
+              createNewCategory={props.createNewCategory}
               category={props.category}
               onChange={updateFilterOptions}
               readOnly
@@ -57,7 +57,7 @@ const Reports = (props: any) => {
           <div className='stopwatch-group sw-tags'>
             <Tags
               allTags={props.allTags}
-              updateAllTags={props.updateAllTags}
+              createNewTag={props.createNewTag}
               tags={props.tags}
               onChange={updateFilterOptions}
               readOnly
@@ -89,12 +89,11 @@ const Reports = (props: any) => {
         <section className='section-sw-entries'>
           <StopwatchList
             allCategories={props.allCategories}
-            updateAllCategories={props.updateAllCategories}
+            createNewCategory={props.createNewCategory}
             allTags={props.allTags}
+            createNewTag={props.createNewTag}
+            updateEntryTags={props.updateEntryTags}
             filteredEntries={props.allEntries}
-            addCategory={props.handleAddCategory}
-            addTag={props.updateAllTags}
-            updateTags={props.updateEntriesTags}
           />
         </section>
       }

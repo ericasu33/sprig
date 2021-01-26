@@ -27,13 +27,13 @@ interface IClock {
   partition: number,
 }
 interface ICategoryDB {
-  id?: number,
+  id?: number | null,
   user_id?: string,
   name: string,
   color: string,
 }
 interface ICategory {
-  id: number | null,
+  id: number | null | undefined,
   value: string,
   color: string,
   label?: string,
@@ -56,6 +56,10 @@ interface ITag {
   value?: string,
 }
 
+interface IEntriesTags {
+  entry_id: number,
+  tag_id: number
+}
 interface IEntryDB {
   id?: number,
   category: number | null,
@@ -65,11 +69,6 @@ interface IEntryDB {
   pause_start_time?: Date | null,
   cumulative_pause_duration: number | null
 }
-interface IEntriesTags {
-  entry_id: number,
-  tag_id: number
-}
-
 interface IEntry {
   id?: number,
   category: ICategory | null,

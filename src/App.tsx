@@ -5,14 +5,8 @@ import StopwatchActive from 'components/Stopwatch/StopwatchActive';
 import Reports from 'components/Stopwatch/Reports';
 import PomodoroTimer from 'components/Pomodoro/PomodoroTimer';
 import 'components/Pomodoro/PomodoroTimer';
-import { 
-  blankActiveEntry,
-  activeEntryData,
-  allEntriesData 
-} from 'hooks/stopwatchData';
 
 import { ISound, ITimer, ICategoryDB, ICategory, ITagDB, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
-import { ETIME } from 'constants';
 
 function App() {
   const [timerPresets, setTimerPresets]: [ITimer[], Function] = useState([]);
@@ -53,7 +47,7 @@ function App() {
   };
 
   // Handle Category CREATE
-  const handleAddCategory = (category: ICategory) => {
+  const handleCreateNewCategory = (category: ICategory) => {
     return axios.post(`/api/category`, category)
       .then((res) => {
       return res.data.id;
@@ -64,7 +58,7 @@ function App() {
   };
 
   // Handle Tag CREATE
-  const handleAddTag = (tag: ITag) => {
+  const handleCreateNewTag = (tag: ITag) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
         return res.data.id;
@@ -139,7 +133,7 @@ function App() {
     }
   }  
   
-  const saveNewEntry = (entryObj: IEntry) => {
+  const handleSaveNewEntry = (entryObj: IEntry) => {
     const inDbFormat = {
       category_id: entryObj.category && entryObj.category.id,
       start_time: entryObj.start_time,
@@ -157,7 +151,7 @@ function App() {
       })
   }
 
-  const handleChangeEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
+  const handleUpdateEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
     let promise;
     if (remove) {
       promise = axios.delete(`/api/stopwatches/${entry_id}/tags${(tag.id && `/${tag.id}`) || ""}`)
@@ -177,25 +171,27 @@ function App() {
 
   // Change format from DB to local state and construct local format if necessary
   const reformatCategoriesToLocal = (categoriesDB: ICategoryDB[]) => {
-    setAllCategories(categoriesDB.map((cat: ICategoryDB) => ({id: cat.id, label: cat.name, value: cat.name, color: cat.color})))
+    return categoriesDB.map((cat: ICategoryDB) => ({id: cat.id, label: cat.name, value: cat.name, color: cat.color}))
   }
   const reformatTagsToLocal = (tagsDB: ITagDB[]) => {
-    setAllTags(tagsDB.map((tag: ITagDB) => ({ id: tag.id, label: tag.tag, value: tag.tag})))
+    return tagsDB.map((tag: ITagDB) => ({ id: tag.id, label: tag.tag, value: tag.tag}))
   }
   const constructAllEntriesFromDB = (
     entriesDB: IEntryDB[],
     entries_tags: IEntriesTags[],
-    allCategories: ICategoryDB[],
-    allTags: ITagDB[]
+    categoriesDB: ICategoryDB[],
+    tagsDB: ITagDB[]
   ) => {
+    const categories: ICategory[] = reformatCategoriesToLocal(categoriesDB)
+
     const constructTagsObj = (entryId: number) => {  
       const tagsObjArr: ITag[] = [];
       entries_tags.map((et: IEntriesTags) => {
         if (et.entry_id === entryId) {
           tagsObjArr.push({
-            id: allTags[et.tag_id].id,
-            label: allTags[et.tag_id].tag,
-            value: allTags[et.tag_id].tag
+            id: tagsDB[et.tag_id].id,
+            label: tagsDB[et.tag_id].tag,
+            value: tagsDB[et.tag_id].tag
           })
         }
       })
@@ -204,8 +200,12 @@ function App() {
     const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
       return {
         ...entryDB,
-        category: entryDB.category && allCategories.filter((cat: ICategoryDB) => cat.id === entryDB.category)[0],
-        tags: entryDB.id && constructTagsObj(entryDB.id)
+        category: (entryDB.category !== null) && categories.filter((cat: ICategory) => cat.id === entryDB.category)[0],
+        tags: entryDB.id && constructTagsObj(entryDB.id),
+        start_time: new Date(String(entryDB.start_time)),
+        end_time: new Date(String(entryDB.end_time)),
+        pause_start_time: new Date(String(entryDB.pause_start_time)),
+        intensity: Number(entryDB.intensity),
       }
     })
     setAllEntries(allEntriesFormatted);
@@ -256,22 +256,22 @@ function App() {
         <section className='section-sw-active'>
           <StopwatchActive
             allCategories={allCategories}
-            updateAllCategories={handleAddCategory}
+            updateAllCategories={handleCreateNewCategory}
             allTags={allTags}
-            updateAllTags={handleAddTag}
-            blankActiveEntry={blankActiveEntry}
+            updateAllTags={handleCreateNewTag}
             activeEntry={activeEntry}
-            saveNewEntry={saveNewEntry}
+            saveNewEntry={handleSaveNewEntry}
           />
         </section>
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
-            updateAllCategories={handleAddCategory}
+            createNewCategory={handleCreateNewCategory}
             allTags={allTags}
-            updateAllTags={handleAddTag}
-            updateEntriesTags={handleChangeEntryTags}
-            allEntries={allEntriesData}
+            createNewTag={handleCreateNewTag}
+            updateEntryTags={handleUpdateEntryTags}
+            allEntries={allEntries}
+            updateEntry={updateEntry}
           />
         </section>
       </section>
