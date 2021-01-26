@@ -24,27 +24,48 @@ function App() {
 
   const handleAddTimer = (timer: ITimer) => {
     // CREATE (save) new pomodoro timer
+    let promise;
     if (timer.id === null) {
-      return axios.post(`/api/pomodoro`, timer)
+      promise = axios.post(`/api/pomodoro`, timer)
         .then((res: any) => {
           const { data } = res;
           setTimerPresets((prev: ITimer[]) => {
             return [ ...prev, { ...timer, id: data.id } ];
           });
           return data.id;
-        })
-        .catch((err) => {
-          console.error(err);
+        });
+    // UPDATE custom pomodoro timer
+    } else {
+      promise = axios.put(`/api/pomodoro/${timer.id}`, timer)
+        .then((res: any) => {
+          const { data } = res;
+          setTimerPresets((prev: ITimer[]) => {
+            return prev.map((t: ITimer) => Number(t.id) === Number(data.id) ? {...timer} : t);
+          });
+          return data.id;
         });
     }
-    // UPDATE custom pomodoro timer
-    return axios.put(`/api/pomodoro/${timer.id}`, timer)
-      .then((res: any) => {
-        const { data } = res;
-        setTimerPresets((prev: ITimer[]) => {
-          return prev.map((t: ITimer) => Number(t.id) === Number(data.id) ? {...timer} : t);
-        });
-        return data.id;
+    return promise.catch((err) => {
+      console.error(err);
+    });
+  };
+
+  const handleAddCategory = (category: ICategory) => {
+    // convert category to DB format
+    return axios.post(`/api/category`, category)
+      .then((res) => {
+        return res.data.id;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleAddTag = (tag: ITag) => {
+    // convert tag to DB format
+    return axios.post(`/api/tag`, tag)
+      .then((res) => {
+        return res.data.id;
       })
       .catch((err) => {
         console.error(err);
@@ -158,13 +179,11 @@ function App() {
     ])
       .then((all) => {
         const [pomodoros, sounds, categories, tags, entries, entries_tags] = all;
-        console.log(pomodoros.data);
         setTimerPresets(pomodoros.data);
         setSoundFiles(sounds.data);
-        setAllCategories(categories.data);
-        setAllTags(tags.data);
-        // setAllEntries(entries.data);
-        constructAllEntries(entries.data, entries_tags.data, categories.data, tags.data);
+        setAllCategories(categories.data.map((cat: ICategory) => ({id: cat.id, label: cat.name, value: cat.name, color: cat.color})));
+        setAllTags(tags.data.map((tag: ITagDB) => ({ id: tag.id, label: tag.tag, value: tag.tag})));
+        constructAllEntriesFromDB(entries.data, entries_tags.data, categories.data, tags.data);
       })
       .catch((err) => {
         console.error(err);
@@ -194,9 +213,9 @@ function App() {
         <section className='section-sw-active'>
           <StopwatchActive
             allCategories={allCategories}
-            updateAllCategories={() => console.log('app.tsx runs update all categories')}
+            updateAllCategories={handleAddCategory}
             allTags={allTags}
-            updateAllTags={() => console.log('app.tsx runs update all tags')}
+            updateAllTags={handleAddTag}
             blankActiveEntry={blankActiveEntry}
             activeEntry={activeEntry}
             saveNewEntry={saveNewEntry}
@@ -205,11 +224,11 @@ function App() {
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
-            updateAllCategories={() => console.log('app.tsx runs update all categories')}
+            updateAllCategories={handleAddCategory}
             allTags={allTags}
-            updateAllTags={() => console.log('app.tsx runs update all tags')}
-            allEntries={allEntries}
-            updateEntry={updateEntry} 
+            updateAllTags={handleAddTag}
+            updateEntriesTags={handleChangeEntryTags}
+            allEntries={allEntriesData}
           />
         </section>
       </section>
