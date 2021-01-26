@@ -11,6 +11,8 @@ import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 import StopwatchList from './StopwatchList';
 
+import { ITag } from '../../ts-interfaces/interfaces';
+
 /*  setDateToLocalMidnight sets hours, minutes, seconds, milliseconds to zero
     so that calendarDate is always midnight, consistent with return value
     from 'react-calendar' */
@@ -57,16 +59,16 @@ const StopwatchListItem = (props: any) => {
         tag = { id: null, label: "" };
       }
       const promise = props.handleChangeEntryTags(entry.id, tag, remove);
-      promise.then(() => {
+      return promise.then((id: number | undefined) => {
+        if (!id) return id;
         props.updateEntry({
           ...props,
           tags: value
-        })
+        });
       });
-      return;
     }
-  props.updateEntry({
-      ...props.entry,
+    props.updateEntry({
+      ...props,
       [key]: value
     }, 'UPDATE')
   };

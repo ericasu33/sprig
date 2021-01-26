@@ -91,9 +91,10 @@ const Reports = (props: any) => {
             allCategories={props.allCategories}
             updateAllCategories={props.updateAllCategories}
             allTags={props.allTags}
-            updateAllTags={props.updateAllTags}
-            filteredEntries={filteredEntries}
-            updateEntry={props.updateEntry}
+            filteredEntries={props.allEntries}
+            addCategory={props.handleAddCategory}
+            addTag={props.updateAllTags}
+            updateTags={props.updateEntriesTags}
           />
         </section>
       }
