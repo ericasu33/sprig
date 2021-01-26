@@ -10,7 +10,7 @@ import { ICategory } from 'ts-interfaces/interfaces';
 
 const Category = (props: any) => {
 
-  const [allCategories, setAllCategories] = useState(props.allCategories)
+  // const [allCategories, setAllCategories] = useState(props.allCategories)
   const [value, setValue] = useState(props.category)
   const [showColourPicker, setShowColourPicker] = useState(false)
 
@@ -21,23 +21,27 @@ const Category = (props: any) => {
     color: '#000'
   });
 
-  useEffect(() => {
-    if (!props.allCategories) return
-    setAllCategories(props.allCategories)
-  }, [props.allCategories])
+  // useEffect(() => {
+  //   if (!props.allCategories) return
+  //   setAllCategories(props.allCategories)
+  // }, [props.allCategories])
 
   useEffect(() => {
     setValue(props.category || '')
   }, [props.category])
   
-  const handleChange = (updatedCategory: any) => {
-    props.onChange('category', updatedCategory)
-    setValue(updatedCategory);
+  const handleChange = (updatedCategory: ICategory) => {
+    const promise = props.onChange('category', updatedCategory)
+    promise.then((id: number | undefined) => {
+      if (!id) return;
+      props.onChange('category', updatedCategory)
+      setValue(updatedCategory);
+    });
   };
 
   const handleCreate = (inputValue: any) => {
     const newCategory = createCategory(inputValue);
-    const promise = props.updateAllCategories(newCategory);
+    const promise = props.createNewCategory(newCategory);
     promise.then((id: number | undefined) => {
       if (!id) return;
       props.onChange('category', newCategory)
@@ -45,13 +49,9 @@ const Category = (props: any) => {
     });
   };
 
-  const colourUpdate = ((picked: any) => {
-    const updatedCategory: ICategory = {...value, color: picked.hex}
+  const handleUpdateColour = ((picked: any) => {
+    const updatedCategory: ICategory = {...value, color: picked.hex}    
     handleChange(updatedCategory)
-    const updatedCategories = allCategories.map((cat: ICategory) => {
-      return cat.id === updatedCategory.id ? updatedCategory : cat
-    })
-    props.updateAllCategories(updatedCategories)
   })
 
   return (
@@ -65,7 +65,7 @@ const Category = (props: any) => {
             placeholder='Category...'
             onChange={handleChange}
             onCreateOption={handleCreate}
-            options={allCategories}
+            options={props.allCategories}
             value={value}
           />
         }
@@ -76,7 +76,7 @@ const Category = (props: any) => {
             isClearable
             placeholder='Category...'
             onChange={handleChange}
-            options={allCategories}
+            options={props.allCategories}
             value={value}
           />
         }
@@ -95,7 +95,7 @@ const Category = (props: any) => {
                 />
                 <CirclePicker
                   color={props.category ? props.category.color : '#000'}
-                  onChangeComplete={(picked: any) => colourUpdate(picked)}
+                  onChangeComplete={(picked: any) => handleUpdateColour(picked)}
                 />
               </div>
             }

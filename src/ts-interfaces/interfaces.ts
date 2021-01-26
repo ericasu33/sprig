@@ -26,13 +26,17 @@ interface IClock {
   time: number,
   partition: number,
 }
-
+interface ICategoryDB {
+  id?: number | null,
+  user_id?: string,
+  name: string,
+  color: string,
+}
 interface ICategory {
-  id: number | null,
+  id: number | null | undefined,
   value: string,
-  color: string | null,
+  color: string,
   label?: string,
-  name?: string,
 }
 
 interface IStats {
@@ -46,13 +50,16 @@ interface ITagDB {
   tag: string,
   user_id: number,
 }
-
 interface ITag {
   id: number | null,
   label: string | null,
   value?: string,
 }
 
+interface IEntriesTags {
+  entry_id: number,
+  tag_id: number
+}
 interface IEntryDB {
   id?: number,
   category: number | null,
@@ -93,6 +100,7 @@ export type {
   ISound,
   ITimer,
   IClock,
+  ICategoryDB,
   ICategory,
   IStats,
   ITagDB,

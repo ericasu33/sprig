@@ -9,9 +9,10 @@ const StopwatchList = (props: any) => {
     <StopwatchListItem
       key={entry.id}
       allCategories={props.allCategories}
-      updateAllCategories={props.updateAllCategories}
+      createNewCategory={props.createNewCategory}
       allTags={props.allTags}
-      updateAllTags={props.updateAllTags}
+      createNewTag={props.createNewTag}
+      updateEntryTags={props.updateEntryTags}
       entry={entry}
       updateEntry={props.updateEntry}
     />

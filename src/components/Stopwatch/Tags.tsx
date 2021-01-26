@@ -18,8 +18,7 @@ const Tags = (props: any) => {
   const [inputValue, setInputValue] = useState('')
     
   useEffect(() => {
-    if (!props.allTags) return
-    setAllTags(props.allTags);
+    if (props.allTags) setAllTags(props.allTags)
   }, [props.allTags])
 
   useEffect(() => {

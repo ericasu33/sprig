@@ -44,7 +44,7 @@ const StopwatchListItem = (props: any) => {
   };
 
   // Update start_time if InputClock is manually adjusted
-  const updateEntry = (key: string, value: Date | string | number, action = null) => {
+  const updateEntry = (key: string, value: Date | string | number, action: any = null) => {
     const actionType: any = action;
     if (key === "tags") {
       let tag: ITag = { id: null, label: ""};
@@ -62,12 +62,12 @@ const StopwatchListItem = (props: any) => {
       return promise.then((id: number | undefined) => {
         if (!id) return id;
         props.updateEntry({
-          ...props,
+          ...props.entry,
           tags: value
         });
       });
     }
-    props.updateEntry({
+    return props.updateEntry({
       ...props.entry,
       [key]: value
     }, 'UPDATE')
@@ -80,7 +80,7 @@ const StopwatchListItem = (props: any) => {
       <div className='stopwatch-group'>
         <Categories 
           allCategories={props.allCategories}
-          updateAllCategories={props.updateAllCategories}
+          createNewCategory={props.createNewCategory}
           category={props.entry.category}
           onChange={updateEntry}
         />
@@ -89,7 +89,8 @@ const StopwatchListItem = (props: any) => {
       <div className='stopwatch-group sw-tags'>
         <Tags
           allTags={props.allTags}
-          updateAllTags={props.updateAllTags}
+          createNewTag={props.createNewTag}
+          updateEntryTags={props.updateEntryTags}
           tags={props.entry.tags}
           onChange={updateEntry}
         />
