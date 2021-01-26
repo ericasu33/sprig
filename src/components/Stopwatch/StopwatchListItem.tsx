@@ -58,13 +58,14 @@ const StopwatchListItem = (props: any) => {
       } else if (actionType.action === "clear") {
         tag = { id: null, label: "" };
       }
-      const promise = props.handleChangeEntryTags(entry.id, tag, remove);
+      const promise = props.updateEntryTags(entry.id, tag, remove);
       return promise.then((id: number | undefined) => {
         if (!id) return id;
         props.updateEntry({
           ...props.entry,
           tags: value
         });
+        return id;
       });
     }
     return props.updateEntry({

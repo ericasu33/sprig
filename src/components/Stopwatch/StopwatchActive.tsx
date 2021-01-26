@@ -37,7 +37,15 @@ const StopwatchActive = (props: any) => {
     if (activeEntry.end_time) {
       props.saveNewEntry(activeEntry)
       console.log('SAVED ENTRY:', activeEntry);
-      setActiveEntry(blankActiveEntry)
+      setActiveEntry({
+        category: null,
+        tags: null,
+        start_time: null,
+        end_time: null,
+        intensity: 100,
+        pause_start_time: null,
+        cumulative_pause_duration: 0,
+      })
     }
   }, [activeEntry])
 

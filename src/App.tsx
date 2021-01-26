@@ -129,7 +129,7 @@ function App() {
   
   const handleSaveNewEntry = (entryObj: IEntry) => {
     const inDbFormat = convertEntryToDBFormat(entryObj)
-    return axios.post<IEntry>(`/api/stopwatches/${entryObj.id}`, inDbFormat)
+    return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
       .then(res => {
         setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}])
       })
@@ -173,15 +173,14 @@ function App() {
 
     const constructTagsObj = (entryId: number) => {  
       const tagsObjArr: ITag[] = [];
-      entries_tags.map((et: IEntriesTags) => {
+      for (const et of entries_tags) {
         if (et.entry_id === entryId) {
-          tagsObjArr.push({
-            id: tagsDB[et.tag_id].id,
-            label: tagsDB[et.tag_id].tag,
-            value: tagsDB[et.tag_id].tag
-          })
+          const tag = tagsDB.find((tag) => tag.id === et.tag_id);
+          if (tag) {
+            tagsObjArr.push({ id: tag.id, label: tag?.tag, value: tag.tag });
+          }
         }
-      })
+      }
       return tagsObjArr;
     }
     const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
@@ -248,10 +247,9 @@ function App() {
             updateAllCategories={() => console.log('app.tsx runs update all categories')}
             allTags={allTags}
             updateAllTags={() => console.log('app.tsx runs update all tags')}
-            blankActiveEntry={blankActiveEntry}
             createNewCategory={handleCreateNewCategory}
-            allTags={allTags}
             createNewTag={handleCreateNewTag}
+            handleChangeEntryTags={handleUpdateEntryTags}
             activeEntry={activeEntry}
             saveNewEntry={handleSaveNewEntry}
           />

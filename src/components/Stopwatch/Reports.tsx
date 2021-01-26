@@ -35,7 +35,6 @@ const Reports = (props: any) => {
     props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
   };
 
-
   return (
     <>
       <div className='analytics-filters stopwatch'>
