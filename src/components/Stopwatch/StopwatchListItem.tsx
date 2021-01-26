@@ -64,7 +64,7 @@ const StopwatchListItem = (props: any) => {
         props.updateEntry({
           ...props.entry,
           tags: value
-        });
+        }, "UPDATE_TAGS");
         return id;
       });
     }
