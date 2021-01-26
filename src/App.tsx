@@ -102,7 +102,6 @@ function App() {
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
     if (instruction === 'UPDATE') {
-      console.trace();
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
         setAllEntries(allEntries.map((e: IEntry) => {
