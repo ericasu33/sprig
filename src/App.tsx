@@ -104,6 +104,7 @@ function App() {
     if (instruction === 'UPDATE') {
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
+        console.log(entryObj);
         setAllEntries(allEntries.map((e: IEntry) => {
           return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
         }))
@@ -113,26 +114,35 @@ function App() {
         console.error(err);
       });
     }
+    if (instruction === 'UPDATE_TAGS') {
+      setAllEntries(allEntries.map((e: IEntry) => {
+        return Number(e.id) === Number(entryObj.id) ? {...entryObj} : e
+      }));
+    }
     if (instruction === 'CLONE') {
         // NOTE : something is wrong with how tags are stored inside of the objects, causing clones to not work
-        axios.post(`api/stopwatches`, convertEntryToDBFormat(entryObj))
+        const newEntry: any = { ...entryObj };
+        console.log(newEntry);
+        axios.post(`api/stopwatches`, convertEntryToDBFormat(newEntry))
           .then((res) => {
-            if (!entryObj || !entryObj.tags) return;
-            const {tags}: any = entryObj;
+            newEntry.id = res.data.id;
+            if (!newEntry || !newEntry.tags) return;
+            const {tags}: any = newEntry;
             const promises = tags.map((tag: ITag) => {
-              return axios.post(`api/stopwatches/${entryObj.id}/tags/${tag.id}`);
+              return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
             });
             return Promise.all(promises);
           })
-          .then((res) => {
-            let sortedAllEntries = []
+          .then((tags) => {
+            let sorted = [ ...allEntries ];
             for (let i=0; i < allEntries.length; i++) {
-              sortedAllEntries.push(allEntries[i])
-              if (allEntries[i].id === entryObj.id) {
-                sortedAllEntries.push(entryObj)
+              const entry: any = sorted[i];
+              if (entry !== null && newEntry !== null && entry.start_time >= newEntry.start_time) {
+                sorted.splice(i, 0, {...newEntry});
+                break;
               }
             }
-            setAllEntries(sortedAllEntries);
+            setAllEntries(sorted);
           })
           .catch((err) => {
             console.error(err);
