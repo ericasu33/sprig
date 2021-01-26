@@ -73,7 +73,7 @@ const StopwatchActive = (props: any) => {
   }
 
   const addCategory = (category: ICategory) => {
-    return props.updateAllCategories(category).then((id: number | undefined) => {
+    return props.createNewCategory(category).then((id: number | undefined) => {
       if (!id) return;
       setAllCategories((prev: ICategory[]) => {
         return [...prev, { ...category, id}]
@@ -82,7 +82,7 @@ const StopwatchActive = (props: any) => {
   };
 
   const addTag = (tag: ITag) => {
-    return props.updateAllTags(tag).then((id: number | undefined) => {
+    return props.createNewTag(tag).then((id: number | undefined) => {
       if (!id) return;
       setAllTags((prev: ITag[]) => {
         return [...prev, { ...tag, id}]
@@ -126,8 +126,8 @@ const StopwatchActive = (props: any) => {
 
         <div className='stopwatch-group'>
           <Categories 
-            allCategories={allCategories}
-            updateAllCategories={addCategory}
+            allCategories={props.allCategories}
+            createNewCategory={addCategory}
             category={activeEntry.category}
             onChange={updateActiveEntry}
           />
@@ -135,8 +135,8 @@ const StopwatchActive = (props: any) => {
 
         <div className='stopwatch-group sw-tags'>
           <Tags
-            allTags={allTags}
-            updateAllTags={addTag}
+            allTags={props.allTags}
+            createNewTag={addTag}
             tags={activeEntry.tags}
             onChange={updateActiveEntry}
           />

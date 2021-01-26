@@ -30,9 +30,15 @@ const Category = (props: any) => {
     setValue(props.category || '')
   }, [props.category])
   
-  const handleChange = (updatedCategory: any) => {
-    props.onChange('category', updatedCategory)
-    setValue(updatedCategory);
+  const handleChange = (updatedCategory: ICategory) => {
+    const promise = props.onChange('category', updatedCategory)
+    promise.then((id: number | undefined) => {
+      if (!id) return;
+      console.log('props.onChange', props.onChange);
+      
+      props.onChange('category', updatedCategory)
+      setValue(updatedCategory);
+    });
   };
 
   const handleCreate = (inputValue: any) => {

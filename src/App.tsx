@@ -224,8 +224,8 @@ function App() {
         const [pomodoros, sounds, categories, tags, entries, entries_tags] = all;
         setTimerPresets(pomodoros.data);
         setSoundFiles(sounds.data);
-        reformatCategoriesToLocal(categories.data);
-        reformatTagsToLocal(tags.data);
+        setAllCategories(reformatCategoriesToLocal(categories.data));
+        setAllTags(reformatTagsToLocal(tags.data));
         constructAllEntriesFromDB(entries.data, entries_tags.data, categories.data, tags.data);
       })
       .catch((err) => {
@@ -256,9 +256,9 @@ function App() {
         <section className='section-sw-active'>
           <StopwatchActive
             allCategories={allCategories}
-            updateAllCategories={handleCreateNewCategory}
+            createNewCategory={handleCreateNewCategory}
             allTags={allTags}
-            updateAllTags={handleCreateNewTag}
+            createNewTag={handleCreateNewTag}
             activeEntry={activeEntry}
             saveNewEntry={handleSaveNewEntry}
           />
