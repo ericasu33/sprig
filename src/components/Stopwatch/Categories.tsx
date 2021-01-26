@@ -21,10 +21,10 @@ const Category = (props: any) => {
     color: '#000'
   });
 
-  useEffect(() => {
-    if (!props.allCategories) return
-    setAllCategories(props.allCategories)
-  }, [props.allCategories])
+  // useEffect(() => {
+  //   if (!props.allCategories) return
+  //   setAllCategories(props.allCategories)
+  // }, [props.allCategories])
 
   useEffect(() => {
     setValue(props.category || '')
