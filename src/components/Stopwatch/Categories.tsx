@@ -45,13 +45,9 @@ const Category = (props: any) => {
     });
   };
 
-  const colourUpdate = ((picked: any) => {
-    const updatedCategory: ICategory = {...value, color: picked.hex}
+  const handleUpdateColour = ((picked: any) => {
+    const updatedCategory: ICategory = {...value, color: picked.hex}    
     handleChange(updatedCategory)
-    const updatedCategories = allCategories.map((cat: ICategory) => {
-      return cat.id === updatedCategory.id ? updatedCategory : cat
-    })
-    props.updateAllCategories(updatedCategories)
   })
 
   return (

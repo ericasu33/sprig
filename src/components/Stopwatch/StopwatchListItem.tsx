@@ -44,7 +44,7 @@ const StopwatchListItem = (props: any) => {
   };
 
   // Update start_time if InputClock is manually adjusted
-  const updateEntry = (key: string, value: Date | string | number, action = null) => {
+  const updateEntry = (key: string, value: Date | string | number, action: any = null) => {
     const actionType: any = action;
     if (key === "tags") {
       let tag: ITag = { id: null, label: ""};
