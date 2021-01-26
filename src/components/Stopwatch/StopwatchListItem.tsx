@@ -151,13 +151,13 @@ const StopwatchListItem = (props: any) => {
       <div className='stopwatch-group sw-calc-times'>
         <StepInputTimer
           label="Total time"
-          value={totalTime / 1000}
+          value={Math.floor(totalTime / 1000)}
           disabled
         />
       
         <StepInputTimer
           label="Effective time"
-          value={totalTime / 1000 * props.entry.intensity / 100}
+          value={Math.floor(totalTime / 1000 * props.entry.intensity / 100)}
           disabled
         />
       </div>
