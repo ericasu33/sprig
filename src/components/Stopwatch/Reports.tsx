@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import StopwatchList from './StopwatchList'
 import Pie from './Pie'
-import ProgressBar from './ProgressBar'
+import ProgressBarByCategory from './ProgressBarByCategory'
 import Categories from './Categories'
 import Tags from './Tags'
 import DateRange from './DateRangePicker'
 import { IFilterOptions } from 'ts-interfaces/interfaces'
 import filterData from 'helpers/filterData'
+
+import { allEntriesData } from '../../hooks/stopwatchData';
 
 
 import './Reports.scss'
@@ -100,8 +102,12 @@ const Reports = (props: any) => {
 
       {tab === 'charts' &&
         <section className='section-sw-charts'>
-          <ProgressBar />
-          <Pie />
+          <ProgressBarByCategory 
+            entries={allEntriesData}
+          />
+          <Pie 
+            entries={allEntriesData}
+          />
         </section>
       }
 

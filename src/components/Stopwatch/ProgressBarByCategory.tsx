@@ -1,8 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD:src/components/Stopwatch/ProgressBarByCategory.tsx
-import { useAxiosGet } from 'hooks/HTTPRequestStopwatch';
-=======
->>>>>>> origin/feature/visualization/all:src/components/ProgressBarByCategory.tsx
 import "./ProgressBar.scss";
 import Loader from '../Loader';
 import ProgressBar from './ProgressBar';
@@ -11,7 +7,7 @@ import { filterStopwatchData } from '../../helpers/displayStopwatchByCatData'
 
 
 const Bar = ( props : any ) => {
-  const stopwatches : any = props.dataState;
+  const stopwatches : any = props.entries;
   let content = null;
   let sumOfValue: number = 0;
 
