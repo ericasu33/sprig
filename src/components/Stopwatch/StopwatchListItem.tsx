@@ -136,12 +136,11 @@ const StopwatchListItem = (props: any) => {
           <Button calendar onClick={() => setShowCalendar(!showCalendar)} />
           {showCalendar && 
             <div className='show-calendar'>
-              <div style={ {position: 'fixed', inset: 0} } onClick={() => setShowCalendar(false)} />
-                <Calendar
-                  value={calendarDate}
-                  onClickDay={(value: Date) => calendarState(value)}
-                  locale='en-CA'
-                />
+              <Calendar
+                value={calendarDate}
+                onClickDay={(value: Date) => updateCalendar(value)}
+                locale='en-CA'
+              />
             </div>
           }
         </div>
