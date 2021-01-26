@@ -19,10 +19,9 @@ const Bar = ( props : any ) => {
 
     const aggregateTotalDurationByCategory = (filteredEntries: any) => {
       const entryObj: any = {};
-      const result: any = [];
+      let result: any = [];
 
       for (const entry of filteredEntries) {
-        console.log("ENTRY", entry)
         const nameColor = entry.name + ',' + entry.color
         if (entryObj[nameColor]) {
           entryObj[nameColor] = entryObj[nameColor] + entry.value;
@@ -42,6 +41,17 @@ const Bar = ( props : any ) => {
           color: nameColorArr[1]
         })
       }
+
+      if (result.length === 0) {
+        result = [{
+          color: "#A8A8A8",
+          name: "No Category",
+          value: 0,
+          valueInSec: 0
+        }]
+      }
+      
+      console.log(result)
       return result;
     }
     
