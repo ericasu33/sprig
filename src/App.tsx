@@ -14,7 +14,16 @@ function App() {
   const [allCategories, setAllCategories]: [ICategory[], Function] = useState([]);
   const [allTags, setAllTags]: [ITag[], Function] = useState([]);
   const [allEntries, setAllEntries]: [IEntry[], Function] = useState([]);
-  const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState(null);
+  const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState({
+    id: undefined,
+    category: null,
+    tags: null,
+    start_time: null,
+    end_time: null,
+    intensity: 100,
+    pause_start_time: null,
+    cumulative_pause_duration: 0,
+  });
 
   // Handle pomodoro timer CREATE and UPDATE
   const handleAddTimer = (timer: ITimer) => {
@@ -104,7 +113,6 @@ function App() {
           .then((res) => {
             if (!entryObj || !entryObj.tags) return;
             const {tags}: any = entryObj;
-            console.log(tags);
             const promises = tags.map((tag: ITag) => {
               return axios.post(`api/stopwatches/${entryObj.id}/tags/${tag.id}`);
             });
@@ -120,7 +128,9 @@ function App() {
             }
             setAllEntries(sortedAllEntries);
           })
-          .catch();
+          .catch((err) => {
+            console.error(err);
+          });
       }
     if (instruction === 'DELETE') {
       axios.delete(`api/stopwatches/${entryObj.id}`)
@@ -135,7 +145,7 @@ function App() {
         });
     }
     if (instruction === 'PLAY') {
-        setActiveEntry({
+      setActiveEntry({
         ...entryObj,
         start_time: null,
         end_time: null,
@@ -149,7 +159,12 @@ function App() {
     const inDbFormat = convertEntryToDBFormat(entryObj)
     return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
       .then(res => {
-        setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}])
+        const {tags}: any = entryObj;
+        const promises = tags.map((tag: ITag) => {
+          return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
+        });
+        setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}]);
+        return Promise.all(promises);
       })
       .catch((err) => {
         console.error(err);
@@ -269,6 +284,7 @@ function App() {
             createNewTag={handleCreateNewTag}
             handleChangeEntryTags={handleUpdateEntryTags}
             activeEntry={activeEntry}
+            setActiveEntry={setActiveEntry}
             saveNewEntry={handleSaveNewEntry}
           />
         </section>
