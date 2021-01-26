@@ -5,15 +5,15 @@ import './StepInput.scss'
 
 const StepInputInt = function(props: any) {
   
-  const isPercent = (str: string) => props.percent ? Number(str) * 100 + ' %' : str
+  const concatPercent = (str: string) => str + (props.percent ? ' %' : '')
   
-  const [value, setValue] = useState(isPercent(String(props.value) || '0'))
+  const [value, setValue] = useState(concatPercent(String(props.value) || '0'))
 
   const cleanInput = (rawStr: string) => String(rawStr).replace(/\D/g,'')
 
   useEffect(() => {
     if (Number.isNaN(Number(props.value))) return;
-    setValue(isPercent(props.value));
+    setValue(concatPercent(props.value));
   }, [props.value]);
 
   const validateVal = (testVal: string | number) => {
@@ -30,14 +30,14 @@ const StepInputInt = function(props: any) {
     const cleaned: string = cleanInput(value)
     const rounded = Math.ceil((Number(cleaned) + plusOrMinus * Number(stepSize)) / Number(stepSize)) * Number(stepSize)
     const validated: Number = validateVal(rounded)
-    setValue(isPercent(String(validated)))
+    setValue(concatPercent(String(validated)))
     props.setValue(props.name, validated);
   };
 
   const handleBlur = (rawStr: string) => {
     const cleaned: string = cleanInput(rawStr)
     const validated: string = validateVal(cleaned)
-    setValue(isPercent(validated))
+    setValue(concatPercent(validated))
     props.setValue(props.name, validated);
   };
 

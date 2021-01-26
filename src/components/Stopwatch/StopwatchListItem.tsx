@@ -124,9 +124,9 @@ const StopwatchListItem = (props: any) => {
             name='intensity'
             value={props.entry.intensity}
             setValue={updateEntry}
-            stepSize='0.05'
+            stepSize='5'
             min='0'
-            max='1.0'
+            max='100'
             percent
           />
         </div>

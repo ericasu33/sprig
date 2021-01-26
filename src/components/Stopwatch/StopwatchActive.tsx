@@ -15,7 +15,7 @@ const blankActiveEntry: IEntry = {
   tags: null,
   start_time: null,
   end_time: null,
-  intensity: 1,
+  intensity: 100,
   pause_start_time: null,
   cumulative_pause_duration: 0,
 };
@@ -162,9 +162,9 @@ const StopwatchActive = (props: any) => {
               name='intensity'
               value={activeEntry.intensity}
               setValue={updateActiveEntry}
-              stepSize='0.05'
+              stepSize='5'
               min='0'
-              max='1'
+              max='100'
               percent
             />
           </div>
