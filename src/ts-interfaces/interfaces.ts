@@ -41,18 +41,21 @@ interface IStats {
   p_work: number;
 };
 
+interface ITagDB {
+  id: number | null,
+  tag: string,
+  user_id: number,
+}
+
 interface ITag {
   id: number | null,
   label: string | null,
   value?: string,
-  color?: string | null,
-  tag?: string,
 }
 
-interface IEntry {
-  id: number,
-  category: ICategory | null,
-  tags: ITag[] | null,
+interface IEntryDB {
+  id?: number,
+  category: number | null,
   start_time: Date | null,
   end_time: Date | null,
   intensity: number | null
@@ -60,14 +63,30 @@ interface IEntry {
   cumulative_pause_duration: number | null
 }
 
-interface IEntries {
-  [key: string]: IEntry;
+interface IEntriesTags {
+  entry_id: number,
+  tag_id: number
 }
 
+interface IEntry {
+  id?: number,
+  category: ICategory | null,
+  tags: ITag[] | number[] | null,
+  start_time: Date | null,
+  end_time: Date | null,
+  intensity: number | null
+  pause_start_time?: Date | null,
+  cumulative_pause_duration: number | null
+}
+
+// interface IEntries {
+//   [key: string]: IEntry;
+// }
+
 interface IFilterOptions {
-  category: number,
-  tags: number[],
-  date_range: Date[],
+  category: number | null,
+  tags: number[] | null,
+  date_range: Date[] | null,
 }
 
 export type {
@@ -76,8 +95,10 @@ export type {
   IClock,
   ICategory,
   IStats,
+  ITagDB,
   ITag,
+  IEntriesTags,
   IEntry,
-  IEntries,
+  IEntryDB,
   IFilterOptions,
 };

@@ -9,9 +9,10 @@ import {
   blankActiveEntry,
   activeEntryData,
   allEntriesData 
-} from './hooks/stopwatchData';
+} from 'hooks/stopwatchData';
 
-import { ISound, ITimer, ICategory, ITag, IEntry } from 'ts-interfaces/interfaces';
+import { ISound, ITimer, ICategory, ITagDB, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
+import { ETIME } from 'constants';
 
 function App() {
   const [timerPresets, setTimerPresets]: [ITimer[], Function] = useState([]);
@@ -19,9 +20,10 @@ function App() {
   const [allCategories, setAllCategories]: [ICategory[], Function] = useState([]);
   const [allTags, setAllTags]: [ITag[], Function] = useState([]);
   const [allEntries, setAllEntries]: [IEntry[], Function] = useState([]);
+  const [activeEntry, setActiveEntry]: [IEntry | null, Function] = useState(null);
 
   const handleAddTimer = (timer: ITimer) => {
-    let promise;
+    // CREATE (save) new pomodoro timer
     if (timer.id === null) {
       promise = axios.post(`/api/pomodoro`, timer)
         .then((res: any) => {
@@ -31,14 +33,13 @@ function App() {
           });
           return data.id;
         });
-    } else {
-      promise = axios.put(`/api/pomodoro/${timer.id}`, timer)
-        .then((res: any) => {
-          const { data } = res;
-          setTimerPresets((prev: ITimer[]) => {
-            return prev.map((t: ITimer) => Number(t.id) === Number(data.id) ? {...timer} : t);
-          });
-          return data.id;
+    }
+    // UPDATE custom pomodoro timer
+    return axios.put(`/api/pomodoro/${timer.id}`, timer)
+      .then((res: any) => {
+        const { data } = res;
+        setTimerPresets((prev: ITimer[]) => {
+          return prev.map((t: ITimer) => Number(t.id) === Number(data.id) ? {...timer} : t);
         });
     }
     return promise.catch((err) => {
@@ -65,6 +66,102 @@ function App() {
         console.error(err);
       });
   };
+  
+
+  const constructAllEntries = (
+    entriesDB: IEntryDB[],
+    entries_tags: IEntriesTags[],
+    allCategories: ICategory[],
+    allTags: ITagDB[]
+  ) => {
+    const constructTagsObj = (entryId: number) => {  
+      const tagsObjArr: ITag[] = [];
+      entries_tags.map((et: IEntriesTags) => {
+        if (et.entry_id === entryId) {
+          tagsObjArr.push({
+            id: allTags[et.tag_id].id,
+            label: allTags[et.tag_id].tag,
+            value: allTags[et.tag_id].tag
+          })
+        }
+      })
+      return tagsObjArr;
+    }
+    const allEntriesFormatted = entriesDB.map((entryDB: IEntryDB) => {
+      return {
+        ...entryDB,
+        category: entryDB.category && allCategories.filter((cat: ICategory) => cat.id === entryDB.category)[0],
+        tags: entryDB.id && constructTagsObj(entryDB.id)
+      }
+    })
+    setAllEntries(allEntriesFormatted);
+  }
+
+  const convertToDBFormat = (entryObj: IEntry) => {
+    return {
+      ...entryObj,
+      category_id: entryObj.category && entryObj.category.id,
+      // delete entryObj.tags
+    }
+  }
+
+  // UPDATE, CLONE, DELETE already-saved stopwatch entry
+  const updateEntry = (entryObj: IEntry, instruction: string) => {
+    switch (instruction) {
+      case 'UPDATE':
+        // post to updateEntries route /:id with entryObj
+        // .then update local allEntries state
+        setAllEntries(allEntries.map((entry: IEntry) => {
+          if (entry.id === entryObj.id) return entryObj
+          return entry
+        }))
+        break;
+      case 'CLONE':
+        // post to createEntry route, get newEntry.id
+        // .then update local allEntries state CHECK SORT ORDER is by start_time
+        let sortedAllEntries = []
+        for (let i=0; i < allEntries.length; i++) {
+          sortedAllEntries.push(allEntries[i])
+          if (allEntries[i].id === entryObj.id) {
+            sortedAllEntries.push(entryObj)
+          }
+        }
+        setAllEntries(sortedAllEntries)
+        break;
+      case 'DELETE':
+        // missing delete route?
+        // post to deleteEntry route /:id
+        // update local allEntries state
+        setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
+        break;
+      case 'PLAY': // no axios call, just local
+        setActiveEntry({
+          ...entryObj,
+          start_time: null,
+          end_time: null,
+          pause_start_time: null,
+          cumulative_pause_duration: 0,
+        });
+    }
+  }  
+  
+  const saveNewEntry = (entryObj: IEntry) => {
+    const inDbFormat = {
+      category_id: entryObj.category && entryObj.category.id,
+      start_time: entryObj.start_time,
+      end_time: entryObj.end_time,
+      pause_start_time: entryObj.pause_start_time,
+      cumulative_pause_duration: entryObj.cumulative_pause_duration,
+      intensity: entryObj.intensity,
+    }
+    axios.post<IEntry>(`/api/stopwatches/${entryObj.id}`, inDbFormat)
+      .then(res => {
+        axios.get<IEntry[]>(`/api/stopwatches`)
+      })
+      .then((res: any) => {
+        setAllEntries(res.data);
+      })
+  }
 
   const handleChangeEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
     let promise;
@@ -89,16 +186,19 @@ function App() {
       axios.get<ITimer[]>(`/api/pomodoro`),
       axios.get<ISound[]>(`/api/sound`),
       axios.get<ICategory[]>(`/api/category`),
-      axios.get<ITag[]>(`/api/tag`),
-      axios.get<IEntry[]>(`/api/stopwatches`),
+      axios.get<ITagDB[]>(`/api/tag`),
+      axios.get<IEntryDB[]>(`/api/stopwatches`),
+      axios.get<IEntriesTags[]>(`/api/stopwatches/entries_tags`),
     ])
       .then((all) => {
-        const [pomodoros, sounds, categories, tags, entries] = all;
+        const [pomodoros, sounds, categories, tags, entries, entries_tags] = all;
+        console.log(pomodoros.data);
         setTimerPresets(pomodoros.data);
         setSoundFiles(sounds.data);
-        setAllCategories(categories.data.map((cat: ICategory) => ({id: cat.id, label: cat.name, value: cat.name, color: cat.color})));
-        setAllTags(tags.data.map((tag: ITag) => ({ id: tag.id, label: tag.tag, value: tag.tag})));
-        setAllEntries(entries.data);
+        setAllCategories(categories.data);
+        setAllTags(tags.data);
+        // setAllEntries(entries.data);
+        constructAllEntries(entries.data, entries_tags.data, categories.data, tags.data);
       })
       .catch((err) => {
         console.error(err);
@@ -110,7 +210,7 @@ function App() {
       <nav className='nav-container'>
         <div className='nav-logo-container'>
           <div className='nav-logo-inner'>
-            <div className='nav-title'>TRACK<br />SUITE</div>
+            <div className='nav-title'>TRACK<br/>SUITE</div>
           </div>
           <div className='nav-logo-inner'>
             <img src="./assets/suit.png" alt="suit"/>
@@ -128,21 +228,22 @@ function App() {
         <section className='section-sw-active'>
           <StopwatchActive
             allCategories={allCategories}
-            updateAllCategories={handleAddCategory}
+            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             allTags={allTags}
-            updateAllTags={handleAddTag}
+            updateAllTags={() => console.log('app.tsx runs update all tags')}
             blankActiveEntry={blankActiveEntry}
-            activeEntry={activeEntryData}
+            activeEntry={activeEntry}
+            saveNewEntry={saveNewEntry}
           />
         </section>
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
-            updateAllCategories={handleAddCategory}
+            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             allTags={allTags}
-            updateAllTags={handleAddTag}
-            updateEntriesTags={handleChangeEntryTags}
-            allEntries={allEntriesData}
+            updateAllTags={() => console.log('app.tsx runs update all tags')}
+            allEntries={allEntries}
+            updateEntry={updateEntry} 
           />
         </section>
       </section>

@@ -10,24 +10,34 @@ import './Stopwatch.scss'
 
 import {ITag, ICategory, IEntry} from 'ts-interfaces/interfaces';
 
+const blankActiveEntry: IEntry = {
+  category: null,
+  tags: null,
+  start_time: null,
+  end_time: null,
+  intensity: 100,
+  pause_start_time: null,
+  cumulative_pause_duration: 0,
+};
 
 const StopwatchActive = (props: any) => {
   const [allCategories, setAllCategories] = useState(props.allCategories);
   const [allTags, setAllTags] = useState(props.allTags);  
   const [isTimerRunning, setIsTimerRunning] = useState(false)
-  const [activeEntry, setActiveEntry] = useState(props.blankActiveEntry);
+  const [activeEntry, setActiveEntry] = useState(props.activeEntry || blankActiveEntry);
   
   useEffect(() => {
     if (activeEntry.id) {
       setIsTimerRunning(true)
+      // set start_time? or is that done automatically somewhere else?
     }
   }, [])
 
   useEffect(() => {
-    // updateDatabase(activeEntry)
     if (activeEntry.end_time) {
+      props.saveNewEntry(activeEntry)
       console.log('SAVED ENTRY:', activeEntry);
-      setActiveEntry(props.blankActiveEntry)
+      setActiveEntry(blankActiveEntry)
     }
   }, [activeEntry])
 

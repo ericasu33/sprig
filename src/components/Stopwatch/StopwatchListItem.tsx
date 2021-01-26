@@ -9,6 +9,7 @@ import StepInputInt from '../StepInputInt'
 import StepInputTimer from '../StepInputTimer';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
+import StopwatchList from './StopwatchList';
 
 import { ITag } from '../../ts-interfaces/interfaces';
 
@@ -21,27 +22,25 @@ const StopwatchListItem = (props: any) => {
   const [calendarDate, setCalendarDate] = useState(setDateToLocalMidnight(props.start_time));
   const [showCalendar, setShowCalendar] = useState(false)
   const [totalTime, setTotalTime] = useState(0)
-  const [entry, setEntry] = useState(props);  
+  const [entry, setEntry] = useState(props.entry);  
 
   useEffect(() => {
-    setTotalTime(props.end_time - props.start_time - props.cumulative_pause_duration)
-    setCalendarDate(setDateToLocalMidnight(props.start_time));
-  }, [props])
+    setTotalTime(props.entry.end_time - props.entry.start_time - props.entry.cumulative_pause_duration)
+    setCalendarDate(setDateToLocalMidnight(props.entry.start_time));
+  }, [props.entry.start_time, props.entry.end_time])
 
   // Adjust start_time and end_time (if not null) by difference between old date and newly chosen date
   const calendarState = (value: Date) => {
     const dateDiff: number = Number(calendarDate) - Number(value);
     setCalendarDate(value)
     setShowCalendar(!showCalendar)
-    setEntry((prev: any) => {
-      const startTime = new Date(Number(props.start_time) - dateDiff)
-      const endTime = new Date(Number(props.end_time) - dateDiff)
-      return {
-        ...prev,
+      const startTime = new Date(Number(props.entry.start_time) - dateDiff)
+      const endTime = new Date(Number(props.entry.end_time) - dateDiff)
+      props.updateEntry({
+        ...props.entry,
         start_time: startTime,
         end_time: endTime
-      }
-    })
+      }, 'UPDATE')
   };
 
   // Update start_time if InputClock is manually adjusted
@@ -69,24 +68,10 @@ const StopwatchListItem = (props: any) => {
       });
     }
     props.updateEntry({
-      ...props,
+      ...props.entry,
       [key]: value
-    })
+    }, 'UPDATE')
   };
-
-  // Manage timerObj data based on PLAY, PAUSE, SAVE 'states' (i.e. most recent button clicked)
-  const handleTimerState = (timerState: string) => {
-    switch (timerState) {
-      case 'DELETE':
-        props.deleteEntry(entry.id)
-        break;
-      case 'CLONE':
-        props.cloneEntry(entry.id)
-        break;
-      case 'PLAY':
-        console.log('play buttton')
-    }
-  }
 
 
   return (
@@ -96,7 +81,7 @@ const StopwatchListItem = (props: any) => {
         <Categories 
           allCategories={props.allCategories}
           updateAllCategories={props.updateAllCategories}
-          category={props.category}
+          category={props.entry.category}
           onChange={updateEntry}
         />
       </div>
@@ -105,7 +90,7 @@ const StopwatchListItem = (props: any) => {
         <Tags
           allTags={props.allTags}
           updateAllTags={props.updateAllTags}
-          tags={props.tags}
+          tags={props.entry.tags}
           onChange={updateEntry}
         />
       </div>
@@ -116,7 +101,7 @@ const StopwatchListItem = (props: any) => {
           <StepInputClock
             label='Start time'
             name='start_time'
-            time={props.start_time}
+            time={props.entry.start_time}
             onChange={updateEntry}
             allowFuture='true'
           />
@@ -126,7 +111,7 @@ const StopwatchListItem = (props: any) => {
           <StepInputClock
             label='End time'
             name='end_time'
-            time={props.end_time}
+            time={props.entry.end_time}
             onChange={updateEntry}
             allowFuture='true'
           />
@@ -136,7 +121,7 @@ const StopwatchListItem = (props: any) => {
           <StepInputInt
             label='Intensity'
             name='intensity'
-            value={props.intensity}
+            value={props.entry.intensity}
             setValue={updateEntry}
             stepSize='5'
             min='0'
@@ -170,15 +155,15 @@ const StopwatchListItem = (props: any) => {
       
         <StepInputTimer
           label="Effective time"
-          value={totalTime / 1000 * props.intensity / 100}
+          value={totalTime / 1000 * props.entry.intensity / 100}
           disabled
         />
       </div>
 
       <div className='stopwatch-group sw-buttons-right'>
-        <Button play onClick={(e: any) => handleTimerState("PLAY")} />
-        <Button clone onClick={(e: any) => handleTimerState("CLONE")} />
-        <Button delete onClick={(e: any) => handleTimerState("DELETE")} />
+        <Button play onClick={(e: any) => props.updateEntry(props.entry, "PLAY")} />
+        <Button clone onClick={(e: any) => props.updateEntry(props.entry, "CLONE")} />
+        <Button delete onClick={(e: any) => props.updateEntry(props.entry, "DELETE")} />
       </div>
     </div>
   )

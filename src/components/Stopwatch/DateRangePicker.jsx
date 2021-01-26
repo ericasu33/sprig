@@ -10,9 +10,9 @@ export default function MyApp(props) {
 
   const [value, setValue] = useState([weekAgoBegin, todayEnd]);
 
-  // useEffect(() => {
-  //   props.updateDateRange(value)
-  // }, [value])
+  useEffect(() => {
+    props.onChange('date_range', value)
+  }, [value])
 
   const dateIntervalChange = (operator) => {
     if (value) {
@@ -50,7 +50,7 @@ export default function MyApp(props) {
         className='date-range-picker'
         onChange={setValue}
         value={value}
-        locale='en-AU'
+        locale='en-CA'
         calendarIcon={<i className='far fa-calendar-alt'></i>}
       />
 

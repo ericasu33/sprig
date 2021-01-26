@@ -1,33 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import StopwatchList from './StopwatchList'
 import Pie from './Pie'
 import ProgressBar from './ProgressBar'
 import Categories from './Categories'
 import Tags from './Tags'
 import DateRange from './DateRangePicker'
+import { IFilterOptions } from 'ts-interfaces/interfaces'
+import filterData from 'helpers/filterData'
 
 
 import './Reports.scss'
 
-const blankFilter = {
-  category: '',
-  tags: [],
-  date_range: []
+const blankFilter: IFilterOptions = {
+  category: null,
+  tags: null,
+  date_range: null,
 }
 
 const Reports = (props: any) => {
   const [filterOptions, setFilterOptions] = useState(blankFilter)
+  const [filteredEntries, setFilteredEntries] = useState([])
   const [tab, setTab] = useState('data');
 
-  // Update start_time if InputClock is manually adjusted
+  useEffect(() => {
+    props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
+  }, [filterOptions, props.allEntries]);
+  
+  // Update filter options when new category, tag or date_range is selected
   const updateFilterOptions = (key: string, value: Date | string | number) => {
     setFilterOptions({
-      ...props,
+      ...filterOptions,
       [key]: value
     })
+    props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
   };
-
-  // allEntries.filter(() => filterFunction())
 
 
   return (
@@ -44,7 +50,8 @@ const Reports = (props: any) => {
               allCategories={props.allCategories}
               updateAllCategories={props.updateAllCategories}
               category={props.category}
-              updateFilterOptions={updateFilterOptions}
+              onChange={updateFilterOptions}
+              readOnly
             />
           </div>
           <div className='stopwatch-group sw-tags'>
@@ -52,12 +59,13 @@ const Reports = (props: any) => {
               allTags={props.allTags}
               updateAllTags={props.updateAllTags}
               tags={props.tags}
-              updateFilterOptions={updateFilterOptions}
+              onChange={updateFilterOptions}
+              readOnly
             />
           </div>
           <div>
             <DateRange
-              updateFilterOptions={updateFilterOptions}
+              onChange={updateFilterOptions}
             />
           </div>
         </div>
@@ -81,11 +89,11 @@ const Reports = (props: any) => {
         <section className='section-sw-entries'>
           <StopwatchList
             allCategories={props.allCategories}
+            updateAllCategories={props.updateAllCategories}
             allTags={props.allTags}
-            filteredEntries={props.allEntries}
-            addCategory={props.handleAddCategory}
-            addTag={props.updateAllTags}
-            updateTags={props.updateEntriesTags}
+            updateAllTags={props.updateAllTags}
+            filteredEntries={filteredEntries}
+            updateEntry={props.updateEntry}
           />
         </section>
       }
