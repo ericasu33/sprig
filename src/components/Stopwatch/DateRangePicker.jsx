@@ -58,9 +58,9 @@ export default function MyApp(props) {
       />
 
       <Button date_range_right onClick={e => dateIntervalChange('add')} />
-      <Button date_range_reset onClick={() => setValue([lastSunday, todayEnd])}>This week</Button>
-      <Button date_range_reset onClick={() => setValue([oneMonthAgo, todayEnd])}>Last month</Button>
-      <Button date_range_reset onClick={() => setValue([oneYearAgo, todayEnd])}>Last year</Button>
+      <Button date_range_reset onClick={() => setValue([sevenDaysAgo, todayEnd])}>Past week</Button>
+      <Button date_range_reset onClick={() => setValue([oneMonthAgo, todayEnd])}>Past month</Button>
+      <Button date_range_reset onClick={() => setValue([oneYearAgo, todayEnd])}>Past year</Button>
 
     </div>
   );
