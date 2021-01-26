@@ -86,69 +86,56 @@ function App() {
 
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
-    switch (instruction) {
-      case 'UPDATE':
-      // If update is to tags:
-      // Update entries_tags with entryObj.tags (processed to DB entries_tags format)
-      // If tag created: handleAddtag  
-      
-      let promise
-        promise = axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
-        .then((res) => {
-          setAllEntries(allEntries.map((e: IEntry) => {
-            return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
-          }))
-          return res.data.id;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-        break;
-      case 'CLONE':
-        // post to createEntry route, get newEntry.id
-        // .then update local allEntries state CHECK SORT ORDER is by start_time
-        let sortedAllEntries = []
-        for (let i=0; i < allEntries.length; i++) {
-          sortedAllEntries.push(allEntries[i])
-          if (allEntries[i].id === entryObj.id) {
-            sortedAllEntries.push(entryObj)
-          }
-        }
-        setAllEntries(sortedAllEntries)
-        break;
-      case 'DELETE':
-        // missing delete route?
-        // post to deleteEntry route /:id
-        // update local allEntries state
-        setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
-        break;
-      case 'PLAY': // no axios call, just local
-        setActiveEntry({
-          ...entryObj,
-          start_time: null,
-          end_time: null,
-          pause_start_time: null,
-          cumulative_pause_duration: 0,
-        });
+    if (instruction === 'UPDATE') {
+      return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
+      .then((res) => {
+        setAllEntries(allEntries.map((e: IEntry) => {
+          return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
+        }))
+        return res.data.id;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     }
-  }  
+    // if (instruction === 'CLONE') {
+    //     // post to createEntry route, get newEntry.id
+    //     // .then update local allEntries state CHECK SORT ORDER is by start_time
+    //     let sortedAllEntries = []
+    //     for (let i=0; i < allEntries.length; i++) {
+    //       sortedAllEntries.push(allEntries[i])
+    //       if (allEntries[i].id === entryObj.id) {
+    //         sortedAllEntries.push(entryObj)
+    //       }
+    //     }
+    //     setAllEntries(sortedAllEntries)
+    //   }
+    // if (instruction === 'DELETE') {
+    //     // missing delete route?
+    //   // post to deleteEntry route /:id
+    //   // update local allEntries state
+    //   setAllEntries(allEntries.filter((entry: IEntry) => entry.id !== entryObj.id))
+    // }
+    // if (instruction === 'PLAY') {
+    //     setActiveEntry({
+    //     ...entryObj,
+    //     start_time: null,
+    //     end_time: null,
+    //     pause_start_time: null,
+    //     cumulative_pause_duration: 0,
+    //   });
+    // }
+  };
   
   const handleSaveNewEntry = (entryObj: IEntry) => {
-    const inDbFormat = {
-      category_id: entryObj.category && entryObj.category.id,
-      start_time: entryObj.start_time,
-      end_time: entryObj.end_time,
-      pause_start_time: entryObj.pause_start_time,
-      cumulative_pause_duration: entryObj.cumulative_pause_duration,
-      intensity: entryObj.intensity,
-    }
-    axios.post<IEntry>(`/api/stopwatches/${entryObj.id}`, inDbFormat)
+    const inDbFormat = convertEntryToDBFormat(entryObj)
+    return axios.post<IEntry>(`/api/stopwatches/${entryObj.id}`, inDbFormat)
       .then(res => {
-        axios.get<IEntry[]>(`/api/stopwatches`)
+        setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}])
       })
-      .then((res: any) => {
-        setAllEntries(res.data);
-      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   const handleUpdateEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
@@ -208,6 +195,8 @@ function App() {
         intensity: Number(entryDB.intensity),
       }
     })
+    console.log('allEntriesFormatted:', allEntriesFormatted);
+    
     setAllEntries(allEntriesFormatted);
   }
 

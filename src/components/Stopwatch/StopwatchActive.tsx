@@ -56,6 +56,7 @@ const StopwatchActive = (props: any) => {
       } else if (actionType.action === "clear") {
         tag = { id: null, label: "" };
       }
+      
       const promise = props.handleChangeEntryTags(activeEntry.id, tag, remove);
       promise.then((id: number | undefined) => {
         if (!id) return id;
@@ -64,12 +65,13 @@ const StopwatchActive = (props: any) => {
           tags: value,
         });
       });
-      return;
+      return promise;
     }
     setActiveEntry({
       ...activeEntry,
       [key]: value
     });
+    return Promise.resolve();
   }
 
   const addCategory = (category: ICategory) => {

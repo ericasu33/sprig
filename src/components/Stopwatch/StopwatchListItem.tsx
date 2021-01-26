@@ -67,7 +67,7 @@ const StopwatchListItem = (props: any) => {
         });
       });
     }
-    props.updateEntry({
+    return props.updateEntry({
       ...props.entry,
       [key]: value
     }, 'UPDATE')
