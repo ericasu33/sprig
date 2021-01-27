@@ -159,11 +159,14 @@ const PomodoroTimer = (props: any) => {
 
   return (
     <>
-      <div className="section-header pm-header">POMO</div>
-      <div className="pomodoro-display">
+      <div className="top-panel-side-title-container">
+        <div className='top-panel-side-title'>
+          POMO
+        </div>
+      </div>
 
         { expand && (
-          <>
+          <div className='pomodoro-form-container'>
             <PomodoroForm 
               disabled={clock.playing}
               pomo_timer={timer}
@@ -174,49 +177,50 @@ const PomodoroTimer = (props: any) => {
               onSave={() => handleSave(timer)}
               onShrink={() => setExpand((prev: boolean) => (!prev))}
             />
-          </>
+          </div>
         ) || ( 
           <>
+          <div className="pomodoro-display">
             <div className='pm-expand-shrink'>
               <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
                 expand
               </Button>
             </div>
             <div className='pm-group'>
-              <label>Name</label>
+              <label className='pm-label'>Name</label>
               <input className='pm-name' type="text" disabled={true} value={timer.name} />
             </div>
 
             <div className='pm-group'>
-              <label>Work</label>
+              <label className='pm-label'>Work</label>
               <StepInputTimer disabled
                 value={clock.current === "work" ? clock.partition : timer.work}
               />
             </div>
             
             <div className='pm-group'>
-              <label>Short break</label>
+              <label className='pm-label'>Short break</label>
               <StepInputTimer disabled
                 value={clock.current === "short_break" ? clock.partition : timer.short_break}
               />
             </div>
             
             <div className='pm-group'>
-              <label>Cycles remaining</label>
+              <label className='pm-label'>Cycles remaining</label>
               <StepInputInt disabled
                 value={calcCycle(clock.time, timer)}
               />
             </div>
             
             <div className='pm-group'>
-              <label>Long break</label>
+              <label className='pm-label'>Long break</label>
               <StepInputTimer disabled
                 value={clock.current === "long_break" ? clock.partition : timer.long_break}
               />
             </div>
             
             <div className='pm-group'>
-              <label>Time remaining</label>
+              <label className='pm-label'>Time remaining</label>
               <StepInputTimer disabled
                 value={clock.time}
               />
@@ -230,9 +234,9 @@ const PomodoroTimer = (props: any) => {
               />
               <Button stop onClick={() => handleStop()} />
             </div>
+          </div>
           </>
         )}
-      </div>
     </>
   );
 };

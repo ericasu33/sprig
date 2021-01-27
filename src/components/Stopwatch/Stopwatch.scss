@@ -35,14 +35,16 @@
   min-height: 60px;
   &-active {
     width: 100%;
-    // border-top: 1px solid lightgrey;
-    // border: 1px solid $border-highlight;
+    border-bottom: none;
   }
   .stopwatch-group {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 60px;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   .sw-categories {
     width: 180px;
@@ -56,12 +58,12 @@
   .sw-inputs {
     width: 330px;
     justify-content: space-evenly;
-    background-color: $background-transparent-light;
-    padding-left: 8px;
-    padding-right: 8px;
+    background-color: $background-transparent-low;
+    // padding-left: 8px;
+    // padding-right: 8px;
   }
   .sw-start-time {
-    // background-color: $background-transparent-light;
+    // background-color: $background-transparent-low;
     height: 55px;
     width: 130px;
     align-items: center;
@@ -70,7 +72,7 @@
   }
   .sw-calc-times {
     width: 200px;
-    background-color: $background-transparent-light;
+    background-color: $background-transparent-low;
     .sw-counter {
       text-align: center;
       font-size: 1.5em;
@@ -85,7 +87,7 @@
   .sw-buttons-right {
     min-width: 140px;
     justify-content: space-between;
-    background-color: $background-transparent-light;
+    background-color: $background-transparent-low;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -94,7 +96,7 @@
 .show-colour-picker {
   position: absolute;
   z-index: 2;
-  background-color: $background-transparent-dark;
+  background-color: $background-transparent-med;
   padding: 10px;
   border-radius: 5px;
   margin-top: 8px;
@@ -103,7 +105,7 @@
 .show-calendar {
   position: absolute;
   z-index: 2;
-  background-color: $background-transparent-dark;
+  background-color: $background-transparent-med;
   padding: 4px;
   border-radius: 4px;
   margin-top: 8px;

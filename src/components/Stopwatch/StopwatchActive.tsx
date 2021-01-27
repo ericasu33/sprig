@@ -98,7 +98,11 @@ const StopwatchActive = (props: any) => {
 
   return (
     <>
-      <div className="section-header sw-active-header">TASK</div>
+      <div className="top-panel-side-title-container">
+        <div className='top-panel-side-title'>
+          TASK
+        </div>
+      </div>
       <div className='stopwatch stopwatch-active'>
 
         <div className='stopwatch-group'>

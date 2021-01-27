@@ -5,12 +5,10 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  // border: 1px solid $border-highlight;
   padding: 5px;
   background-color: $background-light;
   width: 100%;
   .pm-group {
-    // border: 1px solid peru;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -21,18 +19,47 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $background-transparent-light;
+    background-color: $background-transparent-low;
     padding-left: 10px;
     padding-right: 10px;
   }
+  .pm-label {
+    font-family: $font-family-fancy;
+    color: $colour-highlight;
+    font-weight: bold;
+  }
 
+}
+
+.pomodoro-form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: $colour-compliment-fade-extra;
+  width: 100%;
+  .pm-right-buttons {
+    min-width: 140px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $background-transparent-med;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .pm-label {
+    font-family: $font-family-fancy;
+    color: $colour-highlight;
+    font-weight: bold;
+  }
   .pomodoro-form {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 150px;
+    height: 170px;
     .pm-form-left-block {
       display: flex;
       justify-content: flex-start;
@@ -99,11 +126,17 @@
             align-items: center;
           }
           .pm-label {
+            font-family: $font-family-fancy;
+            color: $colour-highlight;
+            font-weight: bold;
             margin: 0px;
           }
           .pm-inputs-container-bottom-left {
             width: 250px;
             text-align: center;
+            font-family: $font-family-fancy;
+            color: $colour-highlight;
+            font-weight: bold;
           }
           .pm-inputs-container-bottom-right {
             width: 100%;
@@ -126,7 +159,7 @@
     .pm-form-right-block {
       display: flex;
       justify-content: flex-end;
-      background-color: $background-transparent-light;
+      background-color: $background-transparent-low;
       .pm-calc-times {
         min-width: 140px;
         font-size: small;

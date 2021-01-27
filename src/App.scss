@@ -19,13 +19,14 @@ body {
         font-family: $font-family-fancy;
         display: flex;
         flex-direction: row;
-        border-radius: 5px;
+        border-bottom-left-radius: 10px;
+        border: 1px solid $colour-compliment;
         .nav-logo-container {
           padding: 5px;
           background-color: $colour-compliment;
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          border-bottom-left-radius: 10px;
           .nav-logo-inner {
             padding-bottom: 2px;
             display: flex;
@@ -45,26 +46,29 @@ body {
       .pm-activesw {
         display: flex;
         flex-direction: column;
+        width: 100%;
         .pm-activesw-pomo {
           display: flex;
           flex-direction: row;
-          border: 1px solid $border-highlight;
           margin-bottom: 10px;
         }
         .pm-activesw-sw {
           display: flex;
           flex-direction: row;
-          border: 1px solid $border-highlight;
+          background-color: $colour-compliment-fade-extra;
         }
-        .section-header {
-          // border: 1px solid;
-          writing-mode: vertical-lr;
-          transform: rotate(180deg);
+        .top-panel-side-title-container {
           font-family: $font-family-fancy;
-          text-align: center;
           color: $colour-highlight;
+          display: flex;
+          align-items: center;
           background-color: $colour-compliment-fade;
           padding: 4px;
+          height: 100%;
+          .top-panel-side-title {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+          }
         }
       }
     }
