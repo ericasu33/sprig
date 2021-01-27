@@ -71,7 +71,7 @@ function App() {
 
   // UPDATE category (used to update colour)
   const handleUpdateCategory = (category: ICategory) => {
-    return axios.put(`/api/category`, category)
+    return axios.put(`/api/category/${category.id}`, category)
       .then((res) => {
         setAllCategories(allCategories.map((cat: ICategory) => {
           return cat.id === category.id ? category : cat;
@@ -114,14 +114,22 @@ function App() {
     })
   }
 
+  // UPDATE all entries LOCALLY
+  const refreshCategory = (updatedEntry: IEntry) => {
+    return allEntries.map((e: IEntry) => {
+      if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
+        return {...e, category: updatedEntry.category}
+      }
+      return e
+    })
+  }
+
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
     if (instruction === 'UPDATE') {
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
-        setAllEntries(allEntries.map((e: IEntry) => {
-          return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
-        }))
+        setAllEntries(refreshCategory(entryObj))
         return res.data.id;
       })
       .catch((err) => {
@@ -309,6 +317,7 @@ function App() {
           <StopwatchActive
             allCategories={allCategories}
             createNewCategory={handleCreateNewCategory}
+            updateCategory={handleUpdateCategory}
             allTags={allTags}
             createNewTag={handleCreateNewTag}
             activeEntry={activeEntry}
