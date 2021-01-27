@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Button from '../Button'
-import Bar from './ProgressBarByCategory'
-import PieEntry from './Pie';
 import './DateRangePicker.scss'
 
 export default function DateRange(props) {
@@ -87,13 +84,6 @@ export default function DateRange(props) {
       <Button date_range_reset onClick={() => setValue([oneMonthAgo, todayEnd])}>Past month</Button>
       <Button date_range_reset onClick={() => setValue([oneYearAgo, todayEnd])}>Past year</Button>
 
-      <Bar
-        dataState={result}
-      />
-
-      <PieEntry
-        dataState={result}
-      />
     </div>
   );
 }

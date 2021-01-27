@@ -17,7 +17,7 @@ const PieEntry = ( props : any ) => {
           entryObj[entry.category.id] = {
             title: entry.category.value,
             value: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
-            color: `#${entry.category.color}`,
+            color: `${entry.category.color}`,
           };
         }
         sum += entry.end_time - entry.start_time - entry.cumulative_pause_duration;
