@@ -83,7 +83,7 @@ const PomodoroForm = (props: any) => {
       <div className='pm-form-left-block'>
 
         <div className='pm-group'>
-          <Button expand onClick={props.onShrink}>shrink</Button>
+          <Button shrink onClick={props.onShrink} />
           <Button save disabled={props.disabled} onClick={props.onSave} />
         </div>
 

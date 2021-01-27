@@ -182,9 +182,7 @@ const PomodoroTimer = (props: any) => {
           <>
           <div className="pomodoro-display">
             <div className='pm-expand-shrink'>
-              <Button expand onClick={() => setExpand((prev: boolean) => (!prev))}>
-                expand
-              </Button>
+              <Button expand onClick={() => setExpand((prev: boolean) => (!prev))} />
             </div>
             <div className='pm-group'>
               <label className='pm-label'>Name</label>
