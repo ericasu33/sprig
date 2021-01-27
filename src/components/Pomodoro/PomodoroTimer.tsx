@@ -3,10 +3,26 @@ import Button from 'components/Button'
 import PomodoroForm from './PomodoroForm';
 import StepInputTimer from 'components/StepInputTimer';
 import StepInputInt from 'components/StepInputInt';
+import axios from 'axios';	
 
-import { ITimer, IClock } from 'ts-interfaces/interfaces';
+import { ITimer, IClock, ISound } from 'ts-interfaces/interfaces';
 
 import './PomodoroTimer.scss';
+
+const getSoundFile = (sounds: ISound[], id: number | null) => {	
+  if (!id) return Promise.resolve();	
+  const soundFile = sounds.find((sound) => sound.id === id);	
+  if (!soundFile) return Promise.resolve();	
+  return axios.get(`/sound_files/${soundFile.file_name}`, { responseType: "blob"})	
+    .then((res) => {	
+      const mp3 = new Blob([res.data], { type: 'audio/mp3' });	
+      const url = window.URL.createObjectURL(mp3);	
+      return url;	
+    })	
+    .catch((err) => {	
+      console.error(err);	
+    });	
+};
 
 const PomodoroTimer = (props: any) => {
   const [expand, setExpand] = useState(false);
@@ -34,6 +50,38 @@ const PomodoroTimer = (props: any) => {
     time: 0,
     partition: 0,
   });
+
+  const [audioFiles, setAudioFiles] = useState({	
+    sh_b_s: new Audio(),	
+    sh_b_e: new Audio(),	
+    lng_b_s: new Audio(),	
+    lng_b_e: new Audio(),	
+  });	
+
+  useEffect(() => {	
+    Promise.all<any>([	
+      getSoundFile(props.sounds, timer.short_b_start_sound),	
+      getSoundFile(props.sounds, timer.short_b_end_sound),	
+      getSoundFile(props.sounds, timer.long_b_start_sound),	
+      getSoundFile(props.sounds, timer.long_b_end_sound),	
+    ]).then((audios) => {	
+      const [ short_start, short_end, long_start, long_end ] = audios;	
+      const sh_b_s = new Audio(short_start);	
+      const sh_b_e = new Audio(short_end);	
+      const lng_b_s = new Audio(long_start); 	
+      const lng_b_e = new Audio(long_end);	
+      sh_b_s.load();	
+      sh_b_e.load();	
+      lng_b_s.load();	
+      lng_b_e.load();	
+      setAudioFiles({	
+        sh_b_s,	
+        sh_b_e,	
+        lng_b_s,	
+        lng_b_e,	
+      });	
+    });	
+  }, [timer.short_b_start_sound, timer.short_b_end_sound, timer.long_b_start_sound, timer.long_b_end_sound, props.sounds]);
 
   const togglePlay = () => {
     setClock((prev: IClock) => {
@@ -70,20 +118,29 @@ const PomodoroTimer = (props: any) => {
       const interval: NodeJS.Timeout = setInterval(() => {
         setClock((prev: IClock) => {
           let { partition, current, time } = prev;
-          if (partition === 0) {
+          if (partition === 0 && time !== 0) {
             if(calcCycle(time, timer) === 0) {
               current = current === "work" ? "long_break" : "work";
             } else {
               current = current === "work" ? "short_break" : "work";
             }
-            if (current === "work") partition = timer.work;
-            else if (current === "short_break") partition = timer.short_break;
-            else if (current === "long_break") partition = timer.long_break;
+            if (current === "work") {
+              audioFiles.sh_b_e.play();
+              partition = timer.work;
+            } else if (current === "short_break") {	
+              audioFiles.sh_b_s.play();	
+              partition = timer.short_break;	
+            } else if (current === "long_break") {	
+              audioFiles.lng_b_s.play();	
+              partition = timer.long_break;	
+            }
           }
           if (time === 0) {
+            audioFiles.lng_b_e.play();
             return {
               ...prev,
               playing: false,
+              stopped: true,
               current: "",
               time: calcTotalTime(timer),
             };
@@ -106,7 +163,7 @@ const PomodoroTimer = (props: any) => {
         current: "work",
       }));
     }
-  }, [clock.stopped, clock.playing, timer]);
+  }, [clock.stopped, clock.playing, timer, audioFiles]);
 
   useEffect(() => {
     setClock((prev: IClock) => ({
