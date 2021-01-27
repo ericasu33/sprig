@@ -125,12 +125,11 @@ const BarChart = ( props : any ) => {
           motionDamping={15}
           labelSkipHeight={16}
           label={d => {
-            console.log(timeHash);
             const seconds = (timeHash[d.indexValue] && timeHash[d.indexValue][d.id]) || 0;
             return formatTimeToStr(seconds);
           }}
           tooltip={d => {
-            const seconds = timeHash[d.indexValue][d.id];
+            const seconds = (timeHash[d.indexValue] && timeHash[d.indexValue][d.id]) || 0;
             const time = formatTimeToStr(seconds);
             return <div className="bar-chart tool-tip">{d.id}: {time}</div>;
           }}
