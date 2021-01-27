@@ -31,6 +31,7 @@ const StepInputInt = function(props: any) {
     const rounded = Math.ceil((Number(cleaned) + plusOrMinus * Number(stepSize)) / Number(stepSize)) * Number(stepSize)
     const validated: Number = validateVal(rounded)
     setValue(concatPercent(String(validated)))
+    console.log(validated);
     props.setValue(props.name, validated);
   };
 
@@ -38,6 +39,7 @@ const StepInputInt = function(props: any) {
     const cleaned: string = cleanInput(rawStr)
     const validated: string = validateVal(cleaned)
     setValue(concatPercent(validated))
+    console.log(props.name);
     props.setValue(props.name, validated);
   };
 

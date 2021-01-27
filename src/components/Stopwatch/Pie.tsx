@@ -42,7 +42,7 @@ const PieEntry = ( props : any ) => {
 
   const legend = chartData.map((cat: any) => {
     return (
-      <div className="pie-legend-item">
+      <div key={cat.id} className="pie-legend-item">
         <div className="pie-legend-block" style={{backgroundColor: cat.color}}>
         </div>
         <div className="pie-legend-title">

@@ -115,10 +115,10 @@ function App() {
   }
 
   // UPDATE all entries LOCALLY
-  const refreshCategory = (updatedEntry: IEntry) => {
+  const refreshEntries = (updatedEntry: IEntry) => {
     return allEntries.map((e: IEntry) => {
       if (e.id === updatedEntry.id) {
-        return {...e, category: updatedEntry.category};
+        return {...updatedEntry, category: updatedEntry.category};
       }
       if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
         return {...e, category: updatedEntry.category}
@@ -132,7 +132,7 @@ function App() {
     if (instruction === 'UPDATE') {
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
-        setAllEntries(refreshCategory(entryObj))
+        setAllEntries(refreshEntries(entryObj))
         return res.data.id;
       })
       .catch((err) => {
