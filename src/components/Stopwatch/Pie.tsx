@@ -1,4 +1,5 @@
 import { PieChart } from 'react-minimal-pie-chart';
+import './Pie.scss';
 
 const PieEntry = ( props : any ) => {
   const stopwatches : any = props.entries || [];
@@ -37,28 +38,47 @@ const PieEntry = ( props : any ) => {
   };
 
   const chartData = aggregateTotalDurationByCategory(stopwatches);
+  console.log(chartData);
+
+  const legend = chartData.map((cat: any) => {
+    return (
+      <div className="pie-legend-item">
+        <div className="pie-legend-block" style={{backgroundColor: cat.color}}>
+        </div>
+        <div className="pie-legend-title">
+          {cat.title}
+        </div>
+      </div>
+    );
+  })
     
   const shiftSize = 7;
   const lineWidth = 60;
 
   return (
     <div>
-      <PieChart
-          data = {chartData}
-          style= {{
-            height: '300px',
-            fontFamily: '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
-            fontSize: '8px',
-          }}
-          radius = {PieChart.defaultProps.radius - shiftSize}
-          lineWidth = {60}
-          segmentsShift={(index) => (index === 0 ? 0.5 : 0.5)}
-          label={({ dataEntry }) => dataEntry.value + "%"}
-          labelPosition={100 - lineWidth / 2}
-          labelStyle={{
-            ...defaultLabelStyle,
-          }}
-      />
+      <div className="pie-chart">
+        <PieChart
+            data = {chartData}
+            style= {{
+              width: '300px',
+              height: '300px',
+              fontFamily: '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
+              fontSize: '8px',
+            }}
+            radius = {PieChart.defaultProps.radius - shiftSize}
+            lineWidth = {60}
+            segmentsShift={(index) => (index === 0 ? 0.5 : 0.5)}
+            label={({ dataEntry }) => dataEntry.value + "%"}
+            labelPosition={100 - lineWidth / 2}
+            labelStyle={{
+              ...defaultLabelStyle,
+            }}
+        />
+        <div className="legend-container">
+          {legend}
+        </div>
+      </div>
     </div>
   )
 }
