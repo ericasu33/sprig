@@ -25,7 +25,7 @@ function App() {
     cumulative_pause_duration: 0,
   });
 
-  // Handle pomodoro timer CREATE and UPDATE
+  // CREATE and UPDATE pomodoro timer
   const handleAddTimer = (timer: ITimer) => {
     // CREATE (save) new pomodoro timer
     let promise;
@@ -55,21 +55,35 @@ function App() {
     });
   };
 
-  // Handle Category CREATE
+  // CREATE category
   const handleCreateNewCategory = (category: ICategory) => {
     return axios.post(`/api/category`, category)
       .then((res) => {
         setAllCategories((prev: ICategory[]) => {
           return [ ...prev, { ...category, id: res.data.id } ];
         });
-    return res.data.id;
+        return res.data.id;
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  // Handle Tag CREATE
+  // UPDATE category (used to update colour)
+  const handleUpdateCategory = (category: ICategory) => {
+    return axios.put(`/api/category`, category)
+      .then((res) => {
+        setAllCategories(allCategories.map((cat: ICategory) => {
+          return cat.id === category.id ? category : cat;
+        }))
+        return res.data.id
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  // CREATE new tag
   const handleCreateNewTag = (tag: ITag) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
@@ -83,10 +97,7 @@ function App() {
       });
   };
   
-    // Change format from local to DB
-  const reformatTagsToDB = (tagObj: ITag[]) => {
-    // setAllTags(tags.map((tag: ITag) => ({ id: tag.id, label: tag.tag, value: tag.tag})))
-  }
+  // Convert entry object to one DB accepts
   const convertEntryToDBFormat = (entryObj: IEntry) => {
     return ({
       id: entryObj.id,
@@ -169,6 +180,7 @@ function App() {
     }
   };
   
+  // CREATE new entry
   const handleSaveNewEntry = (entryObj: IEntry) => {
     const inDbFormat = convertEntryToDBFormat(entryObj)
     return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
@@ -185,6 +197,7 @@ function App() {
       });
   }
 
+  // UPDATE tags_entries associations
   const handleUpdateEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
     let promise;
     if (remove) {
@@ -291,12 +304,9 @@ function App() {
         <section className='section-sw-active'>
           <StopwatchActive
             allCategories={allCategories}
-            updateAllCategories={() => console.log('app.tsx runs update all categories')}
-            allTags={allTags}
-            updateAllTags={() => console.log('app.tsx runs update all tags')}
             createNewCategory={handleCreateNewCategory}
+            allTags={allTags}
             createNewTag={handleCreateNewTag}
-            handleChangeEntryTags={handleUpdateEntryTags}
             activeEntry={activeEntry}
             setActiveEntry={setActiveEntry}
             saveNewEntry={handleSaveNewEntry}
@@ -305,8 +315,8 @@ function App() {
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
-            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             createNewCategory={handleCreateNewCategory}
+            updateCategory={handleUpdateCategory}
             allTags={allTags}
             createNewTag={handleCreateNewTag}
             updateEntryTags={handleUpdateEntryTags}

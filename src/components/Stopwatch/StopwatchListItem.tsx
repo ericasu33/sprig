@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-import ColourPicker from './ColourPicker'
 import Button from '../Button';
 import Categories from './Categories';
 import Tags from './Tags';
@@ -9,7 +8,6 @@ import StepInputInt from '../StepInputInt'
 import StepInputTimer from '../StepInputTimer';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
-import StopwatchList from './StopwatchList';
 
 import { ITag } from '../../ts-interfaces/interfaces';
 
@@ -82,6 +80,7 @@ const StopwatchListItem = (props: any) => {
         <Categories 
           allCategories={props.allCategories}
           createNewCategory={props.createNewCategory}
+          updateCategory={props.updateCategory}
           category={props.entry.category}
           onChange={updateEntry}
         />
@@ -105,7 +104,7 @@ const StopwatchListItem = (props: any) => {
             name='start_time'
             time={props.entry.start_time}
             onChange={updateEntry}
-            allowFuture='true'
+            maxTime={props.entry.end_time}
           />
         </div>
         -
@@ -115,7 +114,7 @@ const StopwatchListItem = (props: any) => {
             name='end_time'
             time={props.entry.end_time}
             onChange={updateEntry}
-            allowFuture='true'
+            maxTime='now'
           />
         </div>
 

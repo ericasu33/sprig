@@ -15,10 +15,14 @@ const StepInputClock = function(props: any) {
   
   // Check if 'time' arg is in the past, return bool
   const isAllowed = (time: Date): boolean => {
-    if (props.allowFuture === 'true') {
-      return true
+    console.log('isAllowed time:', time);
+    console.log('isAllowed maxTime:', props.maxTime);
+    
+    if (props.maxTime) {
+      if (props.maxTime === 'now') return time <= new Date()
+      return time <= props.maxTime;
     }
-    return time <= new Date()
+    return true
   }
   
   // Update state with new value directly entered into input
