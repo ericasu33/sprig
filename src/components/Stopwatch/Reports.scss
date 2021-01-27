@@ -67,5 +67,26 @@
     border-top: none;
     border-bottom: none;
     min-height: 200px;
+    padding-bottom: 30px;
+  }
+  .section-sw-charts {
+    border: 2px solid $border-highlight;
+    border-top: none;
+    border-bottom: none;
+    min-height: 200px;
+    padding-bottom: 50px;
+    .section-sw-charts-title {
+      font-family: $font-family-fancy;
+      font-size: 1.5em;
+      font-weight: 600;
+      padding-top: 20px;
+      padding-left: 12px;
+    }
+    .entry-bar-chart, .pie-chart {
+      margin: 10px;
+      background-color: $background-transparent-low;
+      border-radius: 10px;
+    }
+
   }
 }
