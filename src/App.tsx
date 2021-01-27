@@ -84,13 +84,17 @@ function App() {
   }
 
   // CREATE new tag
-  const handleCreateNewTag = (tag: ITag) => {
+  const handleCreateNewTag = (tag: ITag, entry_id: number | null = null) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
         setAllTags((prev: ITag[]) => {
           return [ ...prev, { ...tag, id: res.data.id } ];
         });
-        return res.data.id;
+        if (entry_id) {
+          return axios.post(`/api/stopwatches/${entry_id}/tags/${res.data.id}`, tag).then(() => res.data.id);
+        } else {
+          return res.data.id;
+        }
       })
       .catch((err) => {
         console.error(err);

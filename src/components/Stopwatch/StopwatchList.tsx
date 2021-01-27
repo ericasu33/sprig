@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import StopwatchListItem from './StopwatchListItem'
 
 import { IEntry } from 'ts-interfaces/interfaces';

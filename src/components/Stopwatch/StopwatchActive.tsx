@@ -51,10 +51,11 @@ const StopwatchActive = (props: any) => {
 
   const addTag = (tag: ITag) => {
     return props.createNewTag(tag).then((id: number | undefined) => {
-      if (!id) return;
+      if (!id) return id;
       setAllTags((prev: ITag[]) => {
         return [...prev, { ...tag, id}]
       });
+      return id;
     });
   };
 

@@ -8,9 +8,6 @@ import DateRange from './DateRangePicker'
 import { IFilterOptions } from 'ts-interfaces/interfaces'
 import filterData from 'helpers/filterData'
 
-import { allEntriesData } from '../../hooks/stopwatchData';
-
-
 import './Reports.scss'
 
 const blankFilter: IFilterOptions = {

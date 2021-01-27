@@ -72,6 +72,9 @@ const StopwatchListItem = (props: any) => {
     }, 'UPDATE')
   };
 
+  const handleNewTag = (newTag: any) => {
+    return props.createNewTag(newTag, entry.id);
+  };
 
   return (
     <div className='stopwatch'>
@@ -89,7 +92,7 @@ const StopwatchListItem = (props: any) => {
       <div className='stopwatch-group sw-tags'>
         <Tags
           allTags={props.allTags}
-          createNewTag={props.createNewTag}
+          createNewTag={handleNewTag}
           updateEntryTags={props.updateEntryTags}
           tags={props.entry.tags}
           onChange={updateEntry}
