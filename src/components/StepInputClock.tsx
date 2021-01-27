@@ -12,12 +12,7 @@ const StepInputClock = function(props: any) {
     hour: '2-digit',
     minute: '2-digit',
   });
-
-  // Set start_time (as props from Stopwatch component) on any 'inputVal' update
-  useEffect(() => {
-    props.onChange(props.name, inputVal)
-  }, [inputVal])
-
+  
   // Check if 'time' arg is in the past, return bool
   const isAllowed = (time: Date): boolean => {
     if (props.allowFuture === 'true') {
@@ -25,7 +20,7 @@ const StepInputClock = function(props: any) {
     }
     return time <= new Date()
   }
-
+  
   // Update state with new value directly entered into input
   const handleChange = (inputStr: string) => {
     const timeArr: (string[] | number[]) = inputStr.split(':')
@@ -36,7 +31,8 @@ const StepInputClock = function(props: any) {
       if (m) newTime.setMinutes(Number(m))
       if (s) newTime.setSeconds(Number(s))
       if (isAllowed(newTime)) {
-        return newTime
+        props.onChange(props.name, newTime);
+        return newTime;
       }
       return prev
     })
@@ -47,6 +43,7 @@ const StepInputClock = function(props: any) {
     setInputVal((prev: Date) => {
       const newTime = new Date(Number(props.time) + sign * (60 * 1000))
       if (isAllowed(newTime)) {
+        props.onChange(props.name, newTime);
         return newTime
       }
       return prev

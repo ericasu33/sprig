@@ -112,9 +112,9 @@ function App() {
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
     if (instruction === 'UPDATE') {
+      console.trace();
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
-        console.log(entryObj);
         setAllEntries(allEntries.map((e: IEntry) => {
           return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
         }))
@@ -132,7 +132,6 @@ function App() {
     if (instruction === 'CLONE') {
         // NOTE : something is wrong with how tags are stored inside of the objects, causing clones to not work
         const newEntry: any = { ...entryObj };
-        console.log(newEntry);
         axios.post(`api/stopwatches`, convertEntryToDBFormat(newEntry))
           .then((res) => {
             newEntry.id = res.data.id;
