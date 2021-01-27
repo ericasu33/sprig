@@ -25,7 +25,7 @@ function App() {
     cumulative_pause_duration: 0,
   });
 
-  // Handle pomodoro timer CREATE and UPDATE
+  // CREATE and UPDATE pomodoro timer
   const handleAddTimer = (timer: ITimer) => {
     // CREATE (save) new pomodoro timer
     let promise;
@@ -55,21 +55,35 @@ function App() {
     });
   };
 
-  // Handle Category CREATE
+  // CREATE category
   const handleCreateNewCategory = (category: ICategory) => {
     return axios.post(`/api/category`, category)
       .then((res) => {
         setAllCategories((prev: ICategory[]) => {
           return [ ...prev, { ...category, id: res.data.id } ];
         });
-    return res.data.id;
+        return res.data.id;
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  // Handle Tag CREATE
+  // UPDATE category (used to update colour)
+  const handleUpdateCategory = (category: ICategory) => {
+    return axios.put(`/api/category`, category)
+      .then((res) => {
+        setAllCategories(allCategories.map((cat: ICategory) => {
+          return cat.id === category.id ? category : cat;
+        }))
+        return res.data.id
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  // CREATE new tag
   const handleCreateNewTag = (tag: ITag) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
@@ -83,10 +97,7 @@ function App() {
       });
   };
   
-    // Change format from local to DB
-  const reformatTagsToDB = (tagObj: ITag[]) => {
-    // setAllTags(tags.map((tag: ITag) => ({ id: tag.id, label: tag.tag, value: tag.tag})))
-  }
+  // Convert entry object to one DB accepts
   const convertEntryToDBFormat = (entryObj: IEntry) => {
     return ({
       id: entryObj.id,
@@ -113,26 +124,34 @@ function App() {
         console.error(err);
       });
     }
+    if (instruction === 'UPDATE_TAGS') {
+      setAllEntries(allEntries.map((e: IEntry) => {
+        return Number(e.id) === Number(entryObj.id) ? {...entryObj} : e
+      }));
+    }
     if (instruction === 'CLONE') {
         // NOTE : something is wrong with how tags are stored inside of the objects, causing clones to not work
-        axios.post(`api/stopwatches`, convertEntryToDBFormat(entryObj))
+        const newEntry: any = { ...entryObj };
+        axios.post(`api/stopwatches`, convertEntryToDBFormat(newEntry))
           .then((res) => {
-            if (!entryObj || !entryObj.tags) return;
-            const {tags}: any = entryObj;
+            newEntry.id = res.data.id;
+            if (!newEntry || !newEntry.tags) return;
+            const {tags}: any = newEntry;
             const promises = tags.map((tag: ITag) => {
-              return axios.post(`api/stopwatches/${entryObj.id}/tags/${tag.id}`);
+              return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
             });
             return Promise.all(promises);
           })
-          .then((res) => {
-            let sortedAllEntries = []
+          .then((tags) => {
+            let sorted = [ ...allEntries ];
             for (let i=0; i < allEntries.length; i++) {
-              sortedAllEntries.push(allEntries[i])
-              if (allEntries[i].id === entryObj.id) {
-                sortedAllEntries.push(entryObj)
+              const entry: any = sorted[i];
+              if (entry !== null && newEntry !== null && entry.start_time >= newEntry.start_time) {
+                sorted.splice(i, 0, {...newEntry});
+                break;
               }
             }
-            setAllEntries(sortedAllEntries);
+            setAllEntries(sorted);
           })
           .catch((err) => {
             console.error(err);
@@ -161,6 +180,7 @@ function App() {
     }
   };
   
+  // CREATE new entry
   const handleSaveNewEntry = (entryObj: IEntry) => {
     const inDbFormat = convertEntryToDBFormat(entryObj)
     return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
@@ -177,6 +197,7 @@ function App() {
       });
   }
 
+  // UPDATE tags_entries associations
   const handleUpdateEntryTags = (entry_id: number, tag: ITag, remove: boolean) => {
     let promise;
     if (remove) {
@@ -285,12 +306,9 @@ function App() {
             <section className='pm-activesw-sw'>
               <StopwatchActive
                 allCategories={allCategories}
-                updateAllCategories={() => console.log('app.tsx runs update all categories')}
-                allTags={allTags}
-                updateAllTags={() => console.log('app.tsx runs update all tags')}
                 createNewCategory={handleCreateNewCategory}
+                allTags={allTags}
                 createNewTag={handleCreateNewTag}
-                handleChangeEntryTags={handleUpdateEntryTags}
                 activeEntry={activeEntry}
                 setActiveEntry={setActiveEntry}
                 saveNewEntry={handleSaveNewEntry}
@@ -301,8 +319,8 @@ function App() {
         <section className='section-analytics'>
           <Reports
             allCategories={allCategories}
-            updateAllCategories={() => console.log('app.tsx runs update all categories')}
             createNewCategory={handleCreateNewCategory}
+            updateCategory={handleUpdateCategory}
             allTags={allTags}
             createNewTag={handleCreateNewTag}
             updateEntryTags={handleUpdateEntryTags}

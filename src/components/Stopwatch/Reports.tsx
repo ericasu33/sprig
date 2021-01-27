@@ -89,12 +89,12 @@ const Reports = (props: any) => {
           <StopwatchList
             allCategories={props.allCategories}
             createNewCategory={props.createNewCategory}
+            updateCategory={props.updateCategory}
             allTags={props.allTags}
-            updateAllTags={props.updateAllTags}
-            filteredEntries={filteredEntries}
-            updateEntry={props.updateEntry}
             createNewTag={props.createNewTag}
             updateEntryTags={props.updateEntryTags}
+            filteredEntries={filteredEntries}
+            updateEntry={props.updateEntry}
           />
         </section>
       }
