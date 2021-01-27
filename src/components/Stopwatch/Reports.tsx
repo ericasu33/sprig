@@ -104,10 +104,10 @@ const Reports = (props: any) => {
       {tab === 'charts' &&
         <section className='section-sw-charts'>
           <ProgressBarByCategory 
-            entries={allEntriesData}
+            entries={filteredEntries}
           />
           <Pie 
-            entries={allEntriesData}
+            entries={filteredEntries}
           />
         </section>
       }
