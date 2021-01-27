@@ -1,9 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Button from '../Button'
+import Bar from './ProgressBarByCategory'
+import PieEntry from './Pie';
 import './DateRangePicker.scss'
 
-export default function MyApp(props) {
+export default function DateRange(props) {
+  const [dataByDateRange, setDataByDateRange] = useState([])
+
+
+  // const url = "http://localhost:8080/api/stopwatches"
+
+  // useEffect(() => {
+  //   axios.get(url)
+  //     .then(res => {
+  //       setDataByDateRange(res.data);
+  //     })
+  //     .catch(err => console.log(err))
+  // }, [url])
+
   const now = new Date();
   const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
   const oneMonthAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 28);
@@ -13,11 +29,18 @@ export default function MyApp(props) {
 
   const [value, setValue] = useState();
 
-  useEffect(() => {
-    props.onChange('date_range', value)
-  }, [value])
+  const result = []
+  
+  for (const entry of dataByDateRange) {
+    const startDate = new Date(entry.start_time);
+    const endDate = new Date(entry.end_time);
 
-  const dateIntervalChange = (operator) => {
+    if (startDate >= value[0] && endDate <= value[1]) {
+      result.push(entry)
+    }
+  }
+
+  const dateIntervalChange = (value, onChange, operator) => {
     if (value) {
       const diffInMs = value[1] - value[0]
       const oneDay = 1000 * 60 * 60 * 24;
@@ -64,6 +87,13 @@ export default function MyApp(props) {
       <Button date_range_reset onClick={() => setValue([oneMonthAgo, todayEnd])}>Past month</Button>
       <Button date_range_reset onClick={() => setValue([oneYearAgo, todayEnd])}>Past year</Button>
 
+      <Bar
+        dataState={result}
+      />
+
+      <PieEntry
+        dataState={result}
+      />
     </div>
   );
 }

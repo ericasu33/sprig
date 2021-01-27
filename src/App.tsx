@@ -49,7 +49,7 @@ function App() {
           });
           return data.id;
         });
-    }
+    });
     return promise.catch((err) => {
       console.error(err);
     });

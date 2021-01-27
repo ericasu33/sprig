@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAxiosGet } from 'hooks/HTTPRequestStopwatch';
 import "./ProgressBar.scss";
 import Loader from '../Loader';
 import ProgressBar from './ProgressBar';
@@ -8,56 +7,38 @@ import { filterStopwatchData } from '../../helpers/displayStopwatchByCatData'
 
 
 const Bar = ( props : any ) => {
-  const url = "http://localhost:8080/api/stopwatches"
-  const stopwatches : any = useAxiosGet(url)
+  const stopwatches : any = props.entries;
   let content = null;
-  let sumOfValue: number = 0;
 
-  if (stopwatches.error) {
-    content =
-      <p>
-        There was an error, please refresh or try again later
-    </p>
-  }
-
-  if (stopwatches.loading) {
-    content = <Loader />
-  }
-
-  if (stopwatches.data) {
-
-    const aggregateTotalDurationByCategory = (filteredEntries: any) => {
-      const entryObj: any = {};
-      const result: any = [];
-
-
-      for (const entry of filteredEntries) {
-        const nameColor = entry.name + ',' + entry.color
-        if (entryObj[nameColor]) {
-          entryObj[nameColor] = entryObj[nameColor] + entry.value;
-          sumOfValue += entry.value;
-        } else {
-          entryObj[nameColor] = entry.value
-          sumOfValue += entry.value;
-        }
+  const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
+    const entryObj : any = {};
+    const results : any = [];
+    let sum = 0;
+    for (const entry of filteredEntries) {
+      if (entryObj[entry.category.id]) {
+        entryObj[entry.category.id].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration
+      } else {
+        entryObj[entry.category.id] = {
+          title: entry.category.value,
+          value: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
+          color: entry.category.color,
+        };
       }
-
-      for (const entry in entryObj) {
-        const nameColorArr = entry.split(",")
-        result.push({
-          name: nameColorArr[0],
-          valueInSec: entryObj[entry],
-          value: +((entryObj[entry] / sumOfValue * 100).toFixed(2)),
-          color: nameColorArr[1]
-        })
-      }
-      return result;
+      sum += entry.end_time - entry.start_time - entry.cumulative_pause_duration;
     }
+    for (const id in entryObj) {
+      results.push({
+        ...entryObj[id],
+        value: Number((entryObj[id].value/sum * 100).toFixed(2)),
+      });
+    }
+    return results;
+  }
+
+  if (stopwatches) {
+    const dataArray : any = aggregateTotalDurationByCategory(stopwatches);
+
     
-  const dataArray : any = aggregateTotalDurationByCategory(filterStopwatchData(stopwatches));
-
-  console.log(dataArray)
-
 
     content = dataArray.map((entry : any, key : any) => {
       return (
@@ -70,9 +51,7 @@ const Bar = ( props : any ) => {
           completed={entry.value}
         />
       )
-    }
-    )
-        
+    });
   }
 
   return (

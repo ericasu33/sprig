@@ -1,23 +1,12 @@
 export function filterStopwatchData (entries: any) {
-  const result: any = [];
 
-  for (let entry of entries.data) {
-    const entryObj: any = {};
-
-    for (const [key] of Object.entries(entry)) {
-      if (key === "category_name") {
-        entryObj.name = entry.category_name
-      }
-
-      if (key === "total_duration_ms") {
-        entryObj.value = entry.total_duration_ms
-      }
-
-      if (key === "category_color") {
-        entryObj.color = `#${entry.category_color}`
-      }
-    }
-    result.push(entryObj);
-  }
+  const result = entries.map((entry: any) => {
+    return {
+      name: entry.category_name,
+      value: entry.end_date - entry.start_date - entry.cumulative_pause_duration,
+      color: entry.category_color,
+    };
+  });
+  
   return result
 } 
