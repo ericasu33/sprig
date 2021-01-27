@@ -118,9 +118,12 @@ function App() {
   const refreshCategory = (updatedEntry: IEntry) => {
     return allEntries.map((e: IEntry) => {
       if (e.id === updatedEntry.id) {
+        return {...e, category: updatedEntry.category};
+      }
+      if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
         return {...e, category: updatedEntry.category}
       }
-      return e
+      return e;
     })
   }
 
