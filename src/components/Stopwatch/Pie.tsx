@@ -11,13 +11,15 @@ const PieEntry = ( props : any ) => {
       const results : any = [];
       let sum = 0;
       for (const entry of filteredEntries) {
-        if (entryObj[entry.category.id]) {
-          entryObj[entry.category.id].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration
+        const name = entry.category.value || "No_Category";
+        const color = (entry.category && entry.category.color) || "#777777";
+        if (entryObj[name]) {
+          entryObj[name].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration
         } else {
-          entryObj[entry.category.id] = {
-            title: entry.category.value,
+          entryObj[name] = {
+            title: name,
             value: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
-            color: `${entry.category.color}`,
+            color,
           };
         }
         sum += entry.end_time - entry.start_time - entry.cumulative_pause_duration;
@@ -28,6 +30,7 @@ const PieEntry = ( props : any ) => {
           value: Number((entryObj[id].value/sum * 100).toFixed(2)),
         });
       }
+      console.log(results);
       return results;
     }
 
