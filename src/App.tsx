@@ -71,7 +71,7 @@ function App() {
 
   // UPDATE category (used to update colour)
   const handleUpdateCategory = (category: ICategory) => {
-    return axios.put(`/api/category`, category)
+    return axios.put(`/api/category/${category.id}`, category)
       .then((res) => {
         setAllCategories(allCategories.map((cat: ICategory) => {
           return cat.id === category.id ? category : cat;
@@ -305,6 +305,7 @@ function App() {
           <StopwatchActive
             allCategories={allCategories}
             createNewCategory={handleCreateNewCategory}
+            updateCategory={handleUpdateCategory}
             allTags={allTags}
             createNewTag={handleCreateNewTag}
             activeEntry={activeEntry}

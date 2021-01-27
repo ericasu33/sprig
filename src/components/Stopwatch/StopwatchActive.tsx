@@ -105,6 +105,7 @@ const StopwatchActive = (props: any) => {
           <Categories 
             allCategories={props.allCategories}
             createNewCategory={addCategory}
+            updateCategory={props.updateCategory}
             category={activeEntry.category}
             onChange={updateActiveEntry}
           />
