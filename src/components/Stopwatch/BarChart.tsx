@@ -2,6 +2,34 @@ import React from 'react';
 import "./BarChart.scss";
 import { ResponsiveBar } from '@nivo/bar';
 
+const formatTimeToStr = (timeInSec: number) => {
+  const sec = Math.floor(timeInSec);
+  let acc = Math.floor(sec / 60);
+  const ss = sec % 60;
+  const mm = acc % 60;
+  acc = Math.floor(acc / 60);
+  const hh = acc;
+  return `${hh > 0 ? `${hh}h ` : ""}${mm > 0 ? `${mm}m ` : ""}${ss > 0 ? `${ss}s ` : ""}`;
+};
+
+const formatTime = (timeInSec: number, size = Infinity) => {
+  const times = [
+    {size: 0, key: "sec", val: 60},
+    {size: 1, key: "min", val: 60},
+    {size: 2, key: "hrs", val: 24},
+  ];
+  const sec = Math.floor(timeInSec);
+  let acc = sec;
+  let prev = { ...times[0], val: acc };
+  for (const time of times) {
+    if (time.size > size) return prev;
+    prev = { size: time.size, key: time.key, val: acc };
+    acc = acc / time.val;
+    if (acc < 1) return prev;
+  }
+  return prev;
+};
+
 const BarChart = ( props : any ) => {
   const stopwatches : any = props.entries || [];
 
@@ -9,6 +37,8 @@ const BarChart = ( props : any ) => {
     const data: any = [];
     const categories: any = [];
     const dataHash: any = {};
+    const timeHash: any = {};
+    let dataType = "min";
     for (const entry of entries) {
       const date = entry.start_time.toDateString();
       const name = (entry.category && entry.category.value) || "No Category";
@@ -16,24 +46,27 @@ const BarChart = ( props : any ) => {
       const color = entry.category && entry.category.color;
       const time = (entry.end_time - entry.start_time - entry.cumulative_pause_duration) / 1000;
       if (dataHash[date]) {
-        dataHash[date][name] = (dataHash[date][name] || 0) + time;
+        dataHash[date][name] = (dataHash[date][name] || 0) + time / 60;
+        timeHash[date][name] = (timeHash[date][name] || 0) + time;
         dataHash[date][`${name}Color`] = `${color || "#000000"}`;
       } else {
         dataHash[date] = {
           date,
-          [name]: time,
+          [name]: time / 60,
           [`${name}Color`]: `${color || "#000000"}`,
+        };
+        timeHash[date] = {
+          [name]: time,
         };
       }
     }
     for (const id in dataHash) {
       data.push(dataHash[id]);
     }
-    const dataType = "sec";
-    return { data, categories, dataType };
+    return { data, categories, dataType, timeHash };
   };
 
-  const { data, categories, dataType } : any = formatEntriesToBarChart(stopwatches);
+  const { data, categories, dataType, timeHash } : any = formatEntriesToBarChart(stopwatches);
 
   return (
     <div className="entry-bar-chart">
@@ -91,7 +124,15 @@ const BarChart = ( props : any ) => {
           motionStiffness={90}
           motionDamping={15}
           labelSkipHeight={16}
-          label={d => `${d.value} ${dataType}`}
+          label={d => {
+            const seconds = timeHash[d.indexValue][d.id];
+            return formatTimeToStr(seconds);
+          }}
+          tooltip={d => {
+            const seconds = timeHash[d.indexValue][d.id];
+            const time = formatTimeToStr(seconds);
+            return <div className="bar-chart tool-tip">{d.id}: {time}</div>;
+          }}
         />
     </div>
   )

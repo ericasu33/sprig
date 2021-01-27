@@ -13,7 +13,7 @@ import './Reports.scss'
 const blankFilter: IFilterOptions = {
   category: null,
   tags: null,
-  date_range: null,
+  date_range: [null, null],
 }
 
 const Reports = (props: any) => {

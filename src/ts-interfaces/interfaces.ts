@@ -93,7 +93,7 @@ interface IEntry {
 interface IFilterOptions {
   category: number | null,
   tags: number[] | null,
-  date_range: Date[] | null,
+  date_range: (Date | null)[],
 }
 
 export type {
