@@ -127,7 +127,7 @@ const StopwatchActive = (props: any) => {
                 name='start_time'
                 time={activeEntry.start_time}
                 onChange={updateActiveEntry}
-                allowFuture='false'
+                maxTime='now'
               />}
             </div>
 

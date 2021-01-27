@@ -106,7 +106,7 @@ const StopwatchListItem = (props: any) => {
             name='start_time'
             time={props.entry.start_time}
             onChange={updateEntry}
-            allowFuture='true'
+            maxTime={props.entry.end_time}
           />
         </div>
         -
@@ -116,7 +116,7 @@ const StopwatchListItem = (props: any) => {
             name='end_time'
             time={props.entry.end_time}
             onChange={updateEntry}
-            allowFuture='true'
+            maxTime='now'
           />
         </div>
 
