@@ -1,9 +1,13 @@
+@import 'styles/variables.scss';
+
 .pie-chart {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   .legend-container {
+    font-family: $font-family-fancy;
+    font-size: 1.25em;
     display: flex;
     flex-direction: column;
     .pie-legend-item {

@@ -9,6 +9,9 @@ html {
 }
 
 body {
+  padding: 20px;
+  font-family: $font-family;
+  font-size: 14px;
   min-height: 100%;
   #root {
     min-height: 100%;
@@ -23,7 +26,6 @@ body {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-      padding-top: 10px;
       // LOGO
       .nav-container {
         font-family: $font-family-fancy;
@@ -83,9 +85,6 @@ body {
         }
       }
     }
-    padding: 10px;
-    font-family: $font-family;
-    font-size: 14px;
   }
 
   .footer, .page-wrap::after {
