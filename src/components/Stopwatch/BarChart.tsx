@@ -2,6 +2,16 @@ import React from 'react';
 import "./BarChart.scss";
 import { ResponsiveBar } from '@nivo/bar';
 
+const formatTime = (timeInSec: number) => {
+  const sec = Math.floor(timeInSec);
+  let acc = Math.floor(sec / 60);
+  const ss = sec % 60;
+  const mm = acc % 60;
+  acc = Math.floor(acc / 60);
+  const hh = acc;
+  return `${hh > 0 ? `${hh}h ` : ""}${mm > 0 ? `${mm}m ` : ""}${ss > 0 ? `${ss}s ` : ""}`;
+};
+
 const BarChart = ( props : any ) => {
   const stopwatches : any = props.entries || [];
 
@@ -91,7 +101,7 @@ const BarChart = ( props : any ) => {
           motionStiffness={90}
           motionDamping={15}
           labelSkipHeight={16}
-          label={d => `${d.value} ${dataType}`}
+          label={d => { console.log(d);return formatTime(Number(d.value))}}
         />
     </div>
   )
