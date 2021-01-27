@@ -128,6 +128,11 @@ const BarChart = ( props : any ) => {
             const seconds = timeHash[d.indexValue][d.id];
             return formatTimeToStr(seconds);
           }}
+          tooltip={d => {
+            const seconds = timeHash[d.indexValue][d.id];
+            const time = formatTimeToStr(seconds);
+            return <div className="bar-chart tool-tip">{d.id}: {time}</div>;
+          }}
         />
     </div>
   )
