@@ -117,7 +117,7 @@ function App() {
   // UPDATE all entries LOCALLY
   const refreshCategory = (updatedEntry: IEntry) => {
     return allEntries.map((e: IEntry) => {
-      if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
+      if (e.id === updatedEntry.id) {
         return {...e, category: updatedEntry.category}
       }
       return e
