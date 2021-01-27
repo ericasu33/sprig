@@ -103,9 +103,15 @@ const Reports = (props: any) => {
         <section className='section-sw-charts'>
           { filteredEntries.length > 0 && 
           <>
+            <div className='section-sw-charts-title'>
+              Category share of time each day
+            </div>
             <BarChart 
               entries={filteredEntries}
             />
+            <div className='section-sw-charts-title'>
+              Category share of time total
+            </div>
             <Pie 
               entries={filteredEntries}
             />
