@@ -71,7 +71,7 @@ function App() {
 
   // UPDATE category (used to update colour)
   const handleUpdateCategory = (category: ICategory) => {
-    return axios.put(`/api/category`, category)
+    return axios.put(`/api/category/${category.id}`, category)
       .then((res) => {
         setAllCategories(allCategories.map((cat: ICategory) => {
           return cat.id === category.id ? category : cat;
@@ -84,13 +84,17 @@ function App() {
   }
 
   // CREATE new tag
-  const handleCreateNewTag = (tag: ITag) => {
+  const handleCreateNewTag = (tag: ITag, entry_id: number | null = null) => {
     return axios.post(`/api/tag`, tag)
       .then((res) => {
         setAllTags((prev: ITag[]) => {
           return [ ...prev, { ...tag, id: res.data.id } ];
         });
-        return res.data.id;
+        if (entry_id) {
+          return axios.post(`/api/stopwatches/${entry_id}/tags/${res.data.id}`, tag).then(() => res.data.id);
+        } else {
+          return res.data.id;
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -110,14 +114,22 @@ function App() {
     })
   }
 
+  // UPDATE all entries LOCALLY
+  const refreshCategory = (updatedEntry: IEntry) => {
+    return allEntries.map((e: IEntry) => {
+      if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
+        return {...e, category: updatedEntry.category}
+      }
+      return e
+    })
+  }
+
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
     if (instruction === 'UPDATE') {
       return axios.put(`api/stopwatches/${entryObj.id}`, convertEntryToDBFormat(entryObj))
       .then((res) => {
-        setAllEntries(allEntries.map((e: IEntry) => {
-          return Number(e.id) === Number(res.data.id) ? {...entryObj} : e
-        }))
+        setAllEntries(refreshCategory(entryObj))
         return res.data.id;
       })
       .catch((err) => {
@@ -185,7 +197,7 @@ function App() {
     const inDbFormat = convertEntryToDBFormat(entryObj)
     return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
       .then(res => {
-        const {tags}: any = entryObj;
+        const tags: any = entryObj.tags || [];
         const promises = tags.map((tag: ITag) => {
           return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
         });
@@ -308,6 +320,7 @@ function App() {
                 <StopwatchActive
                   allCategories={allCategories}
                   createNewCategory={handleCreateNewCategory}
+                  updateCategory={handleUpdateCategory}
                   allTags={allTags}
                   createNewTag={handleCreateNewTag}
                   activeEntry={activeEntry}

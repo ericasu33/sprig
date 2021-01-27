@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import StopwatchList from './StopwatchList'
 import Pie from './Pie'
-import ProgressBar from './ProgressBar'
+import BarChart from './BarChart'
 import Categories from './Categories'
 import Tags from './Tags'
 import DateRange from './DateRangePicker'
 import { IFilterOptions } from 'ts-interfaces/interfaces'
 import filterData from 'helpers/filterData'
-
 
 import './Reports.scss'
 
@@ -23,7 +22,8 @@ const Reports = (props: any) => {
   const [tab, setTab] = useState('data');
 
   useEffect(() => {
-    props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
+    console.log(filterOptions);
+    props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions));
   }, [filterOptions, props.allEntries]);
   
   // Update filter options when new category, tag or date_range is selected
@@ -101,8 +101,19 @@ const Reports = (props: any) => {
 
       {tab === 'charts' &&
         <section className='section-sw-charts'>
-          <ProgressBar />
-          <Pie />
+          { filteredEntries.length > 0 && 
+          <>
+            <BarChart 
+              entries={filteredEntries}
+            />
+            <Pie 
+              entries={filteredEntries}
+            />
+          </>
+          }
+          { filteredEntries.length === 0 && 
+          "No entry data to display"
+          }
         </section>
       }
 

@@ -46,8 +46,8 @@ const mockEntryData: IEntry = {
 };
 
 const allEntriesData: IEntry[] = [
-  {...mockEntryData, id: 0, start_time: new Date(1611020000000), end_time: new Date(1611021000000)},
-  {...mockEntryData, id: 1, start_time: new Date(1611022000000), end_time: new Date(1611023000000)},
+  {...mockEntryData, category: allCategoriesData[0], id: 0, start_time: new Date(1611020000000), end_time: new Date(1611021000000)},
+  {...mockEntryData, category: allCategoriesData[2], id: 1, start_time: new Date(1611022000000), end_time: new Date(1611023000000)},
   {...mockEntryData, id: 2, start_time: new Date(1611024000000), end_time: new Date(1611025000000)},
   {...mockEntryData, id: 3, start_time: new Date(1411024000000), end_time: new Date(1411027000000)},
 ]

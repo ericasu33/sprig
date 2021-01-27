@@ -1,68 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import Button from '../Button'
 import './DateRangePicker.scss'
 
-export default function MyApp(props) {
-  const now = new Date();
-  const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
-  const oneMonthAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 28);
-  const oneYearAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 365);
-  const lastSunday = new Date(now.setDate(now.getDate() - now.getDay()));
-  const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+export default function DateRange(props) {
 
-  const [value, setValue] = useState();
-
-  useEffect(() => {
-    props.onChange('date_range', value)
-  }, [value])
-
-  const dateIntervalChange = (operator) => {
-    if (value) {
-      const diffInMs = value[1] - value[0]
-      const oneDay = 1000 * 60 * 60 * 24;
-      const diffInDays = Math.round(diffInMs / oneDay)
-    
-      if (operator === "add") {
-        const start = new Date(value[0]);
-        const end = new Date(value[1]);
-
-        start.setDate(start.getDate() + diffInDays);
-        end.setDate(end.getDate() + diffInDays)
-
-        setValue([start, end])
-      }
-
-      if (operator === "subtract") {
-        const start = new Date(value[0]);
-        const end = new Date(value[1]);
-
-        start.setDate(start.getDate() - diffInDays);
-        end.setDate(end.getDate() - diffInDays)
-        
-        setValue([start, end])
-      }
+  const [value, setValue] = useState([null, null]);
+  const {onChange} = props;
+  
+  const dateIntervalChange = (value, operator = "") => {
+    const now = new Date();
+    const diffInMs = value[1] - value[0]
+    const oneDay = 1000 * 60 * 60 * 24;
+    const diffInDays = Math.round(diffInMs / oneDay)
+    let start = value[0] && new Date(value[0]);
+    let end = value[1] && new Date(value[1]);
+    if (operator === "add") {
+      start.setDate(start.getDate() + diffInDays);
+      end.setDate(end.getDate() + diffInDays)
+    } else if (operator === "subtract") {
+      start.setDate(start.getDate() - diffInDays);
+      end.setDate(end.getDate() - diffInDays)
+    } else if (operator === "week") {
+      start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+      end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+      console.log(start,end);
+    } else if (operator === "month") {
+      start = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+    } else if (operator === "year") {
+      start = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+      end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
     }
+    setValue([start, end]);
+    onChange("date_range",[start, end]);
   }
   
   return (
     <div className="calendar-container">
-      <Button date_range_left onClick={() => dateIntervalChange('subtract')} />
+      <Button date_range_left onClick={() => dateIntervalChange(value, 'subtract')} />
       
       <DateRangePicker
         className='date-range-picker'
-        onChange={setValue}
+        onChange={dateIntervalChange}
         value={value}
         locale='en-CA'
         clearIcon={null}
         calendarIcon={<i className='far fa-calendar-alt' />}
       />
 
-      <Button date_range_right onClick={e => dateIntervalChange('add')} />
-      <Button date_range_reset onClick={() => setValue()}>Clear</Button>
-      <Button date_range_reset onClick={() => setValue([sevenDaysAgo, todayEnd])}>Past week</Button>
-      <Button date_range_reset onClick={() => setValue([oneMonthAgo, todayEnd])}>Past month</Button>
-      <Button date_range_reset onClick={() => setValue([oneYearAgo, todayEnd])}>Past year</Button>
+      <Button date_range_right onClick={e => dateIntervalChange(value, 'add')} />
+      <Button date_range_reset onClick={() => dateIntervalChange([null,null])}>Clear</Button>
+      <Button date_range_reset onClick={() => dateIntervalChange(value, 'week')}>Past week</Button>
+      <Button date_range_reset onClick={() => dateIntervalChange(value, 'month')}>Past month</Button>
+      <Button date_range_reset onClick={() => dateIntervalChange(value, 'year')}>Past year</Button>
 
     </div>
   );

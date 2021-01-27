@@ -23,7 +23,7 @@ const Category = (props: any) => {
 
   useEffect(() => {
     setValue(props.category || '')
-  }, [props.category])
+  }, [props.category, props.allCategories])
   
   const handleChange = (updatedCategory: ICategory) => {
     const promise = props.onChange('category', updatedCategory);
@@ -54,6 +54,7 @@ const Category = (props: any) => {
       if (!id) return
       handleChange(updatedCategory)
     })
+    setShowColourPicker(false)
   })
 
   return (

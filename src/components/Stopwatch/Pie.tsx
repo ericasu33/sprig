@@ -1,53 +1,34 @@
 import { PieChart } from 'react-minimal-pie-chart';
-import { useAxiosGet } from 'hooks/HTTPRequestStopwatch';
-import Loader from '../Loader';
-import { totalTimeUsed } from 'helpers/timeDisplay'
-import { filterStopwatchData } from 'helpers/displayStopwatchByCatData'
 
 const PieEntry = ( props : any ) => {
-  const url = "http://localhost:8080/api/stopwatches"
-  const stopwatches : any = useAxiosGet(url)
-  let content = null;
-  let sumOfValue: number = 0;
+  const stopwatches : any = props.entries || [];
 
-  if (stopwatches.error) {
-    content = 
-    <p>
-      There was an error, please refresh or try again later
-    </p>
-  }
-
-  if (stopwatches.loading) {
-    content = <Loader />
-  }
-
-  if (stopwatches.data) {
-
-    const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
-      const entryObj : any = {};
-      const result : any = [];
-      
-      for (const entry of filteredEntries) {
-        const nameColor = entry.name + ',' + entry.color
-         if (entryObj[nameColor]) {
-            entryObj[nameColor] = entryObj[nameColor] + entry.value;
-            sumOfValue += entry.value;
-          } else {
-            entryObj[nameColor] = entry.value
-            sumOfValue += entry.value;
-          }
-        }
-
-        for (const entry in entryObj) {
-          const nameColorArr = entry.split(",")
-          result.push({
-            name: nameColorArr[0],
-            value: +((entryObj[entry]/sumOfValue * 100).toFixed(2)),
-            color: nameColorArr[1]
-          })
-        }
-        return result;
+  const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
+    const entryObj : any = {};
+    const results : any = [];
+    let sum = 0;
+    for (const entry of filteredEntries) {
+      const name = (entry.category && entry.category.value) || "No_Category";
+      const color = (entry.category && entry.category.color) || "#777777";
+      if (entryObj[name]) {
+        entryObj[name].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration
+      } else {
+        entryObj[name] = {
+          title: name,
+          value: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
+          color,
+        };
       }
+      sum += entry.end_time - entry.start_time - entry.cumulative_pause_duration;
+    }
+    for (const id in entryObj) {
+      results.push({
+        ...entryObj[id],
+        value: Number((entryObj[id].value/sum * 100).toFixed(2)),
+      });
+    }
+    return results;
+  }
 
   const defaultLabelStyle = {
     fontSize: '5px',
@@ -55,13 +36,14 @@ const PieEntry = ( props : any ) => {
     fill: '#FFF'
   };
 
-    const chartData = aggregateTotalDurationByCategory(filterStopwatchData(stopwatches));
+  const chartData = aggregateTotalDurationByCategory(stopwatches);
     
-    const shiftSize = 7;
-    const lineWidth = 60;
-  
-    content = 
-        <PieChart
+  const shiftSize = 7;
+  const lineWidth = 60;
+
+  return (
+    <div>
+      <PieChart
           data = {chartData}
           style= {{
             height: '300px',
@@ -76,13 +58,7 @@ const PieEntry = ( props : any ) => {
           labelStyle={{
             ...defaultLabelStyle,
           }}
-        />
-  }
-
-  return (
-    <div>
-      {totalTimeUsed(sumOfValue)}
-      {content}
+      />
     </div>
   )
 }

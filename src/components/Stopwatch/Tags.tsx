@@ -44,8 +44,8 @@ const Tags = (props: any) => {
     const promise = props.createNewTag(newTag);
     promise.then((id: number | undefined) => {
       if (!id) return;
-      props.onChange('tags', [...value, newTag]);
-      setValue([...value, newTag]);
+      props.onChange('tags', [...value, {...newTag, id}]);
+      setValue([...value, {...newTag, id}]);
     });
   };
 
