@@ -76,6 +76,10 @@ function App() {
         setAllCategories(allCategories.map((cat: ICategory) => {
           return cat.id === category.id ? category : cat;
         }))
+        return res.data.id
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 
