@@ -125,7 +125,8 @@ const BarChart = ( props : any ) => {
           motionDamping={15}
           labelSkipHeight={16}
           label={d => {
-            const seconds = timeHash[d.indexValue][d.id];
+            console.log(timeHash);
+            const seconds = (timeHash[d.indexValue] && timeHash[d.indexValue][d.id]) || 0;
             return formatTimeToStr(seconds);
           }}
           tooltip={d => {
