@@ -282,54 +282,65 @@ function App() {
   }, []);
 
   return (
-    <main>
-      <section className='main-app'>
-        <div className='top-panel'>
-          <nav className='nav-container'>
-            <div className='nav-logo-container'>
-              <div className='nav-logo-inner'>
-                <div className='nav-title'>TRACK<br/>SUITE</div>
+    <>
+      <main className='page-wrap'>
+        <section className='main-app'>
+          <div className='top-panel'>
+            <nav className='nav-container'>
+              <div className='nav-logo-container'>
+                <div className='nav-logo-inner'>
+                  <div className='nav-title'>TRACK<br/>SUITE</div>
+                </div>
+                <div className='nav-logo-inner'>
+                  <img src="./assets/suit.png" alt="suit"/>
+                </div>
               </div>
-              <div className='nav-logo-inner'>
-                <img src="./assets/suit.png" alt="suit"/>
-              </div>
+            </nav>
+            <div className='pm-activesw'>
+              <section className='pm-activesw-pomo'>
+                <PomodoroTimer 
+                  timers={timerPresets}
+                  saveTimer={handleAddTimer}
+                  sounds={soundFiles}
+                />
+              </section>
+              <section className='pm-activesw-sw'>
+                <StopwatchActive
+                  allCategories={allCategories}
+                  createNewCategory={handleCreateNewCategory}
+                  allTags={allTags}
+                  createNewTag={handleCreateNewTag}
+                  activeEntry={activeEntry}
+                  setActiveEntry={setActiveEntry}
+                  saveNewEntry={handleSaveNewEntry}
+                />
+              </section>
             </div>
-          </nav>
-          <div className='pm-activesw'>
-            <section className='pm-activesw-pomo'>
-              <PomodoroTimer 
-                timers={timerPresets}
-                saveTimer={handleAddTimer}
-                sounds={soundFiles}
-              />
-            </section>
-            <section className='pm-activesw-sw'>
-              <StopwatchActive
-                allCategories={allCategories}
-                createNewCategory={handleCreateNewCategory}
-                allTags={allTags}
-                createNewTag={handleCreateNewTag}
-                activeEntry={activeEntry}
-                setActiveEntry={setActiveEntry}
-                saveNewEntry={handleSaveNewEntry}
-              />
-            </section>
           </div>
-        </div>
-        <section className='section-analytics'>
-          <Reports
-            allCategories={allCategories}
-            createNewCategory={handleCreateNewCategory}
-            updateCategory={handleUpdateCategory}
-            allTags={allTags}
-            createNewTag={handleCreateNewTag}
-            updateEntryTags={handleUpdateEntryTags}
-            allEntries={allEntries}
-            updateEntry={updateEntry} 
-          />
+          <section className='section-analytics'>
+            <Reports
+              allCategories={allCategories}
+              createNewCategory={handleCreateNewCategory}
+              updateCategory={handleUpdateCategory}
+              allTags={allTags}
+              createNewTag={handleCreateNewTag}
+              updateEntryTags={handleUpdateEntryTags}
+              allEntries={allEntries}
+              updateEntry={updateEntry} 
+            />
+          </section>
         </section>
-      </section>
-    </main>
+      </main>
+      <footer className='footer'>
+        <div className='footer-text'>
+          Built by a team who know exaclty how long it took
+          <br/>
+          who took regular breaks
+          <br/>
+          time for one now actually...
+        </div>
+      </footer>
+    </>
   );
 }
 
