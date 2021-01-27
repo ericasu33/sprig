@@ -10,6 +10,7 @@ const StopwatchList = (props: any) => {
       key={entry.id}
       allCategories={props.allCategories}
       createNewCategory={props.createNewCategory}
+      updateCategory={props.updateCategory}
       allTags={props.allTags}
       createNewTag={props.createNewTag}
       updateEntryTags={props.updateEntryTags}

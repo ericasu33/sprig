@@ -48,8 +48,12 @@ const Category = (props: any) => {
   };
 
   const handleUpdateColour = ((picked: any) => {
-    const updatedCategory: ICategory = {...value, color: picked.hex}    
-    handleChange(updatedCategory)
+    const updatedCategory: ICategory = {...value, color: picked.hex}
+    const promise = props.updateCategory(updatedCategory);
+    promise.then((id: number | undefined) => {
+      if (!id) return
+      handleChange(updatedCategory)
+    })
   })
 
   return (

@@ -62,12 +62,22 @@ function App() {
         setAllCategories((prev: ICategory[]) => {
           return [ ...prev, { ...category, id: res.data.id } ];
         });
-    return res.data.id;
+        return res.data.id;
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
+  // Handle Colour UPDATE
+  const handleUpdateCategory = (category: ICategory) => {
+    return axios.put(`/api/category`, category)
+      .then((res) => {
+        setAllCategories(allCategories.map((cat: ICategory) => {
+          return cat.id === category.id ? category : cat;
+        }))
+      })
+  }
 
   // Handle Tag CREATE
   const handleCreateNewTag = (tag: ITag) => {
@@ -309,6 +319,7 @@ function App() {
             allCategories={allCategories}
             updateAllCategories={() => console.log('app.tsx runs update all categories')}
             createNewCategory={handleCreateNewCategory}
+            updateCategory={handleUpdateCategory}
             allTags={allTags}
             createNewTag={handleCreateNewTag}
             updateEntryTags={handleUpdateEntryTags}

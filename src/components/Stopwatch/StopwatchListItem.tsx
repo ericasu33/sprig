@@ -82,6 +82,7 @@ const StopwatchListItem = (props: any) => {
         <Categories 
           allCategories={props.allCategories}
           createNewCategory={props.createNewCategory}
+          updateCategory={props.updateCategory}
           category={props.entry.category}
           onChange={updateEntry}
         />
