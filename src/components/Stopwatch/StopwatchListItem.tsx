@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-import ColourPicker from './ColourPicker'
 import Button from '../Button';
 import Categories from './Categories';
 import Tags from './Tags';
@@ -9,7 +8,6 @@ import StepInputInt from '../StepInputInt'
 import StepInputTimer from '../StepInputTimer';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
-import StopwatchList from './StopwatchList';
 
 import { ITag } from '../../ts-interfaces/interfaces';
 
