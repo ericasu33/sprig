@@ -5,7 +5,7 @@ import './DateRangePicker.scss'
 
 export default function DateRange(props) {
 
-  const [value, setValue] = useState();
+  const [value, setValue] = useState([null, null]);
   const {onChange} = props;
   
   const dateIntervalChange = (value, operator = "") => {
@@ -15,11 +15,7 @@ export default function DateRange(props) {
     const diffInDays = Math.round(diffInMs / oneDay)
     let start = value[0] && new Date(value[0]);
     let end = value[1] && new Date(value[1]);
-    if (!start || !end) {
-      setValue([start, end]);
-      onChange("date_range",[start, end]);
-      return;
-    } else if (operator === "add") {
+    if (operator === "add") {
       start.setDate(start.getDate() + diffInDays);
       end.setDate(end.getDate() + diffInDays)
     } else if (operator === "subtract") {
@@ -28,6 +24,7 @@ export default function DateRange(props) {
     } else if (operator === "week") {
       start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
       end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+      console.log(start,end);
     } else if (operator === "month") {
       start = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
       end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);

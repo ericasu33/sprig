@@ -8,7 +8,7 @@ const PieEntry = ( props : any ) => {
     const results : any = [];
     let sum = 0;
     for (const entry of filteredEntries) {
-      const name = entry.category.value || "No_Category";
+      const name = (entry.category && entry.category.value) || "No_Category";
       const color = (entry.category && entry.category.color) || "#777777";
       if (entryObj[name]) {
         entryObj[name].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration

@@ -1,8 +1,6 @@
 import React from 'react';
 import "./BarChart.scss";
 import { ResponsiveBar } from '@nivo/bar';
-import { IEntry } from 'ts-interfaces/interfaces';
-
 
 const BarChart = ( props : any ) => {
   const stopwatches : any = props.entries || [];
@@ -11,19 +9,19 @@ const BarChart = ( props : any ) => {
     const data: any = [];
     const categories: any = [];
     const dataHash: any = {};
-    console.log(entries);
     for (const entry of entries) {
-      const date = entry.start_time.getDate();
-      const name = entry.category.value || "No Category";
+      const date = entry.start_time.toDateString();
+      const name = (entry.category && entry.category.value) || "No Category";
       if (!categories.includes(name)) categories.push(name);
       const color = entry.category && entry.category.color;
+      const time = (entry.end_time - entry.start_time - entry.cumulative_pause_duration) / 1000;
       if (dataHash[date]) {
-        dataHash[date][name] = entry.end_time - entry.start_time - entry.cumulative_pause_duration;
+        dataHash[date][name] = (dataHash[date][name] || 0) + time;
         dataHash[date][`${name}Color`] = `${color || "#000000"}`;
       } else {
         dataHash[date] = {
           date,
-          [name]: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
+          [name]: time,
           [`${name}Color`]: `${color || "#000000"}`,
         };
       }
@@ -31,10 +29,11 @@ const BarChart = ( props : any ) => {
     for (const id in dataHash) {
       data.push(dataHash[id]);
     }
-    return { data, categories };
+    const dataType = "sec";
+    return { data, categories, dataType };
   };
 
-  const { data, categories } : any = formatEntriesToBarChart(stopwatches);
+  const { data, categories, dataType } : any = formatEntriesToBarChart(stopwatches);
 
   return (
     <div className="entry-bar-chart">
@@ -60,7 +59,7 @@ const BarChart = ( props : any ) => {
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: 'Time',
+              legend: `Time (${dataType})`,
               legendPosition: 'middle',
               legendOffset: -80
           }}
@@ -91,6 +90,8 @@ const BarChart = ( props : any ) => {
           animate={true}
           motionStiffness={90}
           motionDamping={15}
+          labelSkipHeight={16}
+          label={d => `${d.value} ${dataType}`}
         />
     </div>
   )

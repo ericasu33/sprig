@@ -189,7 +189,7 @@ function App() {
     const inDbFormat = convertEntryToDBFormat(entryObj)
     return axios.post<IEntry>(`/api/stopwatches`, inDbFormat)
       .then(res => {
-        const {tags}: any = entryObj;
+        const tags: any = entryObj.tags || [];
         const promises = tags.map((tag: ITag) => {
           return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
         });
