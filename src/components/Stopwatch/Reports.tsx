@@ -103,12 +103,19 @@ const Reports = (props: any) => {
 
       {tab === 'charts' &&
         <section className='section-sw-charts'>
-          <BarChart 
-            entries={filteredEntries}
-          />
-          <Pie 
-            entries={filteredEntries}
-          />
+          { filteredEntries.length > 0 && 
+          <>
+            <BarChart 
+              entries={filteredEntries}
+            />
+            <Pie 
+              entries={filteredEntries}
+            />
+          </>
+          }
+          { filteredEntries.length === 0 && 
+          "No entry data to display"
+          }
         </section>
       }
 

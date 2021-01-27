@@ -5,9 +5,7 @@ import { IEntry } from 'ts-interfaces/interfaces';
 
 
 const BarChart = ( props : any ) => {
-  const stopwatches : any = props.entries;
-  let content = null;
-
+  const stopwatches : any = props.entries || [];
 
   const formatEntriesToBarChart = (entries: any[]) => {
     const data: any = [];
@@ -33,14 +31,13 @@ const BarChart = ( props : any ) => {
     for (const id in dataHash) {
       data.push(dataHash[id]);
     }
-    console.log(dataHash);
     return { data, categories };
   };
 
-  const { data, categories } : any = formatEntriesToBarChart(stopwatches || []);
-  console.log(categories);
+  const { data, categories } : any = formatEntriesToBarChart(stopwatches);
+
   return (
-    <div style={{height: "300px"}}>
+    <div className="entry-bar-chart">
       <ResponsiveBar 
           data={data}
           indexBy={"date"}
@@ -95,7 +92,6 @@ const BarChart = ( props : any ) => {
           motionStiffness={90}
           motionDamping={15}
         />
-      {content}
     </div>
   )
 };

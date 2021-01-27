@@ -1,38 +1,34 @@
 import { PieChart } from 'react-minimal-pie-chart';
 
 const PieEntry = ( props : any ) => {
-  const stopwatches : any = props.entries;
-  let content = null;
+  const stopwatches : any = props.entries || [];
 
-  if (stopwatches) {
-
-    const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
-      const entryObj : any = {};
-      const results : any = [];
-      let sum = 0;
-      for (const entry of filteredEntries) {
-        const name = entry.category.value || "No_Category";
-        const color = (entry.category && entry.category.color) || "#777777";
-        if (entryObj[name]) {
-          entryObj[name].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration
-        } else {
-          entryObj[name] = {
-            title: name,
-            value: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
-            color,
-          };
-        }
-        sum += entry.end_time - entry.start_time - entry.cumulative_pause_duration;
+  const aggregateTotalDurationByCategory = ( filteredEntries : any ) =>  {
+    const entryObj : any = {};
+    const results : any = [];
+    let sum = 0;
+    for (const entry of filteredEntries) {
+      const name = entry.category.value || "No_Category";
+      const color = (entry.category && entry.category.color) || "#777777";
+      if (entryObj[name]) {
+        entryObj[name].value += entry.end_time - entry.start_time - entry.cumulative_pause_duration
+      } else {
+        entryObj[name] = {
+          title: name,
+          value: entry.end_time - entry.start_time - entry.cumulative_pause_duration,
+          color,
+        };
       }
-      for (const id in entryObj) {
-        results.push({
-          ...entryObj[id],
-          value: Number((entryObj[id].value/sum * 100).toFixed(2)),
-        });
-      }
-      console.log(results);
-      return results;
+      sum += entry.end_time - entry.start_time - entry.cumulative_pause_duration;
     }
+    for (const id in entryObj) {
+      results.push({
+        ...entryObj[id],
+        value: Number((entryObj[id].value/sum * 100).toFixed(2)),
+      });
+    }
+    return results;
+  }
 
   const defaultLabelStyle = {
     fontSize: '5px',
@@ -40,12 +36,14 @@ const PieEntry = ( props : any ) => {
     fill: '#FFF'
   };
 
-    const chartData = aggregateTotalDurationByCategory(stopwatches);
+  const chartData = aggregateTotalDurationByCategory(stopwatches);
     
-    const shiftSize = 7;
-    const lineWidth = 60;
-    content = 
-        <PieChart
+  const shiftSize = 7;
+  const lineWidth = 60;
+
+  return (
+    <div>
+      <PieChart
           data = {chartData}
           style= {{
             height: '300px',
@@ -60,12 +58,7 @@ const PieEntry = ( props : any ) => {
           labelStyle={{
             ...defaultLabelStyle,
           }}
-        />
-  }
-
-  return (
-    <div>
-      {content}
+      />
     </div>
   )
 }
