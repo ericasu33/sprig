@@ -29,7 +29,7 @@ const filterData = (allEntries: any, filterOptions: any) => {
       }
     }
     // Date range in filter, return false if entry.start_date is outside range
-    if (date_range) {
+    if (date_range[0] && date_range[1]) {
       if (new Date(entry.start_time) < start || end < new Date(entry.start_time)) {
         return false;
       }

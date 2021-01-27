@@ -22,7 +22,8 @@ const Reports = (props: any) => {
   const [tab, setTab] = useState('data');
 
   useEffect(() => {
-    props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions))
+    console.log(filterOptions);
+    props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions));
   }, [filterOptions, props.allEntries]);
   
   // Update filter options when new category, tag or date_range is selected
