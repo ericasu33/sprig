@@ -38,26 +38,21 @@ const BarChart = ( props : any ) => {
     const categories: any = [];
     const dataHash: any = {};
     const timeHash: any = {};
-    let dataType = "";
-    let size = Infinity;
+    let dataType = "min";
     for (const entry of entries) {
       const date = entry.start_time.toDateString();
       const name = (entry.category && entry.category.value) || "No Category";
       if (!categories.includes(name)) categories.push(name);
       const color = entry.category && entry.category.color;
       const time = (entry.end_time - entry.start_time - entry.cumulative_pause_duration) / 1000;
-      const timeObj = formatTime(time, size);
-      const formattedTime = timeObj.val;
-      size = timeObj.size;
-      dataType = timeObj.key;
       if (dataHash[date]) {
-        dataHash[date][name] = (dataHash[date][name] || 0) + formattedTime;
+        dataHash[date][name] = (dataHash[date][name] || 0) + time / 60;
         timeHash[date][name] = (timeHash[date][name] || 0) + time;
         dataHash[date][`${name}Color`] = `${color || "#000000"}`;
       } else {
         dataHash[date] = {
           date,
-          [name]: formattedTime,
+          [name]: time / 60,
           [`${name}Color`]: `${color || "#000000"}`,
         };
         timeHash[date] = {
