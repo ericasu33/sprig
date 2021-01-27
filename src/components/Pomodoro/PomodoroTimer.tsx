@@ -109,7 +109,7 @@ const PomodoroTimer = (props: any) => {
   };
 
   const calcTotalTime = ({cycles, work, short_break, long_break}: ITimer) => {
-    return ((work + short_break) * cycles + long_break + work);
+    return ((work + short_break) * (cycles - 1) + long_break + work);
   };
 
   useEffect(() => {
@@ -258,7 +258,7 @@ const PomodoroTimer = (props: any) => {
             </div>
             
             <div className='pm-group'>
-              <label>Cycles remaining</label>
+              <label>Repeats remaining</label>
               <StepInputInt disabled
                 value={calcCycle(clock.time, timer)}
               />

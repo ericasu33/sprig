@@ -23,8 +23,8 @@ const PomodoroForm = (props: any) => {
   });
 
   const calcStats = ({work, short_break, long_break, cycles}: {[key:string]: number}) => {
-    const duration_time = (work + short_break) * cycles + work + long_break;
-    const work_time = work + work * cycles;
+    const duration_time = (work + short_break) * (cycles - 1) + work + long_break;
+    const work_time = work * cycles;
     if (!duration_time || !work_time) return null;
     const p_work = Math.floor((work_time / duration_time) * 100);
     return { duration: duration_time, work: work_time, p_work};
