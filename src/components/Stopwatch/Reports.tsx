@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import StopwatchList from './StopwatchList'
 import Pie from './Pie'
-import ProgressBarByCategory from './ProgressBarByCategory'
+import BarChart from './BarChart'
 import Categories from './Categories'
 import Tags from './Tags'
 import DateRange from './DateRangePicker'
@@ -103,7 +103,7 @@ const Reports = (props: any) => {
 
       {tab === 'charts' &&
         <section className='section-sw-charts'>
-          <ProgressBarByCategory 
+          <BarChart 
             entries={filteredEntries}
           />
           <Pie 
