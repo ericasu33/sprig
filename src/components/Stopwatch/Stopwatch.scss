@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 10px;
+  // margin-top: 10px;
   .sw-header {
     display: flex;
     flex-direction: row;
@@ -16,15 +16,18 @@
     font-weight: bold;
     margin: 0;
     color: $colour-highlight;
-    padding-left: 5px;
-
+    // padding-left: 5px;
+    padding: 2px;
+    border-bottom: 1px solid $border-light;
       .sw-header-category {
         text-align: center;
         width: 240px;
+        padding-right: 30px;
       }
       .sw-header-tags {
         text-align: center;
         width: 330px;
+        padding-right: 20px;
       }
       .sw-header-times {
         display: flex;
@@ -38,7 +41,7 @@
         .sw-header-times-end {
           text-align: center;
           width: 110px;
-          padding-left: 10px;
+          padding-left: 12px;
         }
         .sw-header-times-intensity {
           text-align: center;
@@ -57,6 +60,7 @@
         .sw-header-calcs-effective {
           text-align: center;
           width: 90px;
+          padding-left: 1px;
         }
         
       }
