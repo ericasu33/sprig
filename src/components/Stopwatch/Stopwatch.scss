@@ -37,6 +37,7 @@
 }
 
 .stopwatch {
+  animation: 1.5s ease-out newEntry;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
