@@ -9,7 +9,7 @@ import StepInputTimer from '../StepInputTimer';
 import 'react-calendar/dist/Calendar.css';
 import './Stopwatch.scss'
 
-import { ICategory, ITag } from '../../ts-interfaces/interfaces';
+import { ITag } from '../../ts-interfaces/interfaces';
 
 /*  setDateToLocalMidnight sets hours, minutes, seconds, milliseconds to zero
     so that calendarDate is always midnight, consistent with return value

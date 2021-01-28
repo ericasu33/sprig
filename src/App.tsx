@@ -8,8 +8,6 @@ import 'components/Pomodoro/PomodoroTimer';
 
 import { ISound, ITimer, ICategoryDB, ICategory, ITagDB, ITag, IEntriesTags, IEntry, IEntryDB } from 'ts-interfaces/interfaces';
 
-
-
 function App() {
   const [timerPresets, setTimerPresets]: [ITimer[], Function] = useState([]);
   const [soundFiles, setSoundFiles]: [ISound[], Function] = useState([]);
@@ -26,33 +24,6 @@ function App() {
     pause_start_time: null,
     cumulative_pause_duration: 0,
   });
-
-
-  // Convert entry object to one DB accepts
-  const convertEntryToDBFormat = (entryObj: IEntry) => {
-    return ({
-      id: entryObj.id,
-      category: entryObj.category && entryObj.category.id,
-      start_time: entryObj.start_time,
-      end_time: entryObj.end_time,
-      intensity: entryObj.intensity,
-      pause_start_time: entryObj.pause_start_time,
-      cumulative_pause_duration: entryObj.cumulative_pause_duration,
-    })
-  }
-
-  // UPDATE all entries LOCALLY
-  const refreshEntries = (updatedEntry: IEntry) => {
-    return allEntries.map((e: IEntry) => {
-      if (e.id === updatedEntry.id) {
-        return {...updatedEntry, category: updatedEntry.category};
-      }
-      if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
-        return {...e, category: updatedEntry.category}
-      }
-      return e;
-    })
-  }
 
   // CREATE and UPDATE pomodoro timer
   const handleAddTimer = (timer: ITimer) => {
@@ -148,6 +119,32 @@ function App() {
         console.error(err);
       });
   };
+  
+  // Convert entry object to one DB accepts
+  const convertEntryToDBFormat = (entryObj: IEntry) => {
+    return ({
+      id: entryObj.id,
+      category: entryObj.category && entryObj.category.id,
+      start_time: entryObj.start_time,
+      end_time: entryObj.end_time,
+      intensity: entryObj.intensity,
+      pause_start_time: entryObj.pause_start_time,
+      cumulative_pause_duration: entryObj.cumulative_pause_duration,
+    })
+  }
+
+  // UPDATE all entries LOCALLY
+  const refreshEntries = (updatedEntry: IEntry) => {
+    return allEntries.map((e: IEntry) => {
+      if (e.id === updatedEntry.id) {
+        return {...updatedEntry, category: updatedEntry.category};
+      }
+      if (e.category && updatedEntry.category && e.category.id === updatedEntry.category.id) {
+        return {...e, category: updatedEntry.category}
+      }
+      return e;
+    })
+  }
 
   // UPDATE, CLONE, DELETE already-saved stopwatch entry
   const updateEntry = (entryObj: IEntry, instruction: string) => {
