@@ -223,7 +223,7 @@ function App() {
         const promises = tags.map((tag: ITag) => {
           return axios.post(`api/stopwatches/${res.data.id}/tags/${tag.id}`);
         });
-        setAllEntries((prev: IEntry[]) => [...prev, {...entryObj, id: res.data.id}]);
+        setAllEntries((prev: IEntry[]) => [ {...entryObj, id: res.data.id}, ...prev ]);
         return Promise.all(promises);
       })
       .catch((err) => {
