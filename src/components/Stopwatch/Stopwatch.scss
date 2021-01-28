@@ -1,12 +1,6 @@
 @import "styles/variables.scss";
 
 .sw-entries-header {
-  font-family: $font-family-fancy;
-  margin: 0;
-  color: $colour-highlight;
-  background-color: $colour-compliment;
-  padding: 4px;
-  padding-left: 5px;
 }
 
 .sw-entries {
@@ -14,6 +8,60 @@
   flex-direction: column;
   align-items: flex-start;
   margin-top: 10px;
+  .sw-header {
+    display: flex;
+    flex-direction: row;
+    font-family: $font-family-fancy;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    color: $colour-highlight;
+    padding-left: 5px;
+
+      .sw-header-category {
+        text-align: center;
+        width: 240px;
+      }
+      .sw-header-tags {
+        text-align: center;
+        width: 330px;
+      }
+      .sw-header-times {
+        display: flex;
+        flex-direction: row;
+        width: 350px;
+        padding: 0px 40px 0px 10px;
+        .sw-header-times-start {
+          text-align: center;
+          width: 105px;
+        }
+        .sw-header-times-end {
+          text-align: center;
+          width: 110px;
+          padding-left: 10px;
+        }
+        .sw-header-times-intensity {
+          text-align: center;
+          width: 70px;
+        }
+      }
+      .sw-header-calcs {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 210px;
+        .sw-header-calcs-total {
+          text-align: center;
+          width: 90px;
+        }
+        .sw-header-calcs-effective {
+          text-align: center;
+          width: 90px;
+        }
+        
+      }
+  }
+
   .sw-entries-list {
     width: 100%;
     display: flex;
