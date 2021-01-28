@@ -46,6 +46,7 @@ const StopwatchActive = (props: any) => {
       setAllCategories((prev: ICategory[]) => {
         return [...prev, { ...category, id}]
       });
+      updateActiveEntry("category", {...category, id});
     });
   };
 
