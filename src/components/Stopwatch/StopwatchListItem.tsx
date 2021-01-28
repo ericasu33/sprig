@@ -76,6 +76,12 @@ const StopwatchListItem = (props: any) => {
     return props.createNewTag(newTag, entry.id);
   };
 
+  const formatDate = (date: Date | null) => {
+    if (date === null) return;
+    const stringDate = date.toDateString();
+    return stringDate.split(' ').splice(1,2).join(' ');
+  };
+
   return (
     <div className='stopwatch'>
 
@@ -136,6 +142,7 @@ const StopwatchListItem = (props: any) => {
 
         <div>
           <Button calendar onClick={() => setShowCalendar(!showCalendar)} />
+          <div className='entry-date-content'>{formatDate(calendarDate)}</div>
           {showCalendar && 
             <div className='show-calendar'>
               <Calendar

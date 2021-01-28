@@ -24,6 +24,18 @@
   }
 }
 
+@keyframes newEntry {
+  0% { 
+    background-color: #eeee0099;
+  }
+  75% { 
+    background-color: #eeee0033;
+  }
+  100% { 
+    background-color: none;
+  }
+}
+
 .stopwatch {
   display: flex;
   flex-direction: row;
