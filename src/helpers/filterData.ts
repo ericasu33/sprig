@@ -23,7 +23,7 @@ const filterData = (allEntries: any, filterOptions: any) => {
     // Tag or tags in filter, return false if entry tags array doesn't include all filter tags
     if (tags) {
 
-      const matchedTags = entry.tags.filter((tag: ITag) => tag_ids.includes(tag.id))
+      const matchedTags = (entry.tags && entry.tags.filter((tag: ITag) => tag_ids.includes(tag.id))) || [];
       if (matchedTags.length !== tags.length) {
         return false;
       }
