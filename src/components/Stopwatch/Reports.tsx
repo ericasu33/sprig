@@ -22,7 +22,6 @@ const Reports = (props: any) => {
   const [tab, setTab] = useState('data');
 
   useEffect(() => {
-    console.log(filterOptions);
     props.allEntries && setFilteredEntries(filterData(props.allEntries, filterOptions));
   }, [filterOptions, props.allEntries]);
   

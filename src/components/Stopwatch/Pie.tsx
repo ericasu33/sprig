@@ -38,7 +38,6 @@ const PieEntry = ( props : any ) => {
   };
 
   const chartData = aggregateTotalDurationByCategory(stopwatches);
-  console.log(chartData);
 
   const legend = chartData.map((cat: any) => {
     return (

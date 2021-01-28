@@ -12,23 +12,23 @@ const formatTimeToStr = (timeInSec: number) => {
   return `${hh > 0 ? `${hh}h ` : ""}${mm > 0 ? `${mm}m ` : ""}${ss > 0 ? `${ss}s ` : ""}`;
 };
 
-const formatTime = (timeInSec: number, size = Infinity) => {
-  const times = [
-    {size: 0, key: "sec", val: 60},
-    {size: 1, key: "min", val: 60},
-    {size: 2, key: "hrs", val: 24},
-  ];
-  const sec = Math.floor(timeInSec);
-  let acc = sec;
-  let prev = { ...times[0], val: acc };
-  for (const time of times) {
-    if (time.size > size) return prev;
-    prev = { size: time.size, key: time.key, val: acc };
-    acc = acc / time.val;
-    if (acc < 1) return prev;
-  }
-  return prev;
-};
+// const formatTime = (timeInSec: number, size = Infinity) => {
+//   const times = [
+//     {size: 0, key: "sec", val: 60},
+//     {size: 1, key: "min", val: 60},
+//     {size: 2, key: "hrs", val: 24},
+//   ];
+//   const sec = Math.floor(timeInSec);
+//   let acc = sec;
+//   let prev = { ...times[0], val: acc };
+//   for (const time of times) {
+//     if (time.size > size) return prev;
+//     prev = { size: time.size, key: time.key, val: acc };
+//     acc = acc / time.val;
+//     if (acc < 1) return prev;
+//   }
+//   return prev;
+// };
 
 const BarChart = ( props : any ) => {
   const stopwatches : any = props.entries || [];

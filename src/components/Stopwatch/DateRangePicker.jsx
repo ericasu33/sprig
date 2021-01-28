@@ -24,7 +24,6 @@ export default function DateRange(props) {
     } else if (operator === "week") {
       start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
       end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-      console.log(start,end);
     } else if (operator === "month") {
       start = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
       end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
