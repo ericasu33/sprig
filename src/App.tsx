@@ -71,11 +71,20 @@ function App() {
 
   // UPDATE category (used to update colour)
   const handleUpdateCategory = (category: ICategory) => {
+    if (!category) return;
     return axios.put(`/api/category/${category.id}`, category)
       .then((res) => {
         setAllCategories(allCategories.map((cat: ICategory) => {
           return cat.id === category.id ? category : cat;
-        }))
+        }));
+        setAllEntries( (prev: IEntry[]) => {
+          return prev.map((entry) => {
+            if (entry.category && entry.category.id === category.id) {
+              return {...entry, category: {...category}};
+            }
+            return entry;
+          });
+        });
         return res.data.id
       })
       .catch((err) => {
