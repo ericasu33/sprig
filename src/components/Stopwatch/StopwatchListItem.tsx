@@ -140,7 +140,7 @@ const StopwatchListItem = (props: any) => {
           />
         </div>
 
-        <div>
+        <div className='sw-input-calendar'>
           <Button calendar onClick={() => setShowCalendar(!showCalendar)} />
           <div className='entry-date-content'>{formatDate(calendarDate)}</div>
           {showCalendar && 

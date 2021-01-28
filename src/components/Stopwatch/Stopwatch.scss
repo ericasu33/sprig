@@ -121,6 +121,17 @@
     background-color: $background-transparent-low;
     // padding-left: 8px;
     // padding-right: 8px;
+    .sw-input-calendar {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      .entry-date-content {
+        font-family: $font-family-fancy;
+        width: 40px;
+        text-align: center;
+      }
+    }
   }
   .sw-start-time {
     // background-color: $background-transparent-low;
