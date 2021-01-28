@@ -15,9 +15,6 @@ const StepInputClock = function(props: any) {
   
   // Check if 'time' arg is in the past, return bool
   const isAllowed = (time: Date): boolean => {
-    console.log('isAllowed time:', time);
-    console.log('isAllowed maxTime:', props.maxTime);
-    
     if (props.maxTime) {
       if (props.maxTime === 'now') return time <= new Date()
       return time <= props.maxTime;

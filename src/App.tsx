@@ -91,7 +91,17 @@ function App() {
           return [ ...prev, { ...tag, id: res.data.id } ];
         });
         if (entry_id) {
-          return axios.post(`/api/stopwatches/${entry_id}/tags/${res.data.id}`, tag).then(() => res.data.id);
+          return axios.post(`/api/stopwatches/${entry_id}/tags/${res.data.id}`, tag).then(() => res.data.id)
+          .then(() => {
+            setAllEntries((prev: any) => {
+                return prev.map((entry: IEntry) => {
+                  if (entry.id === entry_id) {
+                    return { ...entry, tags: (entry.tags && [...entry.tags, {...tag, id: res.data.id}]) || [{...tag, id: res.data.id}]};
+                  }
+                  return entry;
+                });
+            });
+          });
         } else {
           return res.data.id;
         }
@@ -269,8 +279,6 @@ function App() {
         intensity: Number(entryDB.intensity),
       }
     })
-    console.log('allEntriesFormatted:', allEntriesFormatted);
-    
     setAllEntries(allEntriesFormatted);
   }
 
@@ -349,7 +357,7 @@ function App() {
       </main>
       <footer className='footer'>
         <div className='footer-text'>
-          Built by a team who know exaclty how long it took
+          Built by a team who know exactly how long it took
           <br/>
           who took regular breaks
           <br/>

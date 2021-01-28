@@ -38,7 +38,6 @@ const StepInputInt = function(props: any) {
     const cleaned: string = cleanInput(rawStr)
     const validated: string = validateVal(cleaned)
     setValue(concatPercent(validated))
-    console.log(props.name);
     props.setValue(props.name, validated);
   };
 
