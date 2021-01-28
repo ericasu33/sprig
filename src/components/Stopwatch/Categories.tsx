@@ -42,7 +42,7 @@ const Category = (props: any) => {
     const promise = props.createNewCategory(newCategory);
     promise.then((id: number | undefined) => {
       if (!id) return;
-      props.onChange('category', newCategory)
+      props.onChange('category', {...newCategory, id});
       setValue(newCategory);
     });
   };
