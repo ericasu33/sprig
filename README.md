@@ -29,6 +29,26 @@ Track Suite is a time management app used to set intervals, specifically pomodor
 - typescript: ^4.1.3
 - web-vitals: ^0.2.4
 
+# Interview Scheduler
+
+A simple, clean scheduler app built with React that books appointments between students and interviewers.
+
+### Main app showing pomodoro-style timer, task tracker and tasks history
+Use filter dropdowns to choose what to show from history (incl. what's displayed in charts)
+
+
+!["Main app"](https://github.com/ericasu33/track-suite/blob/master/src/docs/Main%20app.png)
+
+
+### Form for configuring pomodoro-style timers and their alerts
+!["Pomodoro form"](https://github.com/ericasu33/track-suite/blob/master/src/docs/Pomodoro%20form.png)
+
+
+### Charts to visualize task history
+!["Task history charts"](https://github.com/ericasu33/track-suite/blob/master/src/docs/Charts.png)
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
