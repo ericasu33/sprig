@@ -4,30 +4,30 @@ Track Suite is a time management app used to set intervals, specifically pomodor
 
 ## Dependencies
 
-@nivo/bar: ^0.67.0
-@nivo/core: ^0.67.0
-@types/node: ^14.14.21
-@types/react: ^17.0.0
-@types/react-dom: ^17.0.0
-@wojtekmaj/react-daterange-picker: ^3.0.0
-axios: ^0.21.1
-body-parser: ^1.19.0
-chroma-js: ^2.1.0
-classnames: ^2.2.6
-dotenv: ^8.2.0
-express: ^4.17.1
-normalize: ^0.3.1
-pg: ^8.5.1
-react: ^17.0.1
-react-calendar: ^3.2.1
-react-color: ^2.19.3
-react-dom: ^17.0.1
-react-minimal-pie-chart: ^8.1.0
-react-scripts: 4.0.1
-react-select: ^3.2.0
-sass: ^1.30.0
-typescript: ^4.1.3
-web-vitals: ^0.2.4
+- @nivo/bar: ^0.67.0
+- @nivo/core: ^0.67.0
+- @types/node: ^14.14.21
+- @types/react: ^17.0.0
+- @types/react-dom: ^17.0.0
+- @wojtekmaj/react-daterange-picker: ^3.0.0
+- axios: ^0.21.1
+- body-parser: ^1.19.0
+- chroma-js: ^2.1.0
+- classnames: ^2.2.6
+- dotenv: ^8.2.0
+- express: ^4.17.1
+- normalize: ^0.3.1
+- pg: ^8.5.1
+- react: ^17.0.1
+- react-calendar: ^3.2.1
+- react-color: ^2.19.3
+- react-dom: ^17.0.1
+- react-minimal-pie-chart: ^8.1.0
+- react-scripts: 4.0.1
+- react-select: ^3.2.0
+- sass: ^1.30.0
+- typescript: ^4.1.3
+- web-vitals: ^0.2.4
 
 # Getting Started with Create React App
 
