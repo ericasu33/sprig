@@ -1,19 +1,72 @@
 @import "styles/variables.scss";
 
 .sw-entries-header {
-  font-family: $font-family-fancy;
-  margin: 0;
-  color: $colour-highlight;
-  background-color: $colour-compliment;
-  padding: 4px;
-  padding-left: 5px;
 }
 
 .sw-entries {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 10px;
+  // margin-top: 10px;
+  .sw-header {
+    display: flex;
+    flex-direction: row;
+    font-family: $font-family-fancy;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    color: $colour-highlight;
+    // padding-left: 5px;
+    padding: 2px;
+    border-bottom: 1px solid $border-light;
+    width: 100%;
+      .sw-header-category {
+        text-align: center;
+        width: 240px;
+        padding-right: 30px;
+      }
+      .sw-header-tags {
+        text-align: center;
+        width: 330px;
+        padding-right: 20px;
+      }
+      .sw-header-times {
+        display: flex;
+        flex-direction: row;
+        width: 350px;
+        padding: 0px 40px 0px 10px;
+        .sw-header-times-start {
+          text-align: center;
+          width: 105px;
+        }
+        .sw-header-times-end {
+          text-align: center;
+          width: 110px;
+          padding-left: 12px;
+        }
+        .sw-header-times-intensity {
+          text-align: center;
+          width: 70px;
+        }
+      }
+      .sw-header-calcs {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 210px;
+        .sw-header-calcs-total {
+          text-align: center;
+          width: 90px;
+        }
+        .sw-header-calcs-effective {
+          text-align: center;
+          width: 90px;
+          padding-left: 1px;
+        }
+        
+      }
+  }
+
   .sw-entries-list {
     width: 100%;
     display: flex;
@@ -44,7 +97,8 @@
   align-items: center;
   border-bottom: 1px solid $border-light;
   padding: 5px;
-  margin-top: 10px;
+  padding-bottom: 8px;
+  padding-top: 10px;
   min-height: 60px;
   &-active {
     width: 100%;
@@ -74,6 +128,17 @@
     background-color: $background-transparent-low;
     // padding-left: 8px;
     // padding-right: 8px;
+    .sw-input-calendar {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      .entry-date-content {
+        font-family: $font-family-fancy;
+        width: 40px;
+        text-align: center;
+      }
+    }
   }
   .sw-start-time {
     // background-color: $background-transparent-low;
